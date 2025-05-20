@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Theme Classes */
+html.light {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+html.dark {
+  --background: #121212;
+  --foreground: #f5f5f5;
+}
+
+html.high-contrast {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+/* Font Size Classes */
+html.text-sm {
+  font-size: 14px;
+}
+
+html.text-base {
+  font-size: 16px;
+}
+
+html.text-xl {
+  font-size: 20px;
+}
+
+/* High Contrast Overrides */
+html.high-contrast a:focus,
+html.high-contrast button:focus,
+html.high-contrast input:focus,
+html.high-contrast select:focus,
+html.high-contrast textarea:focus {
+  outline: 3px solid yellow !important;
+}
+
+html.high-contrast .bg-white {
+  background-color: black !important;
+  color: white !important;
+}
+
+html.high-contrast .bg-gray-100,
+html.high-contrast .bg-gray-200,
+html.high-contrast .bg-blue-50,
+html.high-contrast .bg-blue-100,
+html.high-contrast .bg-yellow-50 {
+  background-color: #333 !important;
+  color: white !important;
+}
+
+html.high-contrast .text-gray-600,
+html.high-contrast .text-gray-700,
+html.high-contrast .text-gray-800 {
+  color: white !important;
+}
+
+html.high-contrast .border,
+html.high-contrast .border-gray-200,
+html.high-contrast .border-gray-300 {
+  border-color: white !important;
+}
