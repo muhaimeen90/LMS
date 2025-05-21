@@ -11,7 +11,7 @@ const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 export const chatWithAI = async (req, res) => {
     const userMessage = req.body.message;
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
         console.log("Model:", model);
 
         const result = await model.generateContent(userMessage);
