@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { lessonData } from '../../data/lessonData';
 import Link from 'next/link';
 import LessonCompletionBadge from '../../components/LessonCompletionBadge';
@@ -21,9 +21,6 @@ import { useLessonTimer } from '../../utils/useLessonTimer';
 import { announceToScreenReader } from '../../utils/screenReaderAnnouncer';
 
 export default function LessonPage({ params }) {
-  // Unwrap params Promise
-  const { lessonId: currentLessonId } = use(params);
-
   const [activeTab, setActiveTab] = useState('content');
   const [activeSection, setActiveSection] = useState(0);
   const [lessonCompleted, setLessonCompleted] = useState(false);
@@ -33,6 +30,7 @@ export default function LessonPage({ params }) {
   const [quizResults, setQuizResults] = useState(null);
   
   // Get the current lesson data
+  const currentLessonId = params.lessonId;
   const currentLessonData = lessonData.find(lesson => lesson.id === currentLessonId) || lessonData[0];
   
   // Use our lesson timer hook
