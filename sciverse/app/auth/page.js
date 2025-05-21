@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -11,11 +11,47 @@ export default function AuthPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  
+  // Check if user is already logged in
+  useEffect(() => {
+    let isActive = true; // For cleanup/preventing state updates after unmount
+    
+    const checkAuth = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          
+          if (response.ok && isActive) {
+            // User is already authenticated, redirect to dashboard
+            router.replace('/dashboard');
+          }
+        } catch (error) {
+          // Token might be invalid, continue with login page
+          if (isActive) {
+            localStorage.removeItem('token');
+          }
+        }
+      }
+    };
+    
+    checkAuth();
+    
+    // Cleanup function
+    return () => {
+      isActive = false;
+    };
+  }, [router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
+    
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/${isSignIn ? 'login' : 'signup'}`, {
@@ -32,13 +68,22 @@ export default function AuthPage() {
         throw new Error(data.message || 'Authentication failed');
       }
 
-      // Save token if provided
-      if (data.session?.access_token) {
-        localStorage.setItem('token', data.session.access_token);
+      // Save token if provided - fixed to match backend response format
+      if (data.data?.token) {
+        localStorage.setItem('token', data.data.token);
+        
+        // Check if we need to store user info separately
+        if (data.data.user) {
+          localStorage.setItem('user', JSON.stringify(data.data.user));
+        }
       }
 
-      // Redirect to home page
-      router.push('/');
+      // Show success message
+      setError('');
+      
+      // Redirect to dashboard after successful login/signup
+      // Use replace instead of push to prevent back button issues
+      router.replace('/dashboard');
     } catch (err) {
       setError(err.message);
     } finally {

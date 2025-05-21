@@ -3,13 +3,15 @@ import cors from 'cors'
 import morgan from 'morgan'
 import helmet from 'helmet'
 import compression from 'compression'
-import { apiLimiter, authLimiter } from './middleware/rateLimitMiddleware.js'
+import { apiLimiter } from './middleware/rateLimitMiddleware.js'
 import { errorHandler } from './utils/errorHandler.js'
 import { requestLogger } from './utils/logger.js'
 import authRoutes from './routes/authRoutes.js'
 import lessonRoutes from './routes/lessonRoutes.js'
 import quizRoutes from './routes/quizRoutes.js'
+import progressRoutes from './routes/progressRoutes.js'
 import chatbotRoute from './routes/chatbotRoute.js';
+
 const app = express()
 
 // Enable compression for all responses
@@ -30,7 +32,7 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
       imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", process.env.SUPABASE_URL],
+      connectSrc: ["'self'", process.env.MONGODB_URI || 'mongodb://localhost:27017'],
     },
   },
   crossOriginEmbedderPolicy: true,
@@ -53,19 +55,24 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }))
 app.use(morgan('dev'))
 app.use(requestLogger)
 
-// Apply rate limiting
+// Apply general API rate limiting
 app.use('/api/', apiLimiter)
-app.use('/api/auth', authLimiter)
+// Removed global auth rate limiter - now applied per-route in authRoutes.js
 
 // Routes
 app.use('/api/auth', authRoutes)
 app.use('/api/lessons', lessonRoutes)
 app.use('/api/quizzes', quizRoutes)
+app.use('/api/progress', progressRoutes)
 app.use('/api/', chatbotRoute);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() })
+  res.status(200).json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    database: 'MongoDB'
+  })
 })
 
 // 404 handler

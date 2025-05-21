@@ -1,8 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { saveQuizResults, getQuizScore } from '../utils/storageUtils';
+import { getQuizScore } from '../utils/storageUtils';
 import { announceToScreenReader } from '../utils/screenReaderAnnouncer';
+import { 
+  processQuizSubmission, 
+  calculateScorePercentage, 
+  isQuizPassed,
+  getScoreColorClass
+} from '../utils/quizUtils';
 
 /**
  * Quiz component for lesson quizzes
@@ -68,35 +74,21 @@ const Quiz = ({
   
   // Submit quiz
   const handleSubmitQuiz = () => {
-    // Calculate score
-    let correctAnswers = 0;
-    
-    questions.forEach((question, index) => {
-      const selectedIndex = selectedAnswers[index];
-      const correctIndex = question.options.findIndex(opt => opt.id === question.correctOptionId);
-      if (selectedIndex === correctIndex) {
-        correctAnswers++;
-      }
-    });
-    
-    // Save result to localStorage
-    saveQuizResults(lessonId, correctAnswers, questions.length);
+    // Process submission using centralized utility
+    const result = processQuizSubmission(lessonId, questions, selectedAnswers);
     
     // Set score and completion state
-    setScore(correctAnswers);
+    setScore(result.score);
     setQuizCompleted(true);
     
     // Announce result
-    const percentage = Math.round((correctAnswers / questions.length) * 100);
-    announceToScreenReader(`Quiz completed. Your score is ${correctAnswers} out of ${questions.length}, which is ${percentage} percent.`);
+    announceToScreenReader(
+      `Quiz completed. Your score is ${result.score} out of ${result.totalQuestions}, which is ${result.percentage} percent.`
+    );
     
     // Callback
     if (onComplete) {
-      onComplete({
-        score: correctAnswers,
-        totalQuestions: questions.length,
-        percentage
-      });
+      onComplete(result);
     }
   };
   
@@ -136,7 +128,7 @@ const Quiz = ({
             <div>
               <p className="text-sm text-blue-800 dark:text-blue-300">
                 Previous attempt: {previousAttempts.score}/{previousAttempts.totalQuestions} 
-                ({Math.round((previousAttempts.score / previousAttempts.totalQuestions) * 100)}%)
+                ({calculateScorePercentage(previousAttempts.score, previousAttempts.totalQuestions)}%)
               </p>
             </div>
             <div className="text-sm text-blue-700 dark:text-blue-400">
@@ -263,16 +255,16 @@ const Quiz = ({
               </span>
             </div>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              You scored {Math.round((score / questions.length) * 100)}%
+              You scored {calculateScorePercentage(score, questions.length)}%
             </p>
             
-            {score / questions.length < 0.5 && (
+            {!isQuizPassed(score, questions.length, 50) && (
               <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800 dark:bg-yellow-900/30 dark:border-yellow-800 dark:text-yellow-300">
                 We recommend reviewing this lesson again before moving on.
               </div>
             )}
             
-            {score / questions.length >= 0.8 && (
+            {isQuizPassed(score, questions.length, 80) && (
               <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800 dark:bg-green-900/30 dark:border-green-800 dark:text-green-300">
                 Great job! You're ready to move on to the next lesson.
               </div>
