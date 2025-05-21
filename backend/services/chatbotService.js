@@ -6,11 +6,13 @@ dotenv.config();
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+// console.log(genAI)
 
 export const chatWithAI = async (req, res) => {
     const userMessage = req.body.message;
     try {
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        console.log("Model:", model);
 
         const result = await model.generateContent(userMessage);
         const response = await result.response;
