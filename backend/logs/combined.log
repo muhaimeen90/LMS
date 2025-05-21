@@ -1,0 +1,46 @@
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 13:37:15"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 13:37:15"}
+{"level":"info","message":"Auth state changed: SIGNED_IN","service":"lms-api","timestamp":"2025-05-21 13:37:41"}
+{"duration":"1123ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-21 13:37:41","url":"/login"}
+{"duration":"2ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":500,"timestamp":"2025-05-21 13:39:01","url":"/chat"}
+{"duration":"2223ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":201,"timestamp":"2025-05-21 14:06:23","url":"/signup"}
+{"level":"info","message":"Auth state changed: TOKEN_REFRESHED","service":"lms-api","timestamp":"2025-05-21 14:35:49"}
+{"level":"info","message":"Auth state changed: TOKEN_REFRESHED","service":"lms-api","timestamp":"2025-05-21 15:33:52"}
+{"level":"info","message":"Auth state changed: TOKEN_REFRESHED","service":"lms-api","timestamp":"2025-05-21 16:46:51"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 16:52:52"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 16:52:52"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 16:53:09"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 16:53:09"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 16:53:30"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 16:53:30"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 16:53:52"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 16:53:52"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 16:54:18"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 16:54:18"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 16:54:47"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 16:54:47"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 16:55:11"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 16:55:11"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 17:01:07"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 17:01:07"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 17:01:45"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 17:01:45"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 17:03:06"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 17:03:06"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 17:05:13"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 17:05:13"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 17:06:11"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 17:06:11"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 17:06:46"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 17:06:46"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 17:09:35"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 17:09:35"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 17:10:08"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 17:10:08"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 17:10:29"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 17:10:29"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 17:11:15"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 17:11:15"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 17:12:19"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 17:12:19"}
+{"level":"info","message":"Received shutdown signal. Closing server...","service":"lms-api","timestamp":"2025-05-21 17:12:28"}
