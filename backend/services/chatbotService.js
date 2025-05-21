@@ -12,7 +12,7 @@ export const chatWithAI = async (req, res) => {
     const userMessage = req.body.message;
     try {
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-        console.log("Model:", model);
+        // console.log("Model:", model);
 
         const result = await model.generateContent(userMessage);
         const response = await result.response;
