@@ -272,3 +272,6 @@
 {"duration":"177ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":201,"timestamp":"2025-05-22 02:03:02","url":"/add"}
 {"duration":"130ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 02:03:22","url":"/top?limit=10"}
 {"duration":"204ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 02:12:12","url":"/top?limit=10"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-22 02:44:00"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 02:44:01"}
+{"duration":"1003ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 02:44:02","url":"/top?limit=10"}
