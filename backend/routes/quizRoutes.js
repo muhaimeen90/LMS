@@ -1,31 +1,38 @@
-import express from 'express'
-import { protect, restrictTo } from '../middleware/authMiddleware.js'
-import { validate, createQuizValidation, quizSubmissionValidation } from '../middleware/validationMiddleware.js'
+import express from 'express';
 import {
-  getAllQuizzes,
-  getQuizById,
   createQuiz,
-  updateQuiz,
-  deleteQuiz,
+  getQuizByLesson,
   submitQuizAttempt,
-  getQuizStats
-} from '../controllers/quizController.js'
+  getStudentAttempts,
+  getStudentQuizStats,
+  getAllQuizzes,
+  getQuizById
+} from '../controllers/quizController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import { teacherOnly } from '../middleware/roleMiddleware.js';
 
-const router = express.Router()
+const router = express.Router();
 
-// Public quiz access routes
-router.get('/', getAllQuizzes)
-router.get('/:id', getQuizById)
+// Public routes
+router.route('/')
+  .get(getAllQuizzes)
+  .post(protect, teacherOnly, createQuiz);
 
-// Quiz management routes - restricted to teachers and admins
-router.post('/', protect, restrictTo('teacher', 'admin'), validate(createQuizValidation), createQuiz)
-router.put('/:id', protect, restrictTo('teacher', 'admin'), validate(createQuizValidation), updateQuiz)
-router.delete('/:id', protect, restrictTo('teacher', 'admin'), deleteQuiz)
+router.route('/:id')
+  .get(getQuizById);
 
-// Quiz attempt routes - available to authenticated students
-router.post('/:quizId/submit', protect, validate(quizSubmissionValidation), submitQuizAttempt)
+// Public route to get quiz by lesson
+router.route('/lesson/:lessonId')
+  .get(getQuizByLesson);
 
-// Quiz statistics - restricted to teachers and admins
-router.get('/:id/stats', protect, restrictTo('teacher', 'admin'), getQuizStats)
+// Student routes
+router.route('/attempt')
+  .post(protect, submitQuizAttempt);
 
-export default router
+router.route('/attempts/:lessonId')
+  .get(protect, getStudentAttempts);
+
+router.route('/stats')
+  .get(protect, getStudentQuizStats);
+
+export default router;
