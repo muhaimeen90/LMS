@@ -13,12 +13,36 @@ export const THEMES = {
   HIGH_CONTRAST: 'high-contrast'
 };
 
+export const MOTION_PREFERENCES = {
+  FULL: 'full',
+  REDUCED: 'reduced',
+  NONE: 'none'
+};
+
+export const TEXT_SPACING = {
+  NORMAL: 'normal',
+  WIDE: 'wide',
+  WIDER: 'wider'
+};
+
+export const COLOR_BLINDNESS_MODES = {
+  NORMAL: 'normal',
+  PROTANOPIA: 'protanopia',
+  DEUTERANOPIA: 'deuteranopia',
+  TRITANOPIA: 'tritanopia',
+  ACHROMATOPSIA: 'achromatopsia'
+};
+
 // Utility function to load settings from localStorage
 export const loadSettings = () => {
   if (typeof window === 'undefined') {
     return {
       fontSize: FONT_SIZES.MEDIUM,
-      theme: THEMES.LIGHT
+      theme: THEMES.LIGHT,
+      motion: MOTION_PREFERENCES.FULL,
+      textSpacing: TEXT_SPACING.NORMAL,
+      dyslexicFont: false,
+      colorBlindnessMode: COLOR_BLINDNESS_MODES.NORMAL
     };
   }
 
@@ -26,13 +50,21 @@ export const loadSettings = () => {
     const savedSettings = localStorage.getItem('sciverse-settings');
     return savedSettings ? JSON.parse(savedSettings) : {
       fontSize: FONT_SIZES.MEDIUM,
-      theme: THEMES.LIGHT
+      theme: THEMES.LIGHT,
+      motion: MOTION_PREFERENCES.FULL,
+      textSpacing: TEXT_SPACING.NORMAL,
+      dyslexicFont: false,
+      colorBlindnessMode: COLOR_BLINDNESS_MODES.NORMAL
     };
   } catch (error) {
     console.error('Error loading settings:', error);
     return {
       fontSize: FONT_SIZES.MEDIUM,
-      theme: THEMES.LIGHT
+      theme: THEMES.LIGHT,
+      motion: MOTION_PREFERENCES.FULL,
+      textSpacing: TEXT_SPACING.NORMAL,
+      dyslexicFont: false,
+      colorBlindnessMode: COLOR_BLINDNESS_MODES.NORMAL
     };
   }
 };
@@ -71,6 +103,54 @@ export const getThemeClasses = (theme) => {
     case THEMES.LIGHT:
     default:
       return 'light bg-white text-gray-900';
+  }
+};
+
+// Get CSS classes for motion preferences
+export const getMotionClasses = (motion) => {
+  switch (motion) {
+    case MOTION_PREFERENCES.REDUCED:
+      return 'reduced-motion';
+    case MOTION_PREFERENCES.NONE:
+      return 'no-motion';
+    case MOTION_PREFERENCES.FULL:
+    default:
+      return '';
+  }
+};
+
+// Get CSS classes for text spacing
+export const getTextSpacingClasses = (spacing) => {
+  switch (spacing) {
+    case TEXT_SPACING.WIDE:
+      return 'text-spacing-wide';
+    case TEXT_SPACING.WIDER:
+      return 'text-spacing-wider';
+    case TEXT_SPACING.NORMAL:
+    default:
+      return '';
+  }
+};
+
+// Get CSS classes for dyslexic font
+export const getDyslexicFontClasses = (enabled) => {
+  return enabled ? 'dyslexic-font' : '';
+};
+
+// Get CSS classes for color blindness mode
+export const getColorBlindnessClasses = (mode) => {
+  switch (mode) {
+    case COLOR_BLINDNESS_MODES.PROTANOPIA:
+      return 'protanopia';
+    case COLOR_BLINDNESS_MODES.DEUTERANOPIA:
+      return 'deuteranopia';
+    case COLOR_BLINDNESS_MODES.TRITANOPIA:
+      return 'tritanopia';
+    case COLOR_BLINDNESS_MODES.ACHROMATOPSIA:
+      return 'achromatopsia';
+    case COLOR_BLINDNESS_MODES.NORMAL:
+    default:
+      return '';
   }
 };
 
