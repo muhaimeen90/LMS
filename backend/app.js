@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import helmet from 'helmet'
+import mongoose from 'mongoose'
 import compression from 'compression'
 import { apiLimiter } from './middleware/rateLimitMiddleware.js'
 import { errorHandler } from './utils/errorHandler.js'
@@ -9,6 +10,7 @@ import { requestLogger } from './utils/logger.js'
 import authRoutes from './routes/authRoutes.js'
 import lessonRoutes from './routes/lessonRoutes.js'
 import quizRoutes from './routes/quizRoutes.js'
+import questionRoutes from './routes/questionRoute.js'
 import progressRoutes from './routes/progressRoutes.js'
 import chatbotRoute from './routes/chatbotRoute.js';
 
@@ -46,6 +48,9 @@ app.use(helmet({
   referrerPolicy: { policy: "strict-origin-when-cross-origin" },
   xssFilter: true
 }))
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Could not connect to MongoDB:', err));
 
 // Request parsing
 app.use(express.json({ limit: '10mb' }))
@@ -63,6 +68,7 @@ app.use('/api/', apiLimiter)
 app.use('/api/auth', authRoutes)
 app.use('/api/lessons', lessonRoutes)
 app.use('/api/quizzes', quizRoutes)
+app.use('/api/questions', questionRoutes) 
 app.use('/api/progress', progressRoutes)
 app.use('/api/', chatbotRoute);
 
