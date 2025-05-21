@@ -1,34 +1,71 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from 'react';
-import { loadSettings, saveSettings, FONT_SIZES, THEMES } from '../utils/themeUtils';
+import { 
+  loadSettings, 
+  saveSettings, 
+  FONT_SIZES, 
+  THEMES, 
+  MOTION_PREFERENCES, 
+  TEXT_SPACING,
+  COLOR_BLINDNESS_MODES
+} from '../utils/themeUtils';
 
 // Create context
 const ThemeContext = createContext({
   fontSize: FONT_SIZES.MEDIUM,
   theme: THEMES.LIGHT,
+  motion: MOTION_PREFERENCES.FULL,
+  textSpacing: TEXT_SPACING.NORMAL,
+  dyslexicFont: false,
+  colorBlindnessMode: COLOR_BLINDNESS_MODES.NORMAL,
   setFontSize: () => {},
   setTheme: () => {},
+  setMotion: () => {},
+  setTextSpacing: () => {},
+  setDyslexicFont: () => {},
+  setColorBlindnessMode: () => {},
 });
 
 // Provider component
 export function ThemeProvider({ children }) {
   const [fontSize, setFontSizeState] = useState(FONT_SIZES.MEDIUM);
   const [theme, setThemeState] = useState(THEMES.LIGHT);
+  const [motion, setMotionState] = useState(MOTION_PREFERENCES.FULL);
+  const [textSpacing, setTextSpacingState] = useState(TEXT_SPACING.NORMAL);
+  const [dyslexicFont, setDyslexicFontState] = useState(false);
+  const [colorBlindnessMode, setColorBlindnessModeState] = useState(COLOR_BLINDNESS_MODES.NORMAL);
   const [isLoaded, setIsLoaded] = useState(false);
-
   // Load settings from localStorage on initial mount
   useEffect(() => {
-    const { fontSize: savedFontSize, theme: savedTheme } = loadSettings();
+    const { 
+      fontSize: savedFontSize, 
+      theme: savedTheme,
+      motion: savedMotion,
+      textSpacing: savedTextSpacing,
+      dyslexicFont: savedDyslexicFont,
+      colorBlindnessMode: savedColorBlindnessMode
+    } = loadSettings();
+    
     setFontSizeState(savedFontSize);
     setThemeState(savedTheme);
+    setMotionState(savedMotion);
+    setTextSpacingState(savedTextSpacing);
+    setDyslexicFontState(savedDyslexicFont);
+    setColorBlindnessModeState(savedColorBlindnessMode);
     setIsLoaded(true);
   }, []);
-
   // Save settings to localStorage when they change
   useEffect(() => {
     if (isLoaded) {
-      saveSettings({ fontSize, theme });
+      saveSettings({ 
+        fontSize, 
+        theme,
+        motion,
+        textSpacing,
+        dyslexicFont,
+        colorBlindnessMode
+      });
       
       // Apply theme and font size classes to html/body elements
       const htmlElement = document.documentElement;
@@ -62,9 +99,36 @@ export function ThemeProvider({ children }) {
         default:
           htmlElement.classList.add('text-base');
       }
+      
+      // Motion preferences
+      htmlElement.classList.remove('reduced-motion', 'no-motion');
+      if (motion === MOTION_PREFERENCES.REDUCED) {
+        htmlElement.classList.add('reduced-motion');
+      } else if (motion === MOTION_PREFERENCES.NONE) {
+        htmlElement.classList.add('no-motion');
+      }
+      
+      // Text spacing
+      htmlElement.classList.remove('text-spacing-wide', 'text-spacing-wider');
+      if (textSpacing === TEXT_SPACING.WIDE) {
+        htmlElement.classList.add('text-spacing-wide');
+      } else if (textSpacing === TEXT_SPACING.WIDER) {
+        htmlElement.classList.add('text-spacing-wider');
+      }
+        // Dyslexic font
+      if (dyslexicFont) {
+        htmlElement.classList.add('dyslexic-font');
+      } else {
+        htmlElement.classList.remove('dyslexic-font');
+      }
+      
+      // Color blindness modes
+      htmlElement.classList.remove('protanopia', 'deuteranopia', 'tritanopia', 'achromatopsia');
+      if (colorBlindnessMode !== COLOR_BLINDNESS_MODES.NORMAL) {
+        htmlElement.classList.add(colorBlindnessMode);
+      }
     }
-  }, [fontSize, theme, isLoaded]);
-
+  }, [fontSize, theme, motion, textSpacing, dyslexicFont, colorBlindnessMode, isLoaded]);
   // Set font size and save to localStorage
   const setFontSize = (newSize) => {
     setFontSizeState(newSize);
@@ -74,13 +138,39 @@ export function ThemeProvider({ children }) {
   const setTheme = (newTheme) => {
     setThemeState(newTheme);
   };
-
+  
+  // Set motion preference
+  const setMotion = (newMotion) => {
+    setMotionState(newMotion);
+  };
+  
+  // Set text spacing
+  const setTextSpacing = (newSpacing) => {
+    setTextSpacingState(newSpacing);
+  };
+    // Set dyslexic font
+  const setDyslexicFont = (enabled) => {
+    setDyslexicFontState(enabled);
+  };
+  
+  // Set color blindness mode
+  const setColorBlindnessMode = (mode) => {
+    setColorBlindnessModeState(mode);
+  };
   // Provide context value
   const contextValue = {
     fontSize,
     theme,
+    motion,
+    textSpacing,
+    dyslexicFont,
+    colorBlindnessMode,
     setFontSize,
     setTheme,
+    setMotion,
+    setTextSpacing,
+    setDyslexicFont,
+    setColorBlindnessMode
   };
 
   return (
