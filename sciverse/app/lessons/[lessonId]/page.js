@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../utils/AuthContext';
 import LessonCompletionBadge from '../../components/LessonCompletionBadge';
-import Quiz from '../../components/Quiz';
-import QuizCreator from '../../components/QuizCreator';
 import ProgressBar from '../../components/ProgressBar';
 import AdaptiveLearningPath from '../../components/AdaptiveLearningPath';
 import LessonNavigationAssistant from '../../components/LessonNavigationAssistant';
@@ -534,61 +532,68 @@ export default function LessonPage({ params }) {
           {/* For teachers and admins */}
           {(isTeacher || isAdmin) && (
             <div className="mb-6">
-              {!isEditingQuiz && (
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                    Quiz Management
-                  </h2>
-                  <button
-                    onClick={() => setIsEditingQuiz(!isEditingQuiz)}
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+                  Quiz Management
+                </h2>
+                {quizData ? (
+                  <Link
+                    href={`/quizzes/${quizData._id}`}
                     className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    {quizData ? 'Edit Quiz' : 'Create Quiz'}
-                  </button>
-                </div>
-              )}
+                    Edit Quiz
+                  </Link>
+                ) : (
+                  <Link
+                    href={`/quizzes/create?lessonId=${lessonId}`}
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    Create Quiz
+                  </Link>
+                )}
+              </div>
               
-              {isEditingQuiz ? (
-                <QuizCreator 
-                  lessonId={lessonId}
-                  existingQuiz={quizData}
-                  onQuizCreated={handleQuizCreated}
-                />
-              ) : quizData ? (
-                <div className="bg-white rounded-lg shadow-md p-6 dark:bg-gray-800">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-medium text-gray-800 dark:text-white">
-                      Quiz Preview
-                    </h3>
+              <div className="bg-white rounded-lg shadow-md p-6 dark:bg-gray-800">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium text-gray-800 dark:text-white">
+                    Quiz Status
+                  </h3>
+                  {quizData ? (
                     <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full dark:bg-green-900 dark:text-green-200">
                       Active
                     </span>
-                  </div>
-                  
+                  ) : (
+                    <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-full dark:bg-yellow-900 dark:text-yellow-200">
+                      Not Created
+                    </span>
+                  )}
+                </div>
+                
+                {quizData ? (
                   <p className="text-gray-600 dark:text-gray-300 mb-4">
                     This quiz has {quizData.questions?.length || 0} questions.
                   </p>
-                  
-                  <div className="mt-4 bg-gray-50 p-4 rounded-md dark:bg-gray-700">
-                    <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-2">Preview:</h4>
-                    <Quiz 
-                      questions={quizData.questions || []}
-                      lessonId={lessonId}
-                    />
-                  </div>
+                ) : (
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
+                    No quiz has been created for this lesson yet. Click "Create Quiz" to make one.
+                  </p>
+                )}
+                
+                <div className="flex justify-end mt-4">
+                  {quizData && (
+                    <Link 
+                      href={`/quizzes/${quizData._id}`} 
+                      className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                      </svg>
+                      View Quiz Page
+                    </Link>
+                  )}
                 </div>
-              ) : (
-                <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 p-6 rounded-lg dark:bg-yellow-900/30 dark:border-yellow-800 dark:text-yellow-300">
-                  <h3 className="text-lg font-medium mb-2">No Quiz Available</h3>
-                  <p className="mb-4">This lesson doesn't have a quiz yet. Create one to help students test their knowledge.</p>
-                  <button
-                    onClick={() => setIsEditingQuiz(true)}
-                    className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  >
-                    Create Quiz
-                  </button>
-                </div>
-              )}
+              </div>
               
               <hr className="my-8 border-gray-200 dark:border-gray-700" />
             </div>
@@ -600,13 +605,38 @@ export default function LessonPage({ params }) {
               Test Your Knowledge
             </h2>
             
-            {quizData?.questions && quizData.questions.length > 0 ? (
-              <Quiz
-                lessonId={lessonId}
-                questions={quizData.questions}
-                onComplete={handleQuizSubmit}
-                initialResults={quizResults}
-              />
+            {quizData ? (
+              <div className="bg-white rounded-lg shadow-md p-6 dark:bg-gray-800">
+                <div className="text-gray-700 dark:text-gray-300 mb-6">
+                  <p>This lesson has a quiz available to test your knowledge on the material you've learned.</p>
+                  <p className="mt-2">The quiz contains {quizData.questions?.length || 0} questions and will help reinforce the key concepts from this lesson.</p>
+                </div>
+                
+                {/* Show quiz status if user has results */}
+                {quizResults && (
+                  <div className="mb-6 p-4 bg-blue-50 rounded-md dark:bg-blue-900/30">
+                    <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">Your Previous Attempt</h4>
+                    <p className="text-blue-700 dark:text-blue-300">
+                      Score: {quizResults.score}/{quizResults.totalQuestions} ({Math.round((quizResults.score / quizResults.totalQuestions) * 100)}%)
+                    </p>
+                    <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">
+                      {quizResults.score / quizResults.totalQuestions >= 0.7 ? "Passed" : "Not passed yet"}
+                    </p>
+                  </div>
+                )}
+                
+                <div className="flex justify-center">
+                  <Link
+                    href={`/quizzes/${quizData._id}`}
+                    className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    {quizResults ? "Retake Quiz" : "Take Quiz"}
+                  </Link>
+                </div>
+              </div>
             ) : (
               <div className="bg-yellow-50 border border-yellow-200 text-yellow-700 p-4 rounded-lg dark:bg-yellow-900/30 dark:border-yellow-800 dark:text-yellow-300">
                 <p className="mb-2">No quiz available for this lesson yet.</p>

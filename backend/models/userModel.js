@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import logger from '../utils/logger.js';
+//import logger from '../utils/logger.js';
 
 // Function to check if connected to MongoDB
 export const isConnected = () => {
@@ -75,7 +75,7 @@ export const createUser = async (userData) => {
     const user = new User(userData);
     return await user.save();
   } catch (error) {
-    logger.error(`Error creating user: ${error.message}`);
+    //logger.error(`Error creating user: ${error.message}`);
     throw error;
   }
 };
@@ -89,7 +89,7 @@ export const getUserById = async (userId) => {
   try {
     return await User.findOne({ id: userId });
   } catch (error) {
-    logger.error(`Error getting user by ID: ${error.message}`);
+    //logger.error(`Error getting user by ID: ${error.message}`);
     throw error;
   }
 };
@@ -104,7 +104,7 @@ export const getUserByEmail = async (email) => {
     // Include password field for authentication
     return await User.findOne({ email }).select('+password');
   } catch (error) {
-    logger.error(`Error getting user by email: ${error.message}`);
+    //logger.error(`Error getting user by email: ${error.message}`);
     throw error;
   }
 };
@@ -123,7 +123,7 @@ export const updateUser = async (userId, userData) => {
       { new: true, runValidators: true }
     );
   } catch (error) {
-    logger.error(`Error updating user: ${error.message}`);
+    //logger.error(`Error updating user: ${error.message}`);
     throw error;
   }
 };
@@ -138,7 +138,7 @@ export const deleteUser = async (userId) => {
     await User.deleteOne({ id: userId });
     return true;
   } catch (error) {
-    logger.error(`Error deleting user: ${error.message}`);
+    //logger.error(`Error deleting user: ${error.message}`);
     throw error;
   }
 };
@@ -156,7 +156,7 @@ export const recordLogin = async (userId) => {
       { new: true }
     );
   } catch (error) {
-    logger.error(`Error recording login: ${error.message}`);
+    //logger.error(`Error recording login: ${error.message}`);
     throw error;
   }
 };
@@ -176,7 +176,7 @@ export const getUserRoles = async (userId) => {
     // Return the role as an array for compatibility with the previous roles system
     return [{ id: user.role, name: user.role }];
   } catch (error) {
-    logger.error(`Error getting user roles: ${error.message}`);
+    //logger.error(`Error getting user roles: ${error.message}`);
     throw error;
   }
 };
@@ -201,7 +201,7 @@ export const assignRoleToUser = async (userId, roleId) => {
       { new: true }
     );
   } catch (error) {
-    logger.error(`Error assigning role to user: ${error.message}`);
+    //logger.error(`Error assigning role to user: ${error.message}`);
     throw error;
   }
 };
@@ -243,7 +243,7 @@ export const getAllUsers = async (options = {}) => {
     
     return await query.exec();
   } catch (error) {
-    logger.error(`Error getting all users: ${error.message}`);
+    //logger.error(`Error getting all users: ${error.message}`);
     throw error;
   }
 };
