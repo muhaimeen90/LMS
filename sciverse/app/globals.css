@@ -80,3 +80,107 @@ html.high-contrast .border-gray-200,
 html.high-contrast .border-gray-300 {
   border-color: white !important;
 }
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation utility classes */
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.5s ease-in-out;
+}
+
+.animate-fadeInDown {
+  animation: fadeInDown 0.5s ease-in-out;
+}
+
+/* Accessibility: Reduced motion preference */
+@media (prefers-reduced-motion) {
+  .animate-fadeIn,
+  .animate-fadeInUp,
+  .animate-fadeInDown {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Motion preferences */
+html.reduced-motion *,
+html.no-motion * {
+  transition: none !important;
+  animation: none !important;
+}
+
+html.no-motion * {
+  scroll-behavior: auto !important;
+}
+
+/* Text spacing */
+html.text-spacing-wide {
+  letter-spacing: 0.05em;
+  word-spacing: 0.1em;
+  line-height: 1.5;
+}
+
+html.text-spacing-wider {
+  letter-spacing: 0.1em;
+  word-spacing: 0.15em;
+  line-height: 1.8;
+}
+
+/* Dyslexic font */
+html.dyslexic-font {
+  font-family: var(--font-lexend-deca), sans-serif;
+  letter-spacing: 0.05em;
+  word-spacing: 0.1em;
+  line-height: 1.5;
+}
+
+/* Color blindness simulation filters */
+html.protanopia {
+  filter: url('#protanopia-filter');
+}
+
+html.deuteranopia {
+  filter: url('#deuteranopia-filter');
+}
+
+html.tritanopia {
+  filter: url('#tritanopia-filter');
+}
+
+html.achromatopsia {
+  filter: grayscale(100%);
+}

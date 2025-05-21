@@ -1,4 +1,16 @@
-/* Tailwind CSS Config */
+// /* Tailwind CSS Config */
+// const config = {
+//   content: [
+//     "./app/**/*.{js,jsx}",
+//     "./components/**/*.{js,jsx}",
+//   ],
+//   theme: {
+//     extend: {},
+//   },
+//   plugins: [],
+// };
+
+// export default config;
 const config = {
   content: [
     "./app/**/*.{js,jsx}",
@@ -7,7 +19,9 @@ const config = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'), // Add the Typography plugin
+  ],
 };
 
 export default config;
