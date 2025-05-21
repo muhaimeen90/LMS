@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { saveQuizResults, getQuizScore } from '../utils/storageUtils';
-import { screenReaderAnnounce } from '../utils/screenReaderAnnouncer';
+import { announceToScreenReader } from '../utils/screenReaderAnnouncer';
 
 /**
  * Quiz component for lesson quizzes
@@ -32,7 +32,7 @@ const Quiz = ({
       }
       
       // Announce quiz loaded
-      screenReaderAnnounce(`Quiz loaded with ${questions.length} questions. ${
+      announceToScreenReader(`Quiz loaded with ${questions.length} questions. ${
         quizData ? `Your previous score was ${quizData.score} out of ${quizData.totalQuestions}.` : ''
       }`);
     }
@@ -46,14 +46,15 @@ const Quiz = ({
     });
     
     // Announce selection
-    const answer = questions[questionIndex].answers[answerIndex];
-    screenReaderAnnounce(`Selected answer: ${answer}`);
+    const option = questions[questionIndex].options[answerIndex];
+    announceToScreenReader(`Selected answer: ${option.text}`);
   };
-    // Move to next question
+  
+  // Move to next question
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      screenReaderAnnounce(`Question ${currentQuestionIndex + 2} of ${questions.length}: ${questions[currentQuestionIndex + 1].question}`);
+      announceToScreenReader(`Question ${currentQuestionIndex + 2} of ${questions.length}: ${questions[currentQuestionIndex + 1].question}`);
     }
   };
   
@@ -61,7 +62,7 @@ const Quiz = ({
   const handlePrevQuestion = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
-      screenReaderAnnounce(`Question ${currentQuestionIndex} of ${questions.length}: ${questions[currentQuestionIndex - 1].question}`);
+      announceToScreenReader(`Question ${currentQuestionIndex} of ${questions.length}: ${questions[currentQuestionIndex - 1].question}`);
     }
   };
   
@@ -71,7 +72,9 @@ const Quiz = ({
     let correctAnswers = 0;
     
     questions.forEach((question, index) => {
-      if (selectedAnswers[index] === question.correctAnswer) {
+      const selectedIndex = selectedAnswers[index];
+      const correctIndex = question.options.findIndex(opt => opt.id === question.correctOptionId);
+      if (selectedIndex === correctIndex) {
         correctAnswers++;
       }
     });
@@ -85,7 +88,7 @@ const Quiz = ({
     
     // Announce result
     const percentage = Math.round((correctAnswers / questions.length) * 100);
-    screenReaderAnnounce(`Quiz completed. Your score is ${correctAnswers} out of ${questions.length}, which is ${percentage} percent.`);
+    announceToScreenReader(`Quiz completed. Your score is ${correctAnswers} out of ${questions.length}, which is ${percentage} percent.`);
     
     // Callback
     if (onComplete) {
@@ -103,7 +106,7 @@ const Quiz = ({
     setSelectedAnswers({});
     setQuizCompleted(false);
     setScore(0);
-    screenReaderAnnounce("Quiz restarted. You can now retake the quiz.");
+    announceToScreenReader("Quiz restarted. You can now retake the quiz.");
   };
   
   // Current question
@@ -177,7 +180,7 @@ const Quiz = ({
             </h3>
             
             <div className="space-y-3">
-              {currentQuestion.answers.map((answer, answerIndex) => (
+              {currentQuestion.options.map((opt, answerIndex) => (
                 <div key={answerIndex} className="flex items-start">
                   <div className="flex items-center h-5">
                     <input
@@ -187,7 +190,7 @@ const Quiz = ({
                       checked={selectedAnswers[currentQuestionIndex] === answerIndex}
                       onChange={() => handleSelectAnswer(currentQuestionIndex, answerIndex)}
                       className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 dark:border-gray-600 dark:bg-gray-700"
-                      aria-label={`Answer option ${answerIndex + 1}: ${answer}`}
+                      aria-label={`Answer option ${answerIndex + 1}: ${opt.text}`}
                     />
                   </div>
                   <div className="ml-3 text-sm">
@@ -195,7 +198,7 @@ const Quiz = ({
                       htmlFor={`answer-${answerIndex}`} 
                       className="font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
                     >
-                      {answer}
+                      {opt.text}
                     </label>
                   </div>
                 </div>
@@ -296,7 +299,7 @@ const Quiz = ({
             <div className="space-y-6">
               {questions.map((question, qIndex) => {
                 const userAnswer = selectedAnswers[qIndex];
-                const isCorrect = userAnswer === question.correctAnswer;
+                const isCorrect = userAnswer === question.options.findIndex(opt => opt.id === question.correctOptionId);
                 
                 return (
                   <div 
@@ -312,31 +315,31 @@ const Quiz = ({
                     </h5>
                     
                     <div className="space-y-2">
-                      {question.answers.map((answer, aIndex) => (
+                      {question.options.map((opt, aIndex) => (
                         <div 
                           key={aIndex}
                           className={`p-2 rounded ${
-                            aIndex === question.correctAnswer
+                            opt.id === question.correctOptionId
                               ? 'bg-green-100 text-green-800 dark:bg-green-800/50 dark:text-green-100'
-                              : aIndex === userAnswer && aIndex !== question.correctAnswer
+                              : aIndex === userAnswer && opt.id !== question.correctOptionId
                                 ? 'bg-red-100 text-red-800 dark:bg-red-800/50 dark:text-red-100'
                                 : 'bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300'
                           }`}
                         >
                           <div className="flex items-center">
                             <div className="flex-shrink-0 mr-2">
-                              {aIndex === question.correctAnswer && (
+                              {opt.id === question.correctOptionId && (
                                 <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                               )}
-                              {aIndex === userAnswer && aIndex !== question.correctAnswer && (
+                              {aIndex === userAnswer && opt.id !== question.correctOptionId && (
                                 <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                                 </svg>
                               )}
                             </div>
-                            <span>{answer}</span>
+                            <span>{opt.text}</span>
                           </div>
                         </div>
                       ))}

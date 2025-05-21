@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { use, useState, useEffect } from 'react';
 import { lessonData } from '../../data/lessonData';
 import Link from 'next/link';
 import LessonCompletionBadge from '../../components/LessonCompletionBadge';
@@ -18,9 +18,12 @@ import {
   getQuizScore 
 } from '../../utils/storageUtils';
 import { useLessonTimer } from '../../utils/useLessonTimer';
-import { screenReaderAnnounce } from '../../utils/screenReaderAnnouncer';
+import { announceToScreenReader } from '../../utils/screenReaderAnnouncer';
 
 export default function LessonPage({ params }) {
+  // Unwrap params Promise
+  const { lessonId: currentLessonId } = use(params);
+
   const [activeTab, setActiveTab] = useState('content');
   const [activeSection, setActiveSection] = useState(0);
   const [lessonCompleted, setLessonCompleted] = useState(false);
@@ -30,7 +33,6 @@ export default function LessonPage({ params }) {
   const [quizResults, setQuizResults] = useState(null);
   
   // Get the current lesson data
-  const currentLessonId = params.lessonId;
   const currentLessonData = lessonData.find(lesson => lesson.id === currentLessonId) || lessonData[0];
   
   // Use our lesson timer hook
@@ -58,7 +60,7 @@ export default function LessonPage({ params }) {
       }
       
       // Announce lesson loaded to screen readers
-      screenReaderAnnounce(`Lesson ${currentLessonData.title} loaded. Use question mark key for keyboard shortcuts.`);
+      announceToScreenReader(`Lesson ${currentLessonData.title} loaded. Use question mark key for keyboard shortcuts.`);
     }
   }, [currentLessonId, currentLessonData.title]);
 
@@ -124,7 +126,7 @@ export default function LessonPage({ params }) {
   const handleMarkComplete = () => {
     markLessonCompleted(currentLessonId, true);
     setLessonCompleted(true);
-    screenReaderAnnounce("Lesson marked as completed");
+    announceToScreenReader("Lesson marked as completed");
   };
 
   // Handle lesson completion when navigating to next section from the last section
@@ -139,10 +141,10 @@ export default function LessonPage({ params }) {
     if (activeSection < currentLessonData.sections.length - 1) {
       setActiveSection(activeSection + 1);
       window.scrollTo(0, 0);
-      screenReaderAnnounce(`Section ${activeSection + 2}: ${currentLessonData.sections[activeSection + 1].title}`);
+      announceToScreenReader(`Section ${activeSection + 2}: ${currentLessonData.sections[activeSection + 1].title}`);
     } else {
       setActiveTab('quiz');
-      screenReaderAnnounce("Navigated to quiz section");
+      announceToScreenReader("Navigated to quiz section");
     }
   };
 
@@ -151,14 +153,14 @@ export default function LessonPage({ params }) {
     if (activeSection > 0) {
       setActiveSection(activeSection - 1);
       window.scrollTo(0, 0);
-      screenReaderAnnounce(`Section ${activeSection}: ${currentLessonData.sections[activeSection - 1].title}`);
+      announceToScreenReader(`Section ${activeSection}: ${currentLessonData.sections[activeSection - 1].title}`);
     }
   };
   
   // Toggle outline view
   const toggleOutline = () => {
     setShowOutline(!showOutline);
-    screenReaderAnnounce(showOutline ? "Outline closed" : "Outline opened");
+    announceToScreenReader(showOutline ? "Outline closed" : "Outline opened");
   };
   
   // Handle quiz completion
@@ -173,7 +175,7 @@ export default function LessonPage({ params }) {
       handleMarkComplete();
     }
     
-    screenReaderAnnounce(`Quiz completed with a score of ${result.percentage}%`);
+    announceToScreenReader(`Quiz completed with a score of ${result.percentage}%`);
   };
 
   return (
@@ -256,7 +258,7 @@ export default function LessonPage({ params }) {
               currentSection={activeSection}
               onSelectSection={(index) => {
                 setActiveSection(index);
-                screenReaderAnnounce(`Navigated to section ${index + 1}: ${currentLessonData.sections[index].title}`);
+                announceToScreenReader(`Navigated to section ${index + 1}: ${currentLessonData.sections[index].title}`);
               }}
             />
           </div>
@@ -268,7 +270,7 @@ export default function LessonPage({ params }) {
             <button
               onClick={() => {
                 setActiveTab('content');
-                screenReaderAnnounce("Navigated to lesson content tab");
+                announceToScreenReader("Navigated to lesson content tab");
               }}
               className={`py-4 px-6 text-center border-b-2 font-medium text-sm focus:outline-none ${
                 activeTab === 'content'
@@ -285,7 +287,7 @@ export default function LessonPage({ params }) {
             <button
               onClick={() => {
                 setActiveTab('quiz');
-                screenReaderAnnounce("Navigated to quiz tab");
+                announceToScreenReader("Navigated to quiz tab");
               }}
               className={`py-4 px-6 text-center border-b-2 font-medium text-sm focus:outline-none ${
                 activeTab === 'quiz'
@@ -302,7 +304,7 @@ export default function LessonPage({ params }) {
             <button
               onClick={() => {
                 setActiveTab('resources');
-                screenReaderAnnounce("Navigated to resources tab");
+                announceToScreenReader("Navigated to resources tab");
               }}
               className={`py-4 px-6 text-center border-b-2 font-medium text-sm focus:outline-none ${
                 activeTab === 'resources'
