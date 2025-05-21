@@ -275,3 +275,585 @@
 {"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-22 02:44:00"}
 {"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 02:44:01"}
 {"duration":"1003ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 02:44:02","url":"/top?limit=10"}
+=======
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 22:11:29"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 22:11:29"}
+{"level":"info","message":"Auth state changed: SIGNED_IN","service":"lms-api","timestamp":"2025-05-21 22:11:37"}
+{"duration":"1331ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-21 22:11:37","url":"/login"}
+{"level":"error","message":"Error getting user roles: Could not find a relationship between 'user_roles' and 'roles' in the schema cache","service":"lms-api","timestamp":"2025-05-21 22:11:38"}
+{"duration":"831ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":500,"timestamp":"2025-05-21 22:11:38","url":"/api/auth/me"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 22:13:58"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 22:13:58"}
+{"level":"info","message":"Auth state changed: SIGNED_IN","service":"lms-api","timestamp":"2025-05-21 22:19:58"}
+{"duration":"1730ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-21 22:19:58","url":"/login"}
+{"level":"error","message":"Error in getUserRoles query: Could not find a relationship between 'user_roles' and 'roles' in the schema cache","service":"lms-api","timestamp":"2025-05-21 22:19:59"}
+{"level":"error","message":"Error getting user roles: Could not find a relationship between 'user_roles' and 'roles' in the schema cache","service":"lms-api","timestamp":"2025-05-21 22:19:59"}
+{"duration":"1027ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":500,"timestamp":"2025-05-21 22:19:59","url":"/api/auth/me"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 22:20:56"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 22:20:56"}
+{"level":"info","message":"Auth state changed: SIGNED_IN","service":"lms-api","timestamp":"2025-05-21 22:25:23"}
+{"duration":"1261ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-21 22:25:23","url":"/login"}
+{"level":"error","message":"Error in getUserRoles query: Could not find a relationship between 'user_roles' and 'roles' in the schema cache","service":"lms-api","timestamp":"2025-05-21 22:25:25"}
+{"level":"error","message":"Error getting user roles: Could not find a relationship between 'user_roles' and 'roles' in the schema cache","service":"lms-api","timestamp":"2025-05-21 22:25:25"}
+{"duration":"1598ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":500,"timestamp":"2025-05-21 22:25:25","url":"/api/auth/me"}
+{"level":"error","message":"Error in getUserRoles query: Could not find a relationship between 'user_roles' and 'roles' in the schema cache","service":"lms-api","timestamp":"2025-05-21 22:25:25"}
+{"level":"error","message":"Error getting user roles: Could not find a relationship between 'user_roles' and 'roles' in the schema cache","service":"lms-api","timestamp":"2025-05-21 22:25:25"}
+{"duration":"1696ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":500,"timestamp":"2025-05-21 22:25:25","url":"/api/auth/me"}
+{"level":"error","message":"Error in getUserRoles query: Could not find a relationship between 'user_roles' and 'roles' in the schema cache","service":"lms-api","timestamp":"2025-05-21 22:25:25"}
+{"level":"error","message":"Error getting user roles: Could not find a relationship between 'user_roles' and 'roles' in the schema cache","service":"lms-api","timestamp":"2025-05-21 22:25:25"}
+{"duration":"1772ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":500,"timestamp":"2025-05-21 22:25:25","url":"/api/auth/me"}
+{"level":"error","message":"Error in getUserRoles query: Could not find a relationship between 'user_roles' and 'roles' in the schema cache","service":"lms-api","timestamp":"2025-05-21 22:25:26"}
+{"level":"error","message":"Error getting user roles: Could not find a relationship between 'user_roles' and 'roles' in the schema cache","service":"lms-api","timestamp":"2025-05-21 22:25:26"}
+{"duration":"2122ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":500,"timestamp":"2025-05-21 22:25:26","url":"/api/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-21 22:25:55","url":"/login"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-21 22:25:57","url":"/login"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-21 22:26:01","url":"/login"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 22:28:28"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 22:28:28"}
+{"level":"info","message":"Auth state changed: SIGNED_IN","service":"lms-api","timestamp":"2025-05-21 22:30:17"}
+{"duration":"882ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-21 22:30:17","url":"/login"}
+{"level":"error","message":"Error fetching from user_roles table: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:30:18"}
+{"level":"error","message":"Error getting user roles: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:30:18"}
+{"duration":"1099ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-21 22:30:18","url":"/me"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-21 22:30:18","url":"/me"}
+{"level":"error","message":"Error fetching from user_roles table: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:30:18"}
+{"level":"error","message":"Error getting user roles: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:30:18"}
+{"duration":"1171ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-21 22:30:18","url":"/me"}
+{"level":"error","message":"Error fetching from user_roles table: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:30:18"}
+{"level":"error","message":"Error getting user roles: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:30:18"}
+{"duration":"1212ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-21 22:30:18","url":"/me"}
+{"level":"error","message":"Error fetching from user_roles table: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:30:18"}
+{"level":"error","message":"Error getting user roles: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:30:18"}
+{"duration":"1313ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-21 22:30:18","url":"/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-21 22:30:44","url":"/login"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-21 22:30:46","url":"/login"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-21 22:31:24","url":"/login"}
+{"level":"info","message":"Received shutdown signal. Closing server...","service":"lms-api","timestamp":"2025-05-21 22:31:34"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 22:31:36"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 22:31:36"}
+{"level":"info","message":"Auth state changed: SIGNED_IN","service":"lms-api","timestamp":"2025-05-21 22:31:41"}
+{"duration":"573ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-21 22:31:41","url":"/login"}
+{"level":"error","message":"Error fetching from user_roles table: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:31:42"}
+{"level":"error","message":"Error getting user roles: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:31:42"}
+{"duration":"620ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-21 22:31:42","url":"/me"}
+{"level":"error","message":"Error fetching from user_roles table: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:31:43"}
+{"level":"error","message":"Error getting user roles: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:31:43"}
+{"duration":"950ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-21 22:31:43","url":"/me"}
+{"level":"error","message":"Error fetching from user_roles table: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:31:44"}
+{"level":"error","message":"Error getting user roles: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:31:44"}
+{"duration":"1425ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-21 22:31:44","url":"/me"}
+{"level":"error","message":"Error fetching from user_roles table: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:31:44"}
+{"level":"error","message":"Error getting user roles: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:31:44"}
+{"duration":"487ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-21 22:31:44","url":"/me"}
+{"duration":"4ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-21 22:31:44","url":"/me"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 22:34:05"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 22:34:05"}
+{"level":"info","message":"Auth state changed: SIGNED_IN","service":"lms-api","timestamp":"2025-05-21 22:34:16"}
+{"duration":"854ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-21 22:34:16","url":"/login"}
+{"level":"error","message":"Error fetching from user_roles table: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:34:17"}
+{"level":"error","message":"Error getting user roles: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:34:17"}
+{"duration":"440ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-21 22:34:17","url":"/me"}
+{"level":"error","message":"Error fetching from user_roles table: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:34:18"}
+{"level":"error","message":"Error getting user roles: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:34:18"}
+{"duration":"1038ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-21 22:34:18","url":"/me"}
+{"level":"error","message":"Error fetching from user_roles table: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:34:18"}
+{"level":"error","message":"Error getting user roles: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:34:18"}
+{"duration":"1146ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-21 22:34:18","url":"/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-21 22:34:18","url":"/me"}
+{"level":"error","message":"Error fetching from user_roles table: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:34:18"}
+{"level":"error","message":"Error getting user roles: relation \"public.user_roles\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:34:18"}
+{"duration":"465ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-21 22:34:18","url":"/me"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 22:36:22"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 22:36:22"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 22:37:09"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 22:37:09"}
+{"level":"info","message":"Auth state changed: SIGNED_IN","service":"lms-api","timestamp":"2025-05-21 22:38:16"}
+{"duration":"1161ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-21 22:38:16","url":"/login"}
+{"level":"error","message":"Error fetching user for roles: relation \"public.users\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:38:17"}
+{"duration":"454ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-21 22:38:17","url":"/me"}
+{"level":"error","message":"Error fetching user for roles: relation \"public.users\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:38:17"}
+{"duration":"499ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-21 22:38:17","url":"/me"}
+{"level":"error","message":"Error fetching user for roles: relation \"public.users\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:38:18"}
+{"duration":"793ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-21 22:38:18","url":"/me"}
+{"level":"error","message":"Error fetching user for roles: relation \"public.users\" does not exist","service":"lms-api","timestamp":"2025-05-21 22:38:18"}
+{"duration":"420ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-21 22:38:18","url":"/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-21 22:38:18","url":"/me"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 22:40:15"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 22:40:15"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 22:41:01"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 22:41:01"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 22:41:55"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 22:41:55"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 23:00:07"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-21 23:00:07"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 23:36:39"}
+{"level":"error","message":"Error connecting to MongoDB: connect ECONNREFUSED 127.0.0.1:27017","service":"lms-api","timestamp":"2025-05-21 23:36:44"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 23:37:51"}
+{"level":"error","message":"Error connecting to MongoDB: connect ECONNREFUSED 127.0.0.1:27017","service":"lms-api","timestamp":"2025-05-21 23:37:56"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-21 23:38:06"}
+{"level":"error","message":"Error connecting to MongoDB: connect ECONNREFUSED 127.0.0.1:27017","service":"lms-api","timestamp":"2025-05-21 23:38:11"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-22 00:10:26"}
+{"level":"error","message":"Error connecting to MongoDB: connect ECONNREFUSED 127.0.0.1:27017","service":"lms-api","timestamp":"2025-05-22 00:10:31"}
+{"level":"info","message":"Auth state changed: INITIAL_SESSION","service":"lms-api","timestamp":"2025-05-22 00:13:07"}
+{"level":"error","message":"Error connecting to MongoDB: connect ECONNREFUSED 127.0.0.1:27017","service":"lms-api","timestamp":"2025-05-22 00:13:12"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 00:23:43"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 00:23:43"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":401,"timestamp":"2025-05-22 00:24:02","url":"/signup"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":401,"timestamp":"2025-05-22 00:26:54","url":"/signup"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":401,"timestamp":"2025-05-22 00:26:57","url":"/signup"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":401,"timestamp":"2025-05-22 00:26:58","url":"/signup"}
+{"duration":"1ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":404,"timestamp":"2025-05-22 00:28:32","url":"/api/signup"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 00:41:22"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 00:41:22"}
+{"duration":"5ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":404,"timestamp":"2025-05-22 00:41:28","url":"/api/signup"}
+{"duration":"196ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":201,"timestamp":"2025-05-22 00:42:21","url":"/signup"}
+{"duration":"211ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:42:35","url":"/login"}
+{"duration":"198ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:42:57","url":"/login"}
+{"duration":"204ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:42:58","url":"/login"}
+{"duration":"190ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:42:59","url":"/login"}
+{"duration":"192ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:43:00","url":"/login"}
+{"duration":"205ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:43:01","url":"/login"}
+{"duration":"189ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:43:02","url":"/login"}
+{"duration":"156ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:43:02","url":"/login"}
+{"duration":"354ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:45:01","url":"/login"}
+{"duration":"249ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:45:11","url":"/login"}
+{"duration":"179ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:46:56","url":"/login"}
+{"duration":"104ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 00:46:56","url":"/me"}
+{"duration":"97ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:56","url":"/me"}
+{"duration":"98ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:56","url":"/me"}
+{"duration":"99ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:56","url":"/me"}
+{"duration":"101ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:56","url":"/me"}
+{"duration":"99ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:56","url":"/me"}
+{"duration":"103ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:56","url":"/me"}
+{"duration":"123ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:57","url":"/me"}
+{"duration":"118ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:57","url":"/me"}
+{"duration":"125ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:57","url":"/me"}
+{"duration":"105ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:57","url":"/me"}
+{"duration":"100ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:57","url":"/me"}
+{"duration":"96ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:57","url":"/me"}
+{"duration":"105ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:57","url":"/me"}
+{"duration":"105ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:57","url":"/me"}
+{"duration":"99ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:57","url":"/me"}
+{"duration":"101ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:58","url":"/me"}
+{"duration":"103ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:58","url":"/me"}
+{"duration":"100ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:58","url":"/me"}
+{"duration":"98ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:58","url":"/me"}
+{"duration":"104ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:58","url":"/me"}
+{"duration":"98ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:58","url":"/me"}
+{"duration":"105ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:58","url":"/me"}
+{"duration":"102ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:58","url":"/me"}
+{"duration":"102ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:58","url":"/me"}
+{"duration":"106ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:58","url":"/me"}
+{"duration":"121ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:59","url":"/me"}
+{"duration":"104ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:59","url":"/me"}
+{"duration":"96ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:59","url":"/me"}
+{"duration":"105ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:59","url":"/me"}
+{"duration":"101ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:59","url":"/me"}
+{"duration":"103ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:59","url":"/me"}
+{"duration":"97ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:59","url":"/me"}
+{"duration":"100ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:59","url":"/me"}
+{"duration":"106ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:46:59","url":"/me"}
+{"duration":"108ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:00","url":"/me"}
+{"duration":"317ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:00","url":"/me"}
+{"duration":"111ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:00","url":"/me"}
+{"duration":"305ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:00","url":"/me"}
+{"duration":"203ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:00","url":"/me"}
+{"duration":"202ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:01","url":"/me"}
+{"duration":"512ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:01","url":"/me"}
+{"duration":"201ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:01","url":"/me"}
+{"duration":"338ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:02","url":"/me"}
+{"duration":"584ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:02","url":"/me"}
+{"duration":"1025ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:03","url":"/me"}
+{"duration":"165ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:03","url":"/me"}
+{"duration":"1057ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:05","url":"/me"}
+{"duration":"437ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:05","url":"/me"}
+{"duration":"786ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:06","url":"/me"}
+{"duration":"203ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:06","url":"/me"}
+{"duration":"713ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:07","url":"/me"}
+{"duration":"184ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:07","url":"/me"}
+{"duration":"744ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:08","url":"/me"}
+{"duration":"297ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:08","url":"/me"}
+{"duration":"423ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:08","url":"/me"}
+{"duration":"719ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:09","url":"/me"}
+{"duration":"441ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:10","url":"/me"}
+{"duration":"644ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:10","url":"/me"}
+{"duration":"539ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:11","url":"/me"}
+{"duration":"712ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:11","url":"/me"}
+{"duration":"1149ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:13","url":"/me"}
+{"duration":"787ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:13","url":"/me"}
+{"duration":"3012ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:16","url":"/me"}
+{"duration":"772ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:17","url":"/me"}
+{"duration":"512ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:18","url":"/me"}
+{"duration":"332ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:18","url":"/me"}
+{"duration":"602ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:19","url":"/me"}
+{"duration":"832ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:19","url":"/me"}
+{"duration":"318ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:20","url":"/me"}
+{"duration":"386ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:20","url":"/me"}
+{"duration":"283ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:20","url":"/me"}
+{"duration":"282ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:21","url":"/me"}
+{"duration":"224ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:21","url":"/me"}
+{"duration":"747ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:22","url":"/me"}
+{"duration":"398ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:22","url":"/me"}
+{"duration":"1139ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:23","url":"/me"}
+{"duration":"387ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:24","url":"/me"}
+{"duration":"731ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:24","url":"/me"}
+{"duration":"952ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:25","url":"/me"}
+{"duration":"326ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:26","url":"/me"}
+{"duration":"573ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:26","url":"/me"}
+{"duration":"472ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:27","url":"/me"}
+{"duration":"549ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:27","url":"/me"}
+{"duration":"354ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:28","url":"/me"}
+{"duration":"1668ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:29","url":"/me"}
+{"duration":"541ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:30","url":"/me"}
+{"duration":"386ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:30","url":"/me"}
+{"duration":"376ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:47:31","url":"/me"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":429,"timestamp":"2025-05-22 00:47:31","url":"/auth/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:48:27","url":"/auth/signup"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:48:29","url":"/auth/signup"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:48:49","url":"/auth/signup"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:48:56","url":"/auth/signup"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:48:56","url":"/auth/signup"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:48:57","url":"/auth/signup"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:48:57","url":"/auth/signup"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:48:58","url":"/auth/signup"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:48:58","url":"/auth/signup"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:48:59","url":"/auth/signup"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:50:35","url":"/auth/signup"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:50:40","url":"/auth/login"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:50:41","url":"/auth/login"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:50:47","url":"/auth/login"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":429,"timestamp":"2025-05-22 00:50:49","url":"/auth/login"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 00:52:21"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 00:52:21"}
+{"duration":"391ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:52:29","url":"/login"}
+{"duration":"632ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:52:33","url":"/login"}
+{"duration":"537ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 00:52:38","url":"/me"}
+{"duration":"1204ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:39","url":"/me"}
+{"duration":"305ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:39","url":"/me"}
+{"duration":"1481ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:41","url":"/me"}
+{"duration":"1676ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:43","url":"/me"}
+{"duration":"2050ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:45","url":"/me"}
+{"duration":"220ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:45","url":"/me"}
+{"duration":"289ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:45","url":"/me"}
+{"duration":"654ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:46","url":"/me"}
+{"duration":"526ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:46","url":"/me"}
+{"duration":"803ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:47","url":"/me"}
+{"duration":"345ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:47","url":"/me"}
+{"duration":"338ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:48","url":"/me"}
+{"duration":"310ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:48","url":"/me"}
+{"duration":"665ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:49","url":"/me"}
+{"duration":"1591ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:50","url":"/me"}
+{"duration":"243ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:51","url":"/me"}
+{"duration":"398ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:51","url":"/me"}
+{"duration":"210ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:51","url":"/me"}
+{"duration":"1005ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:52","url":"/me"}
+{"duration":"227ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:52","url":"/me"}
+{"duration":"302ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:53","url":"/me"}
+{"duration":"249ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:53","url":"/me"}
+{"duration":"200ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:53","url":"/me"}
+{"duration":"241ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:53","url":"/me"}
+{"duration":"195ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:54","url":"/me"}
+{"duration":"262ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:54","url":"/me"}
+{"duration":"188ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:54","url":"/me"}
+{"duration":"155ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:54","url":"/me"}
+{"duration":"244ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:55","url":"/me"}
+{"duration":"115ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:55","url":"/me"}
+{"duration":"181ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:55","url":"/me"}
+{"duration":"209ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:55","url":"/me"}
+{"duration":"188ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:55","url":"/me"}
+{"duration":"154ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:55","url":"/me"}
+{"duration":"316ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:56","url":"/me"}
+{"duration":"322ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:56","url":"/me"}
+{"duration":"513ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:57","url":"/me"}
+{"duration":"324ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:57","url":"/me"}
+{"duration":"247ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:57","url":"/me"}
+{"duration":"426ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:58","url":"/me"}
+{"duration":"241ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:58","url":"/me"}
+{"duration":"696ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:52:58","url":"/me"}
+{"duration":"1990ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:53:00","url":"/me"}
+{"duration":"836ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:53:01","url":"/me"}
+{"duration":"439ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:53:02","url":"/me"}
+{"duration":"157ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:53:02","url":"/me"}
+{"duration":"287ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:53:02","url":"/me"}
+{"duration":"191ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:53:02","url":"/me"}
+{"duration":"463ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:53:03","url":"/me"}
+{"duration":"174ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:53:03","url":"/me"}
+{"duration":"165ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:53:03","url":"/me"}
+{"duration":"180ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:53:03","url":"/me"}
+{"level":"info","message":"Received shutdown signal. Closing server...","service":"lms-api","timestamp":"2025-05-22 00:53:04"}
+{"level":"error","message":"Error connecting to MongoDB: Server selection timed out after 5000 ms","service":"lms-api","timestamp":"2025-05-22 00:54:28"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 00:55:32"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 00:55:33"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 00:55:33"}
+{"duration":"205ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:56:01","url":"/login"}
+{"duration":"137ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 00:56:01","url":"/me"}
+{"duration":"143ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:56:01","url":"/me"}
+{"duration":"116ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:56:01","url":"/me"}
+{"duration":"133ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:56:01","url":"/me"}
+{"duration":"119ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:56:01","url":"/me"}
+{"duration":"121ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:56:07","url":"/me"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 00:56:10"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 00:56:11"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 00:56:11"}
+{"duration":"306ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":201,"timestamp":"2025-05-22 00:56:19","url":"/signup"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 00:56:58"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 00:56:59"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 00:56:59"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 00:57:28"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 00:57:28"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 00:57:28"}
+{"duration":"299ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 00:57:35","url":"/login"}
+{"duration":"511ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 00:57:36","url":"/me"}
+{"duration":"310ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:57:36","url":"/me"}
+{"duration":"440ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:57:37","url":"/me"}
+{"duration":"172ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:57:37","url":"/me"}
+{"duration":"256ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:57:37","url":"/me"}
+{"duration":"231ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:57:43","url":"/me"}
+{"duration":"231ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:57:56","url":"/me"}
+{"duration":"112ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:58:00","url":"/me"}
+{"duration":"190ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:58:01","url":"/me"}
+{"duration":"478ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:58:05","url":"/me"}
+{"duration":"179ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:58:06","url":"/me"}
+{"duration":"475ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:58:07","url":"/me"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 00:58:11"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 00:58:12"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 00:58:12"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 00:58:44"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 00:58:50"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 00:58:50"}
+{"duration":"156ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:58:59","url":"/me"}
+{"duration":"117ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 00:59:11","url":"/me"}
+{"duration":"270ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:00:13","url":"/me"}
+{"duration":"217ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:00:15","url":"/me"}
+{"duration":"140ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:02:08","url":"/me"}
+{"duration":"135ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:02:10","url":"/me"}
+{"duration":"132ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:05:23","url":"/me"}
+{"level":"error","message":"Error getting user by ID: Socket 'secureConnect' timed out after 9999ms (connectTimeoutMS: 10000)","service":"lms-api","timestamp":"2025-05-22 01:06:55"}
+{"level":"error","message":"JWT verification failed: Socket 'secureConnect' timed out after 9999ms (connectTimeoutMS: 10000)","service":"lms-api","timestamp":"2025-05-22 01:06:55"}
+{"duration":"15126ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":401,"timestamp":"2025-05-22 01:06:55","url":"/me"}
+{"level":"warn","message":"Using development mode fallback in auth middleware","service":"lms-api","timestamp":"2025-05-22 01:06:55"}
+{"level":"error","message":"Error getting user by ID: Socket 'secureConnect' timed out after 10000ms (connectTimeoutMS: 10000)","service":"lms-api","timestamp":"2025-05-22 01:07:10"}
+{"level":"error","message":"JWT verification failed: Socket 'secureConnect' timed out after 10000ms (connectTimeoutMS: 10000)","service":"lms-api","timestamp":"2025-05-22 01:07:10"}
+{"duration":"15009ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":401,"timestamp":"2025-05-22 01:07:10","url":"/me"}
+{"level":"warn","message":"MongoDB disconnected","service":"lms-api","timestamp":"2025-05-22 01:07:11"}
+{"duration":"569ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 01:07:12","url":"/login"}
+{"duration":"122ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:07:12","url":"/me"}
+{"duration":"130ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:07:13","url":"/me"}
+{"duration":"123ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:07:13","url":"/me"}
+{"duration":"451ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:07:13","url":"/me"}
+{"duration":"449ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:07:13","url":"/me"}
+{"duration":"399ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:07:21","url":"/me"}
+{"duration":"105ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:07:30","url":"/me"}
+{"duration":"104ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:08:49","url":"/me"}
+{"duration":"104ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:08:50","url":"/me"}
+{"duration":"455ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:10:01","url":"/me"}
+{"duration":"115ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:10:03","url":"/me"}
+{"duration":"102ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:10:03","url":"/me"}
+{"duration":"367ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:10:16","url":"/me"}
+{"duration":"212ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:10:17","url":"/me"}
+{"duration":"202ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:10:17","url":"/me"}
+{"duration":"238ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:10:28","url":"/me"}
+{"duration":"101ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:10:30","url":"/me"}
+{"duration":"102ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:10:31","url":"/me"}
+{"duration":"120ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:10:32","url":"/me"}
+{"duration":"252ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:10:35","url":"/me"}
+{"duration":"355ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:11:48","url":"/me"}
+{"duration":"240ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:11:48","url":"/me"}
+{"duration":"109ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:15:15","url":"/me"}
+{"duration":"185ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:15:46","url":"/me"}
+{"duration":"297ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:15:53","url":"/me"}
+{"duration":"212ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":201,"timestamp":"2025-05-22 01:16:30","url":"/"}
+{"duration":"197ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:16:32","url":"/me"}
+{"duration":"78ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:19:20","url":"/"}
+{"duration":"51ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:22:58","url":"/lesson_1747854990164"}
+{"duration":"66ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:22:58","url":"/lesson_1747854990164"}
+{"duration":"108ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:22:58","url":"/me"}
+{"duration":"52ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:22:58","url":"/"}
+{"duration":"57ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:22:58","url":"/"}
+{"duration":"69ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:24:05","url":"/"}
+{"duration":"62ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:24:05","url":"/"}
+{"duration":"111ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:24:05","url":"/me"}
+{"duration":"50ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:25:11","url":"/"}
+{"duration":"128ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:25:11","url":"/me"}
+{"duration":"62ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:25:42","url":"/lesson_1747854990164"}
+{"duration":"73ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:25:42","url":"/lesson_1747854990164"}
+{"duration":"125ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:25:42","url":"/me"}
+{"duration":"59ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:25:42","url":"/"}
+{"duration":"49ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:25:42","url":"/"}
+{"duration":"99ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:31:53","url":"/me"}
+{"duration":"66ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:31:55","url":"/"}
+{"duration":"59ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:31:55","url":"/"}
+{"duration":"116ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:31:55","url":"/me"}
+{"duration":"89ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:32:16","url":"/lesson_1747854990164"}
+{"duration":"101ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:32:16","url":"/lesson_1747854990164"}
+{"duration":"215ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:32:16","url":"/me"}
+{"duration":"102ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:32:16","url":"/"}
+{"duration":"73ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:32:16","url":"/"}
+{"duration":"147ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:34:21","url":"/me"}
+{"duration":"179ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:34:43","url":"/me"}
+{"duration":"129ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:34:58","url":"/me"}
+{"duration":"58ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:35:12","url":"/"}
+{"duration":"72ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:35:12","url":"/"}
+{"duration":"117ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:35:12","url":"/me"}
+{"duration":"55ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:35:14","url":"/lesson_1747854990164"}
+{"duration":"79ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:35:14","url":"/lesson_1747854990164"}
+{"duration":"99ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:35:14","url":"/me"}
+{"duration":"54ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:35:14","url":"/"}
+{"duration":"68ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:35:14","url":"/"}
+{"duration":"50ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:40:20","url":"/"}
+{"duration":"60ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:40:20","url":"/"}
+{"duration":"100ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:40:20","url":"/me"}
+{"duration":"168ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:40:27","url":"/lesson_1747854990164"}
+{"duration":"139ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:40:27","url":"/lesson_1747854990164"}
+{"duration":"215ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:40:27","url":"/me"}
+{"duration":"49ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:40:27","url":"/"}
+{"duration":"50ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:40:27","url":"/"}
+{"duration":"52ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:42:34","url":"/lesson_1747854990164"}
+{"duration":"8ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":404,"timestamp":"2025-05-22 01:42:34","url":"/api/quizzes/lesson/lesson_1747854990164"}
+{"duration":"51ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:42:34","url":"/"}
+{"duration":"58ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:43:26","url":"/"}
+{"duration":"68ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:43:26","url":"/"}
+{"duration":"119ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:43:26","url":"/me"}
+{"duration":"58ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:43:27","url":"/lesson_1747854990164"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":404,"timestamp":"2025-05-22 01:43:28","url":"/api/quizzes/lesson/lesson_1747854990164"}
+{"duration":"98ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:43:28","url":"/me"}
+{"duration":"73ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:43:28","url":"/lesson_1747854990164"}
+{"duration":"61ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:43:28","url":"/"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":404,"timestamp":"2025-05-22 01:43:28","url":"/api/quizzes/lesson/lesson_1747854990164"}
+{"duration":"96ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:43:28","url":"/"}
+{"duration":"68ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":400,"timestamp":"2025-05-22 01:47:04","url":"/api/quizzes/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 01:53:22"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 01:53:28"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 01:53:28"}
+{"duration":"208ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 01:54:14","url":"/login"}
+{"duration":"117ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:54:15","url":"/me"}
+{"duration":"128ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:54:15","url":"/me"}
+{"duration":"107ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:54:16","url":"/me"}
+{"duration":"109ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:54:16","url":"/me"}
+{"duration":"125ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:54:16","url":"/me"}
+{"duration":"117ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:54:20","url":"/me"}
+{"duration":"65ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:54:22","url":"/"}
+{"duration":"85ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:54:22","url":"/"}
+{"duration":"130ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:54:22","url":"/me"}
+{"duration":"58ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:54:24","url":"/lesson_1747854990164"}
+{"duration":"52ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 01:54:24","url":"/lesson_1747854990164"}
+{"duration":"4ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":404,"timestamp":"2025-05-22 01:54:24","url":"/api/quizzes/lesson/lesson_1747854990164"}
+{"duration":"115ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:54:24","url":"/me"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":404,"timestamp":"2025-05-22 01:54:24","url":"/api/quizzes/lesson/lesson_1747854990164"}
+{"duration":"46ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:54:24","url":"/"}
+{"duration":"54ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 01:54:24","url":"/"}
+{"duration":"92ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":400,"timestamp":"2025-05-22 01:54:45","url":"/api/quizzes/"}
+{"duration":"104ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 02:00:02","url":"/me"}
+{"duration":"318ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 02:00:03","url":"/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 02:03:15"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 02:03:16"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 02:03:16"}
+{"duration":"72ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 02:04:00","url":"/lesson_1747854990164"}
+{"duration":"5ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":404,"timestamp":"2025-05-22 02:04:01","url":"/api/quizzes/lesson/lesson_1747854990164"}
+{"duration":"137ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 02:04:01","url":"/lesson_1747854990164"}
+{"duration":"49ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 02:04:01","url":"/"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":404,"timestamp":"2025-05-22 02:04:01","url":"/api/quizzes/lesson/lesson_1747854990164"}
+{"duration":"210ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 02:04:01","url":"/me"}
+{"duration":"48ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 02:04:01","url":"/"}
+{"duration":"252ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":400,"timestamp":"2025-05-22 02:04:12","url":"/api/quizzes/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 02:04:38"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 02:04:39"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 02:04:39"}
+{"duration":"134ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":400,"timestamp":"2025-05-22 02:04:52","url":"/api/quizzes/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 02:05:08"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 02:05:10"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 02:05:10"}
+{"duration":"69ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":400,"timestamp":"2025-05-22 02:05:14","url":"/api/quizzes/"}
+{"duration":"52ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":400,"timestamp":"2025-05-22 02:11:12","url":"/api/quizzes/"}
+{"duration":"62ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":400,"timestamp":"2025-05-22 02:13:27","url":"/api/quizzes"}
+{"level":"info","message":"Received shutdown signal. Closing server...","service":"lms-api","timestamp":"2025-05-22 02:23:56"}
