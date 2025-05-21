@@ -1,28 +1,52 @@
-import cors from 'cors';
-import express from 'express';
-import dotenv from 'dotenv';
-import chatbotRoute from './routes/chatbotRoute.js';
-dotenv.config();
+import app from './app.js'
+import dotenv from 'dotenv'
+import logger from './utils/logger.js'
+import { connectToMongoDB } from './config/mongoClient.js'
 
-const app = express(); 
-app.use(
-    cors({
-        origin: process.env.CLIENT_URL,
-        methods: ["GET","POST","DELETE","PUT"],
-        allowedHeaders: ["Content-Type","Authorization"],
-        })
-    );
-  app.use(express.json());
+dotenv.config()
 
-app.use('/api', chatbotRoute);
+// Function to start the server
+const startServer = () => {
+  const port = process.env.PORT || 3001
+  const server = app.listen(port, () => {
+    logger.info(`Server is running on port ${port}`)
+  })
 
+  const shutdown = () => {
+    logger.info('Received shutdown signal. Closing server...')
+    server.close(() => {
+      logger.info('Server closed')
+      process.exit(0)
+    })
 
+    // Force close after 10s
+    setTimeout(() => {
+      logger.error('Could not close connections in time, forcefully shutting down')
+      process.exit(1)
+    }, 10000)
+  }
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Server error' });
-});
-const PORT=process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+  process.on('SIGTERM', shutdown)
+  process.on('SIGINT', shutdown)
+}
+
+// Try to connect to MongoDB, but fall back to starting without it if there's a connection issue
+connectToMongoDB()
+  .then(() => {
+    startServer()
+  })
+  .catch(err => {
+    logger.error('Failed to connect to MongoDB:', err)
+    logger.warn('Starting server without MongoDB connection. Some features may not work properly.')
+    startServer() // Still start the server even if MongoDB connection fails
+  })
+
+process.on('uncaughtException', (err) => {
+  logger.error('Uncaught Exception:', err)
+  process.exit(1)
+})
+
+process.on('unhandledRejection', (err) => {
+  logger.error('Unhandled Rejection:', err)
+  process.exit(1)
+})
