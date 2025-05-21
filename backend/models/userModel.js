@@ -1,5 +1,5 @@
 import supabase from '../config/supabaseClient.js';
-import logger from '../utils/logger.js';
+//import logger from '../utils/logger.js';
 
 const usersTable = 'users';
 
@@ -32,7 +32,7 @@ export const getUserById = async (userId) => {
       ...userData
     };
   } catch (error) {
-    logger.error(`Error getting user by ID: ${error.message}`);
+    //logger.error(`Error getting user by ID: ${error.message}`);
     throw error;
   }
 };
@@ -85,7 +85,7 @@ export const getUserByEmail = async (email) => {
     
     return userData || null;
   } catch (error) {
-    logger.error(`Error getting user by email: ${error.message}`);
+    //logger.error(`Error getting user by email: ${error.message}`);
     throw error;
   }
 };
@@ -223,7 +223,7 @@ export const updateUser = async (userId, userData) => {
     
     return null;
   } catch (error) {
-    logger.error(`Error updating user: ${error.message}`);
+    //logger.error(`Error updating user: ${error.message}`);
     throw error;
   }
 };
@@ -252,7 +252,7 @@ export const deleteUser = async (userId) => {
     if (dbError) throw dbError;
     return true;
   } catch (error) {
-    logger.error(`Error deleting user: ${error.message}`);
+    //logger.error(`Error deleting user: ${error.message}`);
     throw error;
   }
 };
@@ -469,7 +469,7 @@ export const getCurrentUser = async () => {
     
     return null;
   } catch (error) {
-    logger.error(`Error getting current user: ${error.message}`);
+    //logger.error(`Error recording login: ${error.message}`);
     throw error;
   }
 };
@@ -505,7 +505,7 @@ export const getUserRoles = async (userId) => {
       assignedAt: userRole.created_at
     }));
   } catch (error) {
-    logger.error(`Error getting user roles: ${error.message}`);
+    //logger.error(`Error getting user roles: ${error.message}`);
     throw error;
   }
 };
@@ -545,7 +545,7 @@ export const assignRoleToUser = async (userId, roleId) => {
     if (error) throw error;
     return data;
   } catch (error) {
-    logger.error(`Error assigning role to user: ${error.message}`);
+    //logger.error(`Error assigning role to user: ${error.message}`);
     throw error;
   }
 };
@@ -567,7 +567,7 @@ export const removeRoleFromUser = async (userId, roleId) => {
     if (error) throw error;
     return true;
   } catch (error) {
-    logger.error(`Error removing role from user: ${error.message}`);
+    //logger.error(`Error getting all users: ${error.message}`);
     throw error;
   }
 };

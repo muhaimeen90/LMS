@@ -1,257 +1,267 @@
-import { ApiError, catchAsync } from '../utils/errorHandler.js';
-import { 
-  validateQuizSubmission, 
-  verifyQuizAnswers, 
-  processQuizQuestions,
-  formatQuizForResponse
-} from '../utils/quizUtils.js';
-import {
-  createQuizResult,
-  getLatestQuizAttempt,
-  getUserQuizAttempts,
-  getAllUserQuizResults,
-  getUserQuizStatistics
-} from '../models/quizModel.js';
 import { Quiz, QuizQuestion, QuizAttempt } from '../models/quizModel.js';
-import { getLessonById } from '../models/lessonModel.js';
+import ApiError from '../utils/apiError.js';
+import { ApiResponse } from '../utils/apiResponse.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
-export const getAllQuizzes = catchAsync(async (req, res) => {
-  const quizzes = await Quiz.find().sort({ created_at: -1 });
+// Get all quizzes (public)
+const getAllQuizzes = asyncHandler(async (req, res) => {
+  const { title, sort, page = 1, limit = 20 } = req.query;
   
-  res.status(200).json({
-    status: 'success',
-    results: quizzes.length,
-    data: quizzes
-  });
+  // Prepare filter options
+  const filter = { isActive: true };
+  if (title) {
+    filter.title = { $regex: title, $options: 'i' };
+  }
+
+  // Prepare sort options
+  const sortOptions = {};
+  if (sort) {
+    const [field, order] = sort.split(':');
+    sortOptions[field] = order === 'desc' ? -1 : 1;
+  } else {
+    sortOptions.createdAt = -1; // Default sort by newest
+  }
+
+  // Pagination
+  const skip = (parseInt(page) - 1) * parseInt(limit);
+  
+  // Execute query
+  const quizzes = await Quiz.find(filter)
+    .sort(sortOptions)
+    .skip(skip)
+    .limit(parseInt(limit))
+    .populate('questions', '-correctAnswer') // Exclude correct answers
+    .populate('createdBy', 'username email');
+  
+  const total = await Quiz.countDocuments(filter);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(
+      200, 
+      { 
+        data: quizzes,
+        pagination: {
+          total,
+          page: parseInt(page),
+          limit: parseInt(limit),
+          pages: Math.ceil(total / parseInt(limit))
+        }
+      },
+      'Quizzes retrieved successfully'
+    ));
 });
 
-export const getQuizById = catchAsync(async (req, res) => {
+// Get quiz by ID (public)
+const getQuizById = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const quiz = await Quiz.findById(id).populate('questions');
-
+  
+  const quiz = await Quiz.findOne({ _id: id, isActive: true })
+    .populate('questions')
+    .populate('createdBy', 'username email');
+  
   if (!quiz) {
     throw new ApiError(404, 'Quiz not found');
   }
-
-  // Format the quiz data using our utility
-  const formattedQuiz = formatQuizForResponse(quiz);
-
-  res.status(200).json({
-    status: 'success',
-    data: formattedQuiz
-  });
+  
+  return res
+    .status(200)
+    .json(new ApiResponse(200, quiz, 'Quiz retrieved successfully'));
 });
 
-export const createQuiz = catchAsync(async (req, res) => {
-  const { title, description, lessonId, questions } = req.body;
+// Teacher creates a new quiz
+const createQuiz = asyncHandler(async (req, res) => {
+  const { title, description, lessonId, questions, passingScore, timeLimit } = req.body;
+  const userId = req.user._id;
 
   if (!title || !lessonId || !questions || questions.length === 0) {
-    throw new ApiError(400, 'Please provide all required fields (title, lessonId, and questions)');
+    throw new ApiError(400, 'Title, lesson ID, and at least one question are required');
   }
 
-  // Check if the lesson exists
-  const lesson = await getLessonById(lessonId);
-  if (!lesson) {
-    throw new ApiError(404, 'Lesson not found');
-  }
-
-  // Prepare quiz data
-  const quizData = {
+  // Create quiz first
+  const quiz = await Quiz.create({
     title,
-    description: description || '',
-    lesson_id: lessonId,
-    created_by: req.user?.userId || 'anonymous',
-    questions: []
-  };
+    description,
+    lessonId,
+    passingScore,
+    timeLimit,
+    createdBy: userId
+  });
 
-  // Create and save the quiz
-  const savedQuiz = await Quiz.create(quizData);
-
-  // Process questions using the central utility
-  const questionIds = await processQuizQuestions(
-    savedQuiz._id, 
-    lessonId, 
-    questions, 
-    req.user?.userId || 'anonymous'
+  // Create questions and link to quiz
+  const createdQuestions = await Promise.all(
+    questions.map(async (q) => {
+      const question = await QuizQuestion.create({
+        quizId: quiz._id,
+        lessonId,
+        text: q.text,
+        options: q.options,
+        correctAnswer: q.correctAnswer,
+        explanation: q.explanation,
+        difficulty: q.difficulty || 'medium',
+        createdBy: userId
+      });
+      return question._id;
+    })
   );
 
-  // Update quiz with question IDs
-  savedQuiz.questions = questionIds;
-  await savedQuiz.save();
+  // Update quiz with question references
+  quiz.questions = createdQuestions;
+  await quiz.save();
 
-  // Fetch the complete quiz with populated questions
-  const completeQuiz = await Quiz.findById(savedQuiz._id).populate('questions');
+  // Populate the quiz with questions for response
+  const populatedQuiz = await Quiz.findById(quiz._id).populate('questions');
 
-  res.status(201).json({
-    status: 'success',
-    data: formatQuizForResponse(completeQuiz)
-  });
+  return res
+    .status(201)
+    .json(new ApiResponse(201, populatedQuiz, 'Quiz created successfully'));
 });
 
-export const updateQuiz = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const { title, description, questions } = req.body;
+// Get quiz by lesson ID
+const getQuizByLesson = asyncHandler(async (req, res) => {
+  const { lessonId } = req.params;
 
-  // Get existing quiz
-  const existingQuiz = await Quiz.findById(id).populate('questions');
-  if (!existingQuiz) {
-    throw new ApiError(404, 'Quiz not found');
-  }
+  const quiz = await Quiz.findOne({ lessonId, isActive: true })
+    .populate('questions')
+    .populate('createdBy', 'username email');
 
-  // Update basic quiz information
-  if (title) existingQuiz.title = title;
-  if (description !== undefined) existingQuiz.description = description;
-  existingQuiz.updated_at = new Date();
-  
-  // Save the updated quiz
-  await existingQuiz.save();
-  
-  // If questions are provided, update them
-  if (questions && Array.isArray(questions)) {
-    // Delete existing questions
-    await QuizQuestion.deleteMany({ quiz_id: existingQuiz._id });
-    
-    // Process questions using the central utility
-    const questionIds = await processQuizQuestions(
-      existingQuiz._id,
-      existingQuiz.lesson_id,
-      questions,
-      req.user?.userId || existingQuiz.created_by
-    );
-    
-    // Update quiz with new question IDs
-    existingQuiz.questions = questionIds;
-    await existingQuiz.save();
-  }
-
-  // Get the updated quiz with populated questions
-  const updatedQuiz = await Quiz.findById(id).populate('questions');
-
-  res.status(200).json({
-    status: 'success',
-    data: formatQuizForResponse(updatedQuiz)
-  });
-});
-
-export const deleteQuiz = catchAsync(async (req, res) => {
-  const { id } = req.params;
-
-  // Get existing quiz
-  const existingQuiz = await Quiz.findById(id);
-  if (!existingQuiz) {
-    throw new ApiError(404, 'Quiz not found');
-  }
-
-  // Delete the quiz questions
-  await QuizQuestion.deleteMany({ quiz_id: id });
-  
-  // Delete the quiz
-  await Quiz.findByIdAndDelete(id);
-
-  res.status(200).json({
-    status: 'success',
-    message: 'Quiz deleted successfully'
-  });
-});
-
-export const getQuizStats = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  
-  // Check if quiz exists
-  const quiz = await Quiz.findById(id);
   if (!quiz) {
-    throw new ApiError(404, 'Quiz not found');
+    throw new ApiError(404, 'No quiz found for this lesson');
   }
-  
-  // Get all attempts for this quiz
-  const attempts = await QuizAttempt.find({ quiz_id: id });
-  
-  // Calculate statistics
-  const stats = calculateQuizStats(attempts);
-  
-  res.status(200).json({
-    status: 'success',
-    data: stats
-  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, quiz, 'Quiz retrieved successfully'));
 });
 
-export const submitQuizAttempt = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const { answers } = req.body;
-  const userId = req.user?.userId || 'anonymous';
+// Student submits quiz attempt
+const submitQuizAttempt = asyncHandler(async (req, res) => {
+  const { quizId, lessonId, answers, timeTaken } = req.body;
+  const userId = req.user._id;
 
-  if (!answers || !Array.isArray(answers)) {
-    throw new ApiError(400, 'Please provide answers in the correct format');
+  // Validate inputs
+  if (!quizId || !lessonId || !answers || !Array.isArray(answers)) {
+    throw new ApiError(400, 'Quiz ID, lesson ID, and answers are required');
   }
 
-  // Get quiz with questions
-  const quiz = await Quiz.findById(id).populate('questions');
+  // Get the quiz with questions
+  const quiz = await Quiz.findById(quizId).populate('questions');
   if (!quiz) {
     throw new ApiError(404, 'Quiz not found');
   }
 
-  const questions = quiz.questions;
-  if (!questions || questions.length === 0) {
-    throw new ApiError(404, 'Quiz questions not found');
-  }
+  // Verify answers and calculate score
+  let correctCount = 0;
+  const processedAnswers = await Promise.all(
+    answers.map(async (answer) => {
+      const question = quiz.questions.find(
+        (q) => q._id.toString() === answer.questionId
+      );
+      
+      if (!question) {
+        throw new ApiError(400, `Question ${answer.questionId} not found in this quiz`);
+      }
 
-  // Verify answers against correct answers using our central utility
-  const verificationResult = verifyQuizAnswers(questions, answers);
-  
-  // Get attempt number
-  const lastAttempt = await getLatestQuizAttempt(userId, id);
-  const attemptNumber = lastAttempt ? lastAttempt.attempt_number + 1 : 1;
+      const isCorrect = question.correctAnswer === answer.selectedAnswer;
+      if (isCorrect) correctCount++;
+
+      return {
+        questionId: question._id,
+        selectedAnswer: answer.selectedAnswer,
+        isCorrect
+      };
+    })
+  );
+
+  // Calculate results
+  const totalQuestions = quiz.questions.length;
+  const score = correctCount;
+  const percentage = Math.round((correctCount / totalQuestions) * 100);
+  const passed = percentage >= quiz.passingScore;
 
   // Save attempt
-  const attemptData = await createQuizResult({
-    user_id: userId,
-    lesson_id: quiz.lesson_id,
-    quiz_id: id,
-    score: verificationResult.score,
-    total_questions: verificationResult.totalQuestions,
-    attempt_number: attemptNumber,
-    answers: verificationResult.answers,
-    time_taken: req.body.timeTaken || 0
+  const attempt = await QuizAttempt.create({
+    quizId,
+    userId,
+    lessonId,
+    answers: processedAnswers,
+    score,
+    percentage,
+    passed,
+    timeTaken
   });
 
-  res.status(201).json({
-    status: 'success',
-    data: {
-      ...verificationResult,
-      attemptId: attemptData._id,
-      attemptNumber
-    }
-  });
+  return res
+    .status(201)
+    .json(new ApiResponse(201, attempt, 'Quiz attempt submitted successfully'));
 });
 
-// Additional function to handle quiz by lesson ID
-export const getQuizByLesson = catchAsync(async (req, res) => {
+// Get quiz attempts for a student
+const getStudentAttempts = asyncHandler(async (req, res) => {
   const { lessonId } = req.params;
-  
-  const quiz = await Quiz.findOne({ lesson_id: lessonId }).populate('questions');
-  
-  if (!quiz) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'No quiz found for this lesson'
-    });
-  }
-  
-  res.status(200).json({
-    status: 'success',
-    data: formatQuizForResponse(quiz)
-  });
+  const userId = req.user._id;
+
+  const attempts = await QuizAttempt.find({ 
+    userId, 
+    lessonId 
+  }).sort({ createdAt: -1 });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, attempts, 'Quiz attempts retrieved successfully'));
 });
 
-// Get quiz attempts for a user
-export const getUserAttempts = catchAsync(async (req, res) => {
-  const { userId, quizId } = req.params;
-  
-  const attempts = await getUserQuizAttempts(userId, quizId);
-  
-  res.status(200).json({
-    status: 'success',
-    results: attempts.length,
-    data: attempts
-  });
+// Get quiz statistics for a student
+const getStudentQuizStats = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const stats = await QuizAttempt.aggregate([
+    { $match: { userId: userId } },
+    {
+      $group: {
+        _id: null,
+        totalAttempts: { $sum: 1 },
+        averageScore: { $avg: "$percentage" },
+        highestScore: { $max: "$percentage" },
+        passedCount: {
+          $sum: {
+            $cond: [{ $eq: ["$passed", true] }, 1, 0]
+          }
+        },
+        totalQuizzes: { $addToSet: "$quizId" }
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        totalAttempts: 1,
+        averageScore: { $round: ["$averageScore", 2] },
+        highestScore: 1,
+        passedCount: 1,
+        totalQuizzes: { $size: "$totalQuizzes" }
+      }
+    }
+  ]);
+
+  const result = stats[0] || {
+    totalAttempts: 0,
+    averageScore: 0,
+    highestScore: 0,
+    passedCount: 0,
+    totalQuizzes: 0
+  };
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, result, 'Quiz statistics retrieved successfully'));
 });
+
+export {
+  createQuiz,
+  getQuizByLesson,
+  submitQuizAttempt,
+  getStudentAttempts,
+  getStudentQuizStats,
+  getAllQuizzes,
+  getQuizById
+};

@@ -60,18 +60,6 @@ export const register = async (req, res, next) => {
   }
 };
 
-// Development mode fallback
-const isDevelopment = process.env.NODE_ENV === 'development';
-const devModeUser = {
-  id: 'dev-user-id',
-  email: 'dev@example.com',
-  fullname: 'Development User',
-  role: 'admin',
-  status: 'active',
-  created_at: new Date().toISOString(),
-  last_login: new Date().toISOString()
-};
-
 /**
  * Login a user
  * @param {object} req - Express request object
@@ -81,33 +69,7 @@ const devModeUser = {
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    
-    // Development mode fallback when MongoDB is unavailable
-    if (isDevelopment && !userModel.isConnected()) {
-      logger.warn('Using development mode fallback for login');
-      
-      // Very simple check just to have some authentication
-      if (email && password) {
-        // Generate JWT token
-        const token = jwt.sign(
-          { id: devModeUser.id, email: devModeUser.email, role: devModeUser.role },
-          JWT_SECRET,
-          { expiresIn: JWT_EXPIRES_IN }
-        );
-        
-        return res.status(200).json({
-          status: 'success',
-          data: {
-            user: devModeUser,
-            token
-          }
-        });
-      } else {
-        return next(new ApiError('Invalid email or password', 401));
-      }
-    }
 
-    // Normal login flow with database
     // Get user from database (with password)
     const user = await userModel.getUserByEmail(email);
     if (!user) {
