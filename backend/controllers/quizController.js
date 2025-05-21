@@ -1,297 +1,257 @@
-import supabase from '../config/supabaseClient.js'
-import { ApiError } from '../utils/errorHandler.js'
-import { catchAsync } from '../utils/errorHandler.js'
-import { validateQuizSubmission, calculateQuizStats } from '../utils/quizUtils.js'
+import { ApiError, catchAsync } from '../utils/errorHandler.js';
+import { 
+  validateQuizSubmission, 
+  verifyQuizAnswers, 
+  processQuizQuestions,
+  formatQuizForResponse
+} from '../utils/quizUtils.js';
+import {
+  createQuizResult,
+  getLatestQuizAttempt,
+  getUserQuizAttempts,
+  getAllUserQuizResults,
+  getUserQuizStatistics
+} from '../models/quizModel.js';
+import { Quiz, QuizQuestion, QuizAttempt } from '../models/quizModel.js';
+import { getLessonById } from '../models/lessonModel.js';
 
 export const getAllQuizzes = catchAsync(async (req, res) => {
-  const { data, error } = await supabase
-    .from('quizzes')
-    .select('*, questions(*)')
-    .order('created_at', { ascending: true })
-
-  if (error) throw new ApiError(500, error.message)
-
+  const quizzes = await Quiz.find().sort({ created_at: -1 });
+  
   res.status(200).json({
     status: 'success',
-    results: data.length,
-    data
-  })
-})
+    results: quizzes.length,
+    data: quizzes
+  });
+});
 
 export const getQuizById = catchAsync(async (req, res) => {
-  const { id } = req.params
-  const { data, error } = await supabase
-    .from('quizzes')
-    .select('*, questions(*)')
-    .eq('id', id)
-    .single()
+  const { id } = req.params;
+  const quiz = await Quiz.findById(id).populate('questions');
 
-  if (error) throw new ApiError(500, error.message)
-  if (!data) throw new ApiError(404, 'Quiz not found')
+  if (!quiz) {
+    throw new ApiError(404, 'Quiz not found');
+  }
+
+  // Format the quiz data using our utility
+  const formattedQuiz = formatQuizForResponse(quiz);
 
   res.status(200).json({
     status: 'success',
-    data
-  })
-})
+    data: formattedQuiz
+  });
+});
 
 export const createQuiz = catchAsync(async (req, res) => {
-  const { title, description, lessonId, questions } = req.body
+  const { title, description, lessonId, questions } = req.body;
 
-  if (!title || !description || !lessonId || !questions || questions.length === 0) {
-    throw new ApiError(400, 'Please provide all required fields (title, description, lessonId, and questions)')
+  if (!title || !lessonId || !questions || questions.length === 0) {
+    throw new ApiError(400, 'Please provide all required fields (title, lessonId, and questions)');
   }
 
-  // Validate questions format
-  questions.forEach((question, index) => {
-    if (!question.text || !question.options || !question.correct_answer) {
-      throw new ApiError(400, `Question ${index + 1} is missing required fields`)
-    }
-    if (!Array.isArray(question.options) || question.options.length < 2) {
-      throw new ApiError(400, `Question ${index + 1} must have at least 2 options`)
-    }
-    if (!question.options.includes(question.correct_answer)) {
-      throw new ApiError(400, `Question ${index + 1}'s correct answer must be one of the options`)
-    }
-  })
-  
-  // First create the quiz
-  const { data: quizData, error: quizError } = await supabase
-    .from('quizzes')
-    .insert([{
-      title,
-      description,
-      lesson_id: lessonId,
-      created_by: req.user.id
-    }])
-    .select()
-
-  if (quizError) throw new ApiError(400, quizError.message)
-
-  // Then create the questions
-  const questionsWithQuizId = questions.map(question => ({
-    ...question,
-    quiz_id: quizData[0].id
-  }))
-
-  const { error: questionsError } = await supabase
-    .from('questions')
-    .insert(questionsWithQuizId)
-
-  if (questionsError) {
-    // If questions creation fails, delete the quiz
-    await supabase.from('quizzes').delete().eq('id', quizData[0].id)
-    throw new ApiError(400, questionsError.message)
+  // Check if the lesson exists
+  const lesson = await getLessonById(lessonId);
+  if (!lesson) {
+    throw new ApiError(404, 'Lesson not found');
   }
 
-  // Fetch the complete quiz with questions
-  const { data: completeQuiz, error: fetchError } = await supabase
-    .from('quizzes')
-    .select('*, questions(*)')
-    .eq('id', quizData[0].id)
-    .single()
+  // Prepare quiz data
+  const quizData = {
+    title,
+    description: description || '',
+    lesson_id: lessonId,
+    created_by: req.user?.userId || 'anonymous',
+    questions: []
+  };
 
-  if (fetchError) throw new ApiError(500, fetchError.message)
+  // Create and save the quiz
+  const savedQuiz = await Quiz.create(quizData);
+
+  // Process questions using the central utility
+  const questionIds = await processQuizQuestions(
+    savedQuiz._id, 
+    lessonId, 
+    questions, 
+    req.user?.userId || 'anonymous'
+  );
+
+  // Update quiz with question IDs
+  savedQuiz.questions = questionIds;
+  await savedQuiz.save();
+
+  // Fetch the complete quiz with populated questions
+  const completeQuiz = await Quiz.findById(savedQuiz._id).populate('questions');
 
   res.status(201).json({
     status: 'success',
-    data: completeQuiz
-  })
-})
+    data: formatQuizForResponse(completeQuiz)
+  });
+});
 
 export const updateQuiz = catchAsync(async (req, res) => {
-  const { id } = req.params
-  const { title, description, questions } = req.body
+  const { id } = req.params;
+  const { title, description, questions } = req.body;
 
-  // Get existing quiz to check ownership
-  const { data: existingQuiz, error: fetchError } = await supabase
-    .from('quizzes')
-    .select('created_by')
-    .eq('id', id)
-    .single()
-
-  if (fetchError) throw new ApiError(500, fetchError.message)
-  if (!existingQuiz) throw new ApiError(404, 'Quiz not found')
-
-  // Check if user is the creator of the quiz
-  if (existingQuiz.created_by !== req.user.id) {
-    throw new ApiError(403, 'You are not authorized to update this quiz')
+  // Get existing quiz
+  const existingQuiz = await Quiz.findById(id).populate('questions');
+  if (!existingQuiz) {
+    throw new ApiError(404, 'Quiz not found');
   }
 
-  // Validate questions if provided
-  if (questions) {
-    questions.forEach((question, index) => {
-      if (!question.text || !question.options || !question.correct_answer) {
-        throw new ApiError(400, `Question ${index + 1} is missing required fields`)
-      }
-      if (!Array.isArray(question.options) || question.options.length < 2) {
-        throw new ApiError(400, `Question ${index + 1} must have at least 2 options`)
-      }
-      if (!question.options.includes(question.correct_answer)) {
-        throw new ApiError(400, `Question ${index + 1}'s correct answer must be one of the options`)
-      }
-    })
-  }
-
-  // Update quiz
-  const { data: quizData, error: quizError } = await supabase
-    .from('quizzes')
-    .update({ title, description })
-    .eq('id', id)
-    .select()
-
-  if (quizError) throw new ApiError(400, quizError.message)
-
-  // Update questions if provided
-  if (questions && questions.length > 0) {
+  // Update basic quiz information
+  if (title) existingQuiz.title = title;
+  if (description !== undefined) existingQuiz.description = description;
+  existingQuiz.updated_at = new Date();
+  
+  // Save the updated quiz
+  await existingQuiz.save();
+  
+  // If questions are provided, update them
+  if (questions && Array.isArray(questions)) {
     // Delete existing questions
-    const { error: deleteError } = await supabase
-      .from('questions')
-      .delete()
-      .eq('quiz_id', id)
-
-    if (deleteError) throw new ApiError(500, deleteError.message)
-
-    // Insert new questions
-    const questionsWithQuizId = questions.map(question => ({
-      ...question,
-      quiz_id: id
-    }))
-
-    const { error: questionsError } = await supabase
-      .from('questions')
-      .insert(questionsWithQuizId)
-
-    if (questionsError) throw new ApiError(400, questionsError.message)
+    await QuizQuestion.deleteMany({ quiz_id: existingQuiz._id });
+    
+    // Process questions using the central utility
+    const questionIds = await processQuizQuestions(
+      existingQuiz._id,
+      existingQuiz.lesson_id,
+      questions,
+      req.user?.userId || existingQuiz.created_by
+    );
+    
+    // Update quiz with new question IDs
+    existingQuiz.questions = questionIds;
+    await existingQuiz.save();
   }
 
-  // Fetch updated quiz with questions
-  const { data: updatedQuiz, error: finalFetchError } = await supabase
-    .from('quizzes')
-    .select('*, questions(*)')
-    .eq('id', id)
-    .single()
-
-  if (finalFetchError) throw new ApiError(500, finalFetchError.message)
+  // Get the updated quiz with populated questions
+  const updatedQuiz = await Quiz.findById(id).populate('questions');
 
   res.status(200).json({
     status: 'success',
-    data: updatedQuiz
-  })
-})
+    data: formatQuizForResponse(updatedQuiz)
+  });
+});
 
 export const deleteQuiz = catchAsync(async (req, res) => {
-  const { id } = req.params
+  const { id } = req.params;
 
-  // Get existing quiz to check ownership
-  const { data: existingQuiz, error: fetchError } = await supabase
-    .from('quizzes')
-    .select('created_by')
-    .eq('id', id)
-    .single()
-
-  if (fetchError) throw new ApiError(500, fetchError.message)
-  if (!existingQuiz) throw new ApiError(404, 'Quiz not found')
-
-  // Check if user is the creator of the quiz
-  if (existingQuiz.created_by !== req.user.id) {
-    throw new ApiError(403, 'You are not authorized to delete this quiz')
+  // Get existing quiz
+  const existingQuiz = await Quiz.findById(id);
+  if (!existingQuiz) {
+    throw new ApiError(404, 'Quiz not found');
   }
 
-  // Delete questions first (due to foreign key constraint)
-  const { error: questionsError } = await supabase
-    .from('questions')
-    .delete()
-    .eq('quiz_id', id)
-
-  if (questionsError) throw new ApiError(500, questionsError.message)
-
-  // Then delete the quiz
-  const { error: quizError } = await supabase
-    .from('quizzes')
-    .delete()
-    .eq('id', id)
-
-  if (quizError) throw new ApiError(500, quizError.message)
+  // Delete the quiz questions
+  await QuizQuestion.deleteMany({ quiz_id: id });
+  
+  // Delete the quiz
+  await Quiz.findByIdAndDelete(id);
 
   res.status(200).json({
     status: 'success',
     message: 'Quiz deleted successfully'
-  })
-})
+  });
+});
 
 export const getQuizStats = catchAsync(async (req, res) => {
-  const { id } = req.params
-  const stats = await calculateQuizStats(id)
+  const { id } = req.params;
+  
+  // Check if quiz exists
+  const quiz = await Quiz.findById(id);
+  if (!quiz) {
+    throw new ApiError(404, 'Quiz not found');
+  }
+  
+  // Get all attempts for this quiz
+  const attempts = await QuizAttempt.find({ quiz_id: id });
+  
+  // Calculate statistics
+  const stats = calculateQuizStats(attempts);
   
   res.status(200).json({
     status: 'success',
     data: stats
-  })
-})
+  });
+});
 
 export const submitQuizAttempt = catchAsync(async (req, res) => {
-  const { quizId } = req.params
-  const { answers } = req.body
+  const { id } = req.params;
+  const { answers } = req.body;
+  const userId = req.user?.userId || 'anonymous';
 
   if (!answers || !Array.isArray(answers)) {
-    throw new ApiError(400, 'Please provide answers in the correct format')
+    throw new ApiError(400, 'Please provide answers in the correct format');
   }
 
-  // Get questions from the database
-  const { data: questions, error: questionsError } = await supabase
-    .from('questions')
-    .select('*')
-    .eq('quiz_id', quizId)
+  // Get quiz with questions
+  const quiz = await Quiz.findById(id).populate('questions');
+  if (!quiz) {
+    throw new ApiError(404, 'Quiz not found');
+  }
 
-  if (questionsError) throw new ApiError(500, questionsError.message)
+  const questions = quiz.questions;
   if (!questions || questions.length === 0) {
-    throw new ApiError(404, 'Quiz questions not found')
+    throw new ApiError(404, 'Quiz questions not found');
   }
 
-  // Validate submission
-  try {
-    validateQuizSubmission(questions, answers)
-  } catch (error) {
-    throw new ApiError(400, error.message)
-  }
-
-  // Calculate score
-  let score = 0
-  const totalQuestions = questions.length
-
-  answers.forEach(answer => {
-    const question = questions.find(q => q.id === answer.questionId)
-    if (question && question.correct_answer === answer.selectedAnswer) {
-      score++
-    }
-  })
+  // Verify answers against correct answers using our central utility
+  const verificationResult = verifyQuizAnswers(questions, answers);
+  
+  // Get attempt number
+  const lastAttempt = await getLatestQuizAttempt(userId, id);
+  const attemptNumber = lastAttempt ? lastAttempt.attempt_number + 1 : 1;
 
   // Save attempt
-  const { data: attemptData, error: attemptError } = await supabase
-    .from('quiz_attempts')
-    .insert([{
-      quiz_id: quizId,
-      user_id: req.user.id,
-      score,
-      total_questions: totalQuestions,
-      answers: answers
-    }])
-    .select()
-
-  if (attemptError) throw new ApiError(500, attemptError.message)
-
-  // Get updated stats
-  const stats = await calculateQuizStats(quizId)
+  const attemptData = await createQuizResult({
+    user_id: userId,
+    lesson_id: quiz.lesson_id,
+    quiz_id: id,
+    score: verificationResult.score,
+    total_questions: verificationResult.totalQuestions,
+    attempt_number: attemptNumber,
+    answers: verificationResult.answers,
+    time_taken: req.body.timeTaken || 0
+  });
 
   res.status(201).json({
     status: 'success',
     data: {
-      score,
-      totalQuestions,
-      percentage: (score / totalQuestions) * 100,
-      attemptId: attemptData[0].id,
-      stats
+      ...verificationResult,
+      attemptId: attemptData._id,
+      attemptNumber
     }
-  })
-})
+  });
+});
+
+// Additional function to handle quiz by lesson ID
+export const getQuizByLesson = catchAsync(async (req, res) => {
+  const { lessonId } = req.params;
+  
+  const quiz = await Quiz.findOne({ lesson_id: lessonId }).populate('questions');
+  
+  if (!quiz) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'No quiz found for this lesson'
+    });
+  }
+  
+  res.status(200).json({
+    status: 'success',
+    data: formatQuizForResponse(quiz)
+  });
+});
+
+// Get quiz attempts for a user
+export const getUserAttempts = catchAsync(async (req, res) => {
+  const { userId, quizId } = req.params;
+  
+  const attempts = await getUserQuizAttempts(userId, quizId);
+  
+  res.status(200).json({
+    status: 'success',
+    results: attempts.length,
+    data: attempts
+  });
+});

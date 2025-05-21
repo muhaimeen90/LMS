@@ -1,27 +1,112 @@
-import supabase from '../config/supabaseClient.js';
+import mongoose from 'mongoose';
 import logger from '../utils/logger.js';
+import Lesson from './lessonModel.js';
 
-const progressTable = 'progress';
+// Define Progress Schema
+const progressSchema = new mongoose.Schema({
+  user_id: {
+    type: String,
+    required: true,
+    index: true,
+  },
+  lesson_id: {
+    type: String,
+    required: true,
+    index: true,
+  },
+  completed: {
+    type: Boolean,
+    default: false,
+  },
+  time_spent: {
+    type: Number,
+    default: 0,
+  },
+  last_position: {
+    type: Number,
+    default: 0,
+  },
+  completed_at: {
+    type: Date,
+  },
+  started_at: {
+    type: Date,
+    default: Date.now,
+  },
+  last_accessed: {
+    type: Date,
+    default: Date.now,
+  },
+  metadata: {
+    type: Map,
+    of: mongoose.Schema.Types.Mixed,
+    default: {},
+  },
+});
+
+// Compound index for uniqueness
+progressSchema.index({ user_id: 1, lesson_id: 1 }, { unique: true });
+
+// Create model
+const Progress = mongoose.model('Progress', progressSchema);
 
 /**
- * Create or update a user's progress for a lesson
- * @param {Object} progressData - Progress data including user_id, lesson_id, completed, time_spent
- * @returns {Promise<Object>} Created/updated progress data
+ * Get progress for a specific user and lesson
+ * @param {string} userId - User ID
+ * @param {string} lessonId - Lesson ID
+ * @returns {Promise<Object|null>} Progress data or null if not found
  */
-export const upsertProgress = async (progressData) => {
+export const getProgress = async (userId, lessonId) => {
   try {
-    // Use upsert to create or update progress based on unique constraint (user_id, lesson_id)
-    const { data, error } = await supabase
-      .from(progressTable)
-      .upsert(progressData, { 
-        onConflict: 'user_id,lesson_id',
-        returning: 'representation'
-      })
-      .select()
-      .single();
+    return await Progress.findOne({ user_id: userId, lesson_id: lessonId });
+  } catch (error) {
+    logger.error(`Error getting progress: ${error.message}`);
+    throw error;
+  }
+};
 
-    if (error) throw error;
-    return data;
+/**
+ * Get all progress entries for a user
+ * @param {string} userId - User ID
+ * @returns {Promise<Array>} Array of progress entries
+ */
+export const getAllUserProgress = async (userId) => {
+  try {
+    return await Progress.find({ user_id: userId });
+  } catch (error) {
+    logger.error(`Error getting all user progress: ${error.message}`);
+    throw error;
+  }
+};
+
+/**
+ * Upsert (update or insert) progress for a user and lesson
+ * @param {string} userId - User ID
+ * @param {string} lessonId - Lesson ID
+ * @param {Object} data - Progress data to update
+ * @returns {Promise<Object>} Updated progress
+ */
+export const upsertProgress = async (userId, lessonId, data) => {
+  try {
+    // Set completed_at timestamp if not set and lesson is being completed
+    if (data.completed && !data.completed_at) {
+      data.completed_at = new Date();
+    }
+    
+    // Always update last_accessed
+    data.last_accessed = new Date();
+
+    const result = await Progress.findOneAndUpdate(
+      { user_id: userId, lesson_id: lessonId },
+      { $set: data },
+      { 
+        new: true, 
+        upsert: true, 
+        setDefaultsOnInsert: true 
+      }
+    );
+    
+    return result;
   } catch (error) {
     logger.error(`Error upserting progress: ${error.message}`);
     throw error;
@@ -29,116 +114,114 @@ export const upsertProgress = async (progressData) => {
 };
 
 /**
- * Get all progress entries for a user
- * @param {string} userId - User UUID
- * @returns {Promise<Array>} Array of progress entries
+ * Delete progress for a user and lesson
+ * @param {string} userId - User ID
+ * @param {string} lessonId - Lesson ID
+ * @returns {Promise<boolean>} Success status
  */
-export const getUserProgress = async (userId) => {
+export const deleteProgress = async (userId, lessonId) => {
   try {
-    const { data, error } = await supabase
-      .from(progressTable)
-      .select(`
-        *,
-        lessons:lesson_id (
-          id,
-          title,
-          description,
-          position
-        )
-      `)
-      .eq('user_id', userId)
-      .order('updated_at', { ascending: false });
-
-    if (error) throw error;
-    return data;
+    await Progress.deleteOne({ user_id: userId, lesson_id: lessonId });
+    return true;
   } catch (error) {
-    logger.error(`Error getting user progress: ${error.message}`);
+    logger.error(`Error deleting progress: ${error.message}`);
     throw error;
   }
 };
 
 /**
- * Get a specific progress entry for a user and lesson
- * @param {string} userId - User UUID
- * @param {string} lessonId - Lesson ID
- * @returns {Promise<Object>} Progress data
+ * Get progress statistics for a user
+ * @param {string} userId - User ID
+ * @returns {Promise<Object>} Progress statistics
  */
-export const getLessonProgress = async (userId, lessonId) => {
+export const getProgressStats = async (userId) => {
   try {
-    const { data, error } = await supabase
-      .from(progressTable)
-      .select('*')
-      .eq('user_id', userId)
-      .eq('lesson_id', lessonId)
-      .single();
-
-    if (error && error.code !== 'PGRST116') throw error; // Ignoring "not found" errors
-    return data || null;
-  } catch (error) {
-    logger.error(`Error getting lesson progress: ${error.message}`);
-    throw error;
-  }
-};
-
-/**
- * Update time spent on a lesson
- * @param {string} userId - User UUID
- * @param {string} lessonId - Lesson ID
- * @param {number} additionalTime - Additional time in seconds
- * @returns {Promise<Object>} Updated progress data
- */
-export const updateTimeSpent = async (userId, lessonId, additionalTime) => {
-  try {
-    // First get current progress
-    const current = await getLessonProgress(userId, lessonId);
+    // Get all progress for user
+    const allProgress = await Progress.find({ user_id: userId });
     
-    // If no existing record, create new one
-    if (!current) {
-      return upsertProgress({
-        user_id: userId,
-        lesson_id: lessonId,
-        time_spent: additionalTime
-      });
+    // Get total number of lessons for completion rate calculation
+    const totalLessons = await mongoose.model('Lesson').countDocuments();
+    
+    // Calculate statistics
+    const completedLessons = allProgress.filter(p => p.completed).length;
+    const totalTimeSpent = allProgress.reduce((sum, p) => sum + (p.time_spent || 0), 0);
+    const completionRate = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
+    
+    // Get lesson with most time spent
+    let mostTimeSpentLesson = null;
+    if (allProgress.length > 0) {
+      const lessonWithMostTime = allProgress.reduce(
+        (prev, current) => (prev.time_spent > current.time_spent) ? prev : current
+      );
+      
+      const lesson = await Lesson.findOne({ id: lessonWithMostTime.lesson_id });
+      if (lesson) {
+        mostTimeSpentLesson = {
+          id: lesson.id,
+          title: lesson.title,
+          time_spent: lessonWithMostTime.time_spent
+        };
+      }
     }
     
-    // Update existing record with new time
-    const totalTime = (current.time_spent || 0) + additionalTime;
-    
-    const { data, error } = await supabase
-      .from(progressTable)
-      .update({ 
-        time_spent: totalTime,
-        updated_at: new Date().toISOString()
-      })
-      .eq('user_id', userId)
-      .eq('lesson_id', lessonId)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
+    return {
+      total_lessons: totalLessons,
+      completed_lessons: completedLessons,
+      completion_rate: completionRate,
+      in_progress_lessons: allProgress.length - completedLessons,
+      total_time_spent: totalTimeSpent,
+      most_time_spent: mostTimeSpentLesson
+    };
   } catch (error) {
-    logger.error(`Error updating time spent: ${error.message}`);
+    logger.error(`Error getting progress stats: ${error.message}`);
     throw error;
   }
 };
 
 /**
- * Mark a lesson as completed
- * @param {string} userId - User UUID
- * @param {string} lessonId - Lesson ID
- * @returns {Promise<Object>} Updated progress data
+ * Get detailed progress with lesson information
+ * @param {string} userId - User ID
+ * @returns {Promise<Array>} Detailed progress data
  */
-export const markLessonCompleted = async (userId, lessonId) => {
+export const getDetailedProgress = async (userId) => {
   try {
-    return upsertProgress({
-      user_id: userId,
-      lesson_id: lessonId,
-      completed: true,
-      updated_at: new Date().toISOString()
-    });
+    // Use MongoDB aggregation to join progress with lessons
+    const detailedProgress = await Progress.aggregate([
+      { $match: { user_id: userId } },
+      {
+        $lookup: {
+          from: 'lessons',
+          localField: 'lesson_id',
+          foreignField: 'id',
+          as: 'lesson'
+        }
+      },
+      { $unwind: '$lesson' },
+      {
+        $project: {
+          _id: 0,
+          user_id: 1,
+          lesson_id: 1,
+          completed: 1,
+          time_spent: 1,
+          last_position: 1,
+          completed_at: 1,
+          started_at: 1,
+          last_accessed: 1,
+          'lesson.id': 1,
+          'lesson.title': 1,
+          'lesson.description': 1,
+          'lesson.type': 1,
+          'lesson.difficulty': 1
+        }
+      }
+    ]);
+    
+    return detailedProgress;
   } catch (error) {
-    logger.error(`Error marking lesson as completed: ${error.message}`);
+    logger.error(`Error getting detailed progress: ${error.message}`);
     throw error;
   }
 };
+
+export default Progress;

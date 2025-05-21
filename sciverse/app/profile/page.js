@@ -2,27 +2,40 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import PersonalizedDashboard from '../components/PersonalizedDashboard';
 import { lessonData } from '../data/lessonData';
 import { getAllProgress, resetProgress } from '../utils/storageUtils';
 import { announceToScreenReader } from '../utils/screenReaderAnnouncer';
+import { useAuth } from '../utils/AuthContext';
 
 export default function ProfilePage() {
   const [lessons, setLessons] = useState([]);
   const [resetConfirm, setResetConfirm] = useState(false);
   const [progressData, setProgressData] = useState({});
+  const { isAuthenticated, user, isLoading } = useAuth();
+  const router = useRouter();
   
   useEffect(() => {
-    // Get lessons data
-    setLessons(lessonData || []);
+    // Redirect unauthenticated users to login
+    if (!isLoading && !isAuthenticated) {
+      router.push('/auth');
+      return;
+    }
     
-    // Get progress data
-    const allProgress = getAllProgress();
-    setProgressData(allProgress);
-    
-    // Announce page loaded to screen readers
-    announceToScreenReader("Profile page loaded with your learning progress");
-  }, []);
+    // Only load data if authenticated
+    if (isAuthenticated) {
+      // Get lessons data
+      setLessons(lessonData || []);
+      
+      // Get progress data
+      const allProgress = getAllProgress();
+      setProgressData(allProgress);
+      
+      // Announce page loaded to screen readers
+      announceToScreenReader("Profile page loaded with your learning progress");
+    }
+  }, [isAuthenticated, isLoading, router]);
   
   const handleResetProgress = () => {
     if (resetConfirm) {
@@ -39,6 +52,23 @@ export default function ProfilePage() {
     }
   };
   
+  // Show loading state while checking auth
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-gray-600">Loading your profile...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  // If not authenticated after loading, don't render the component
+  // (the redirect will happen via the useEffect)
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
@@ -55,7 +85,9 @@ export default function ProfilePage() {
             </div>
             
             <div>
-              <h2 className="text-2xl font-semibold">Your Learning Journey</h2>
+              <h2 className="text-2xl font-semibold">
+                {user?.email ? `${user.email}'s Journey` : 'Your Learning Journey'}
+              </h2>
               <p className="text-gray-600 mt-1">
                 Track your progress and get personalized recommendations
               </p>
