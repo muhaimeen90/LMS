@@ -8,7 +8,7 @@ import QuizScoreCard from './QuizScoreCard';
 import { 
   calculateOverallProgress, 
   getRecommendedLesson,
-  getAllProgress
+  getLessonTimeSpent
 } from '../utils/storageUtils';
 
 /**
@@ -20,7 +20,6 @@ import {
 const PersonalizedDashboard = ({ lessons = [] }) => {
   const [overallProgress, setOverallProgress] = useState(0);
   const [recommendedLesson, setRecommendedLesson] = useState(null);
-  const [progressData, setProgressData] = useState({});
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
@@ -32,11 +31,6 @@ const PersonalizedDashboard = ({ lessons = [] }) => {
       // Get recommended next lesson
       const recommended = getRecommendedLesson(lessons);
       setRecommendedLesson(recommended);
-      
-      // Get all progress data
-      const allProgress = getAllProgress();
-      setProgressData(allProgress);
-      
       setLoading(false);
     }
   }, [lessons]);
@@ -51,10 +45,7 @@ const PersonalizedDashboard = ({ lessons = [] }) => {
       // Update recommended lesson
       const recommended = getRecommendedLesson(lessons);
       setRecommendedLesson(recommended);
-      
-      // Update progress data
-      const allProgress = getAllProgress();
-      setProgressData(allProgress);
+      setLoading(false);
     }
   };
   
@@ -163,21 +154,24 @@ const PersonalizedDashboard = ({ lessons = [] }) => {
                       Time Spent
                     </h5>
                     <div className="border border-gray-200 rounded-lg p-4 dark:border-gray-700">
-                      {progressData[`lesson_${lesson.id}_timeSpent`] ? (
-                        <div className="flex items-center">
-                          <svg className="w-5 h-5 mr-2 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                          </svg>
-                          <span 
-                            className="text-lg font-semibold text-gray-700 dark:text-gray-300"
-                            aria-label={`Time spent on this lesson: ${formatTime(progressData[`lesson_${lesson.id}_timeSpent`])} hours`}
-                          >
-                            {formatTime(progressData[`lesson_${lesson.id}_timeSpent`])}
-                          </span>
-                        </div>
-                      ) : (
-                        <p className="text-sm text-gray-500 dark:text-gray-400">No time tracked yet</p>
-                      )}
+                      {(() => {
+                        const time = getLessonTimeSpent(lesson.id);
+                        return time > 0 ? (
+                          <div className="flex items-center">
+                            <svg className="w-5 h-5 mr-2 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span
+                              className="text-lg font-semibold text-gray-700 dark:text-gray-300"
+                              aria-label={`Time spent on this lesson: ${formatTime(time)}`}
+                            >
+                              {formatTime(time)}
+                            </span>
+                          </div>
+                        ) : (
+                          <p className="text-sm text-gray-500 dark:text-gray-400">No time tracked yet</p>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>

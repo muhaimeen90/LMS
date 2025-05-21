@@ -5,7 +5,7 @@ import Link from 'next/link';
 import PersonalizedDashboard from '../components/PersonalizedDashboard';
 import { lessonData } from '../data/lessonData';
 import { getAllProgress, resetProgress } from '../utils/storageUtils';
-import { screenReaderAnnounce } from '../utils/screenReaderAnnouncer';
+import { announceToScreenReader } from '../utils/screenReaderAnnouncer';
 
 export default function ProfilePage() {
   const [lessons, setLessons] = useState([]);
@@ -21,7 +21,7 @@ export default function ProfilePage() {
     setProgressData(allProgress);
     
     // Announce page loaded to screen readers
-    screenReaderAnnounce("Profile page loaded with your learning progress");
+    announceToScreenReader("Profile page loaded with your learning progress");
   }, []);
   
   const handleResetProgress = () => {
@@ -29,13 +29,13 @@ export default function ProfilePage() {
       resetProgress();
       setProgressData({});
       setResetConfirm(false);
-      screenReaderAnnounce("All progress has been reset");
+      announceToScreenReader("All progress has been reset");
       
       // Force reload to update all components
       window.location.reload();
     } else {
       setResetConfirm(true);
-      screenReaderAnnounce("Warning: You are about to reset all your progress. Press the button again to confirm.");
+      announceToScreenReader("Warning: You are about to reset all your progress. Press the button again to confirm.");
     }
   };
   
