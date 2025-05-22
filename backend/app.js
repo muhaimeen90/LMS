@@ -71,7 +71,8 @@ app.use('/api/lessons', lessonRoutes)
 app.use('/api/quizzes', quizRoutes)
 app.use('/api/questions', questionRoutes) 
 app.use('/api/progress', progressRoutes)
-app.use('/api/', chatbotRoute);
+// Chatbot route (AI chat)
+app.use('/api/chat', chatbotRoute);
 app.use('/api/user', userRoutes);
 
 // Health check endpoint

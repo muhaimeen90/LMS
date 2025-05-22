@@ -6,6 +6,11 @@ import {
   deleteQuestion,
   getTopQuestions
 } from '../controllers/questionController.js';
+import {
+  addLessonQuestion,
+  getRelatedLessonQuestions
+} from '../controllers/lessonQuestionController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -17,11 +22,15 @@ router.get('/top', getTopQuestions);
 
 // Get question by ID
 router.get('/:id', getQuestionById);
-router.post('/add', addQuestion);
+router.post('/', addQuestion);
 
 // Process new question (check similarity, store if unique)
 
 // Delete question
 router.delete('/:id', deleteQuestion);
+
+// New lesson-specific questions routes
+router.post('/lesson', protect, addLessonQuestion);
+router.get('/lesson/:lessonId', protect, getRelatedLessonQuestions);
 
 export default router;
