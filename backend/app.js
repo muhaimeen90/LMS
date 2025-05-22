@@ -34,7 +34,7 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
       imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", process.env.MONGODB_URI || 'mongodb://localhost:27017'],
+      connectSrc: ["'self'", process.env.MONGO_URI || 'mongodb://localhost:27017'],
     },
   },
   crossOriginEmbedderPolicy: true,

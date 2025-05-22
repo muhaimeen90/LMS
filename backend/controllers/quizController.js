@@ -25,19 +25,21 @@ const getAllQuizzes = asyncHandler(async (req, res) => {
   // Pagination
   const skip = (parseInt(page) - 1) * parseInt(limit);
   
-  // Execute query
-  const quizzes = await Quiz.find(filter)
-    .sort(sortOptions)
-    .skip(skip)
-    .limit(parseInt(limit))
-    .populate('questions', '-correctAnswer') // Exclude correct answers
-    .populate('createdBy', 'username email');
-  
-  const total = await Quiz.countDocuments(filter);
+  try {
+    // Execute query with proper error handling
+    const quizzes = await Quiz.find(filter)
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(parseInt(limit))
+      .populate('questions', '-correctAnswer');
+    
+    // Don't try to populate createdBy since it might be a string ID 
+    // instead of a MongoDB ObjectId reference
 
-  return res
-    .status(200)
-    .json(new ApiResponse(
+    const total = await Quiz.countDocuments(filter);
+    console.log('Total quizzes found:', total);
+
+    return res.status(200).json(new ApiResponse(
       200, 
       { 
         data: quizzes,
@@ -50,6 +52,10 @@ const getAllQuizzes = asyncHandler(async (req, res) => {
       },
       'Quizzes retrieved successfully'
     ));
+  } catch (error) {
+    console.error('Error fetching quizzes:', error);
+    throw new ApiError(500, 'Failed to retrieve quizzes due to server error');
+  }
 });
 
 // Get quiz by ID (public)
@@ -72,49 +78,58 @@ const getQuizById = asyncHandler(async (req, res) => {
 // Teacher creates a new quiz
 const createQuiz = asyncHandler(async (req, res) => {
   const { title, description, lessonId, questions, passingScore, timeLimit } = req.body;
-  const userId = req.user._id;
+  // Get the user ID from the authenticated user
+  const userId = req.user?.id || req.user?._id;
+  
+  if (!userId) {
+    throw new ApiError(401, 'Authentication required to create a quiz');
+  }
 
   if (!title || !lessonId || !questions || questions.length === 0) {
     throw new ApiError(400, 'Title, lesson ID, and at least one question are required');
   }
 
-  // Create quiz first
-  const quiz = await Quiz.create({
-    title,
-    description,
-    lessonId,
-    passingScore,
-    timeLimit,
-    createdBy: userId
-  });
+  try {
+    // Create quiz first with generated ID
+    const quiz = await Quiz.create({
+      title,
+      description,
+      lessonId,
+      passingScore,
+      timeLimit,
+      createdBy: userId
+    });
 
-  // Create questions and link to quiz
-  const createdQuestions = await Promise.all(
-    questions.map(async (q) => {
-      const question = await QuizQuestion.create({
-        quizId: quiz._id,
-        lessonId,
-        text: q.text,
-        options: q.options,
-        correctAnswer: q.correctAnswer,
-        explanation: q.explanation,
-        difficulty: q.difficulty || 'medium',
-        createdBy: userId
-      });
-      return question._id;
-    })
-  );
+    // Create questions and link to quiz
+    const createdQuestions = await Promise.all(
+      questions.map(async (q) => {
+        const question = await QuizQuestion.create({
+          quizId: quiz._id,
+          lessonId,
+          text: q.text,
+          options: q.options,
+          correctAnswer: q.correctAnswer,
+          explanation: q.explanation,
+          difficulty: q.difficulty || 'medium',
+          createdBy: userId
+        });
+        return question._id;
+      })
+    );
 
-  // Update quiz with question references
-  quiz.questions = createdQuestions;
-  await quiz.save();
+    // Update quiz with question references
+    quiz.questions = createdQuestions;
+    await quiz.save();
 
-  // Populate the quiz with questions for response
-  const populatedQuiz = await Quiz.findById(quiz._id).populate('questions');
+    // Populate the quiz with questions for response
+    const populatedQuiz = await Quiz.findById(quiz._id).populate('questions');
 
-  return res
-    .status(201)
-    .json(new ApiResponse(201, populatedQuiz, 'Quiz created successfully'));
+    return res
+      .status(201)
+      .json(new ApiResponse(201, populatedQuiz, 'Quiz created successfully'));
+  } catch (error) {
+    throw new ApiError(500, error.message || 'Failed to create quiz');
+  }
 });
 
 // Get quiz by lesson ID
