@@ -423,3 +423,7 @@
 {"duration":"72ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 18:31:47","url":"/top?limit=10"}
 {"duration":"242ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 18:31:47","url":"/me"}
 {"level":"warn","message":"MongoDB disconnected","service":"lms-api","timestamp":"2025-05-22 18:51:00"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 22:27:05"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 22:27:05"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 22:27:05"}
+{"level":"info","message":"Received shutdown signal. Closing server...","service":"lms-api","timestamp":"2025-05-22 22:27:08"}
