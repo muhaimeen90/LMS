@@ -3,11 +3,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { use } from 'react'; // Add React.use import
 import { useAuth } from '../../utils/AuthContext';
 import { announceToScreenReader } from '../../utils/screenReaderAnnouncer';
 
 export default function QuizDetailPage({ params }) {
-  const { id: quizId } = params;
+  // Properly unwrap the params using React.use
+  const unwrappedParams = use(params);
+  const quizId = unwrappedParams.id;
+  
   const [quiz, setQuiz] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -93,6 +97,7 @@ export default function QuizDetailPage({ params }) {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
+        console.log('Fetching quiz with ID:', quizId);
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quizzes/${quizId}`);
         
         if (!response.ok) {
@@ -100,6 +105,7 @@ export default function QuizDetailPage({ params }) {
         }
         
         const result = await response.json();
+        console.log('Quiz data:', result);
         setQuiz(result.data);
         
         // Announce to screen readers
@@ -151,24 +157,93 @@ export default function QuizDetailPage({ params }) {
   
   // Submit quiz
   const handleSubmitQuiz = async () => {
-    // Calculate time taken in seconds
-    const timeTaken = Math.round((Date.now() - timeStarted) / 1000);
-    
-    // Format answers for API
-    const formattedAnswers = Object.keys(selectedAnswers).map(qIndex => ({
-      questionId: quiz.questions[qIndex]._id,
-      selectedAnswer: selectedAnswers[qIndex]
-    }));
-    
     try {
+      // Calculate time taken in seconds
+      const timeTaken = Math.round((Date.now() - timeStarted) / 1000);
+      
+      // Get token for authentication
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Authentication required. Please sign in to submit the quiz.');
+      }
+      
+      // Log the quiz structure for debugging
+      console.log('Quiz structure:', quiz);
+      console.log('Selected answers:', selectedAnswers);
+      
+      // Format answers for API - handle all possible option formats
+      const formattedAnswers = Object.keys(selectedAnswers).map(qIndex => {
+        const question = quiz.questions[qIndex];
+        const optionId = selectedAnswers[qIndex];
+        
+        console.log(`Processing question ${qIndex}:`, question);
+        console.log(`Selected optionId for question ${qIndex}:`, optionId);
+        
+        // Initialize with default
+        let selectedAnswerText = optionId;
+        
+        // Different ways to extract the answer text based on various option formats
+        if (Array.isArray(question.options)) {
+          console.log(`Options type:`, typeof question.options[0]);
+          
+          // Case 1: Options are simple strings
+          if (typeof question.options[0] === 'string') {
+            const index = parseInt(optionId);
+            if (!isNaN(index) && index >= 0 && index < question.options.length) {
+              selectedAnswerText = question.options[index];
+            }
+          } 
+          // Case 2: Options are objects with text property
+          else if (typeof question.options[0] === 'object') {
+            // Try finding by direct match of id/index
+            const matchingOption = question.options.find(opt => 
+              opt.id === optionId || 
+              opt._id === optionId || 
+              opt.text === optionId ||
+              opt === optionId
+            );
+            
+            if (matchingOption) {
+              if (typeof matchingOption === 'string') {
+                selectedAnswerText = matchingOption;
+              } else if (matchingOption.text) {
+                selectedAnswerText = matchingOption.text;
+              }
+            } 
+            // Fallback: Try finding by index
+            else {
+              const index = parseInt(optionId);
+              if (!isNaN(index) && index >= 0 && index < question.options.length) {
+                const opt = question.options[index];
+                selectedAnswerText = typeof opt === 'string' ? opt : opt.text || `Option ${index+1}`;
+              }
+            }
+          }
+        }
+        
+        // Ensure we're not submitting empty answers
+        if (!selectedAnswerText || selectedAnswerText === "") {
+          selectedAnswerText = optionId || "Option selected";
+        }
+        
+        console.log(`Final answer text for question ${qIndex}:`, selectedAnswerText);
+        
+        return {
+          questionId: question._id,
+          selectedAnswer: selectedAnswerText
+        };
+      });
+      
+      console.log('Submitting quiz with answers:', formattedAnswers);
+      
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quizzes/attempt`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          quizId,
+          quizId: quizId,
           lessonId: quiz.lessonId,
           answers: formattedAnswers,
           timeTaken
@@ -176,11 +251,17 @@ export default function QuizDetailPage({ params }) {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to submit quiz');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Error response from API:', errorData);
+        throw new Error(errorData.message || 'Failed to submit quiz');
       }
       
       const result = await response.json();
-      setQuizResults(result.data);
+      console.log('Quiz submission successful:', result);
+      
+      // For compatibility with different response formats
+      const resultData = result.data?.attempt || result.data;
+      setQuizResults(resultData);
       setQuizSubmitted(true);
       
       // Stop the timer
@@ -189,15 +270,15 @@ export default function QuizDetailPage({ params }) {
       }
       
       // Calculate and announce score
-      const score = result.data.score;
+      const score = resultData.score;
       const total = quiz.questions.length;
-      const percentage = result.data.percentage;
+      const percentage = resultData.percentage;
       
       announceToScreenReader(`Quiz completed. Your score is ${score} out of ${total}, which is ${percentage}%.`);
     } catch (err) {
       console.error('Error submitting quiz:', err);
-      setError('Failed to submit quiz. Please try again.');
-      announceToScreenReader('Error submitting quiz');
+      setError('Failed to submit quiz: ' + err.message);
+      announceToScreenReader('Error submitting quiz: ' + err.message);
     }
   };
   
@@ -408,7 +489,7 @@ export default function QuizDetailPage({ params }) {
                               className={`p-2 rounded ${
                                 opt.id === question.correctAnswer
                                   ? 'bg-green-100 text-green-800 dark:bg-green-800/50 dark:text-green-100'
-                                  : opt.id === userAnswer
+                                  : opt.id === userAnswer && opt.id !== question.correctAnswer
                                     ? 'bg-red-100 text-red-800 dark:bg-red-800/50 dark:text-red-100'
                                     : 'bg-gray-100 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300'
                               }`}
@@ -560,43 +641,51 @@ export default function QuizDetailPage({ params }) {
             </h3>
             
             <div className="space-y-3" role="radiogroup" aria-labelledby="current-question">
-              {quiz.questions[activeQuestion]?.options.map((option, index) => (
-                <div 
-                  key={option.id || index}
-                  onClick={() => handleSelectAnswer(activeQuestion, option.id)}
-                  className={`
-                    p-4 rounded-md border cursor-pointer transition-all
-                    ${selectedAnswers[activeQuestion] === option.id 
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/40 dark:border-blue-700' 
-                      : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'}
-                  `}
-                  role="radio"
-                  aria-checked={selectedAnswers[activeQuestion] === option.id}
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      handleSelectAnswer(activeQuestion, option.id);
-                    }
-                  }}
-                >
-                  <div className="flex items-center">
-                    <div className={`
-                      flex-shrink-0 h-5 w-5 mr-2 rounded-full border
-                      ${selectedAnswers[activeQuestion] === option.id 
-                        ? 'border-blue-500 bg-blue-500 dark:border-blue-400 dark:bg-blue-400' 
-                        : 'border-gray-300 dark:border-gray-600'}
-                    `}>
-                      {selectedAnswers[activeQuestion] === option.id && (
-                        <svg className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                        </svg>
-                      )}
+              {quiz.questions[activeQuestion]?.options && quiz.questions[activeQuestion].options.map((option, index) => {
+                // Handle different option formats: string or object
+                const optionId = typeof option === 'string' ? index : (option.id || option._id || index);
+                const optionText = typeof option === 'string' ? option : option.text;
+                
+                console.log(`Option ${index}:`, { option, optionId, optionText });
+                
+                return (
+                  <div 
+                    key={index}
+                    onClick={() => handleSelectAnswer(activeQuestion, optionId)}
+                    className={`
+                      p-4 rounded-md border cursor-pointer transition-all
+                      ${selectedAnswers[activeQuestion] === optionId 
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/40 dark:border-blue-700' 
+                        : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'}
+                    `}
+                    role="radio"
+                    aria-checked={selectedAnswers[activeQuestion] === optionId}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSelectAnswer(activeQuestion, optionId);
+                      }
+                    }}
+                  >
+                    <div className="flex items-center">
+                      <div className={`
+                        flex-shrink-0 h-5 w-5 mr-2 rounded-full border
+                        ${selectedAnswers[activeQuestion] === optionId 
+                          ? 'border-blue-500 bg-blue-500 dark:border-blue-400 dark:bg-blue-400' 
+                          : 'border-gray-300 dark:border-gray-600'}
+                      `}>
+                        {selectedAnswers[activeQuestion] === optionId && (
+                          <svg className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                        )}
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-300">{optionText || `Option ${index + 1}`}</span>
                     </div>
-                    <span className="text-gray-700 dark:text-gray-300">{option.text}</span>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           

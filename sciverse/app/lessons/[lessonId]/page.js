@@ -140,17 +140,28 @@ export default function LessonPage({ params }) {
     }
   }, [lessonId, router, isTeacher, isAdmin]);
   
+  // Add new useEffect to trigger quiz fetching when tab changes to 'quiz'
+  useEffect(() => {
+    // Only fetch quiz data when quiz tab is selected
+    if (activeTab === 'quiz') {
+      console.log('Quiz tab selected, fetching quiz data...');
+      fetchQuizData();
+    }
+  }, [activeTab]);
+  
   // Fetch quiz data separately (especially useful for teachers/admins)
   const fetchQuizData = async () => {
     try {
+      console.log('Fetching quiz for lesson ID:', lessonId);
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quizzes/lesson/${lessonId}`);
       
       if (response.ok) {
         const data = await response.json();
+        console.log('Quiz data received:', data);
         setQuizData(data.data);
       } else {
         // No quiz found or error
-        console.log('No quiz found for this lesson or error fetching quiz');
+        console.log('No quiz found for this lesson or error fetching quiz:', response.status);
         setQuizData(null);
       }
     } catch (err) {

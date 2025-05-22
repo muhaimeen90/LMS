@@ -2,6 +2,7 @@ import { Quiz, QuizQuestion, QuizAttempt } from '../models/quizModel.js';
 import ApiError from '../utils/apiError.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
+import { awardXP } from '../utils/xpUtils.js';
 
 // Get all quizzes (public)
 const getAllQuizzes = asyncHandler(async (req, res) => {
@@ -25,19 +26,21 @@ const getAllQuizzes = asyncHandler(async (req, res) => {
   // Pagination
   const skip = (parseInt(page) - 1) * parseInt(limit);
   
-  // Execute query
-  const quizzes = await Quiz.find(filter)
-    .sort(sortOptions)
-    .skip(skip)
-    .limit(parseInt(limit))
-    .populate('questions', '-correctAnswer') // Exclude correct answers
-    .populate('createdBy', 'username email');
-  
-  const total = await Quiz.countDocuments(filter);
+  try {
+    // Execute query with proper error handling
+    const quizzes = await Quiz.find(filter)
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(parseInt(limit))
+      .populate('questions', '-correctAnswer');
+    
+    // Don't try to populate createdBy since it might be a string ID 
+    // instead of a MongoDB ObjectId reference
 
-  return res
-    .status(200)
-    .json(new ApiResponse(
+    const total = await Quiz.countDocuments(filter);
+    console.log('Total quizzes found:', total);
+
+    return res.status(200).json(new ApiResponse(
       200, 
       { 
         data: quizzes,
@@ -50,150 +53,229 @@ const getAllQuizzes = asyncHandler(async (req, res) => {
       },
       'Quizzes retrieved successfully'
     ));
+  } catch (error) {
+    console.error('Error fetching quizzes:', error);
+    throw new ApiError(500, 'Failed to retrieve quizzes due to server error');
+  }
 });
 
 // Get quiz by ID (public)
 const getQuizById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   
-  const quiz = await Quiz.findOne({ _id: id, isActive: true })
-    .populate('questions')
-    .populate('createdBy', 'username email');
-  
-  if (!quiz) {
-    throw new ApiError(404, 'Quiz not found');
+  try {
+    // Find quiz by MongoDB ID and populate questions
+    const quiz = await Quiz.findOne({ _id: id, isActive: true })
+      .populate('questions');
+    
+    // Don't try to populate createdBy with specific fields since they might not exist
+    
+    if (!quiz) {
+      throw new ApiError(404, 'Quiz not found');
+      
+    }
+    
+    return res
+      .status(200)
+      .json(new ApiResponse(200, quiz, 'Quiz retrieved successfully'));
+  } catch (error) {
+    console.error('Error fetching quiz by ID:', error);
+    throw new ApiError(500, `Failed to retrieve quiz: ${error.message}`);
   }
-  
-  return res
-    .status(200)
-    .json(new ApiResponse(200, quiz, 'Quiz retrieved successfully'));
 });
 
 // Teacher creates a new quiz
 const createQuiz = asyncHandler(async (req, res) => {
   const { title, description, lessonId, questions, passingScore, timeLimit } = req.body;
-  const userId = req.user._id;
+  // Get the user ID from the authenticated user
+  const userId = req.user?.id || req.user?._id;
+  
+  if (!userId) {
+    throw new ApiError(401, 'Authentication required to create a quiz');
+  }
 
   if (!title || !lessonId || !questions || questions.length === 0) {
     throw new ApiError(400, 'Title, lesson ID, and at least one question are required');
   }
 
-  // Create quiz first
-  const quiz = await Quiz.create({
-    title,
-    description,
-    lessonId,
-    passingScore,
-    timeLimit,
-    createdBy: userId
-  });
+  try {
+    // Create quiz first with generated ID
+    const quiz = await Quiz.create({
+      title,
+      description,
+      lessonId,
+      passingScore,
+      timeLimit,
+      createdBy: userId
+    });
 
-  // Create questions and link to quiz
-  const createdQuestions = await Promise.all(
-    questions.map(async (q) => {
-      const question = await QuizQuestion.create({
-        quizId: quiz._id,
-        lessonId,
-        text: q.text,
-        options: q.options,
-        correctAnswer: q.correctAnswer,
-        explanation: q.explanation,
-        difficulty: q.difficulty || 'medium',
-        createdBy: userId
-      });
-      return question._id;
-    })
-  );
+    // Create questions and link to quiz
+    const createdQuestions = await Promise.all(
+      questions.map(async (q) => {
+        const question = await QuizQuestion.create({
+          quizId: quiz._id,
+          lessonId,
+          text: q.text,
+          options: q.options,
+          correctAnswer: q.correctAnswer,
+          explanation: q.explanation,
+          difficulty: q.difficulty || 'medium',
+          createdBy: userId
+        });
+        return question._id;
+      })
+    );
 
-  // Update quiz with question references
-  quiz.questions = createdQuestions;
-  await quiz.save();
+    // Update quiz with question references
+    quiz.questions = createdQuestions;
+    await quiz.save();
 
-  // Populate the quiz with questions for response
-  const populatedQuiz = await Quiz.findById(quiz._id).populate('questions');
+    // Populate the quiz with questions for response
+    const populatedQuiz = await Quiz.findById(quiz._id).populate('questions');
 
-  return res
-    .status(201)
-    .json(new ApiResponse(201, populatedQuiz, 'Quiz created successfully'));
+    return res
+      .status(201)
+      .json(new ApiResponse(201, populatedQuiz, 'Quiz created successfully'));
+  } catch (error) {
+    throw new ApiError(500, error.message || 'Failed to create quiz');
+  }
 });
 
 // Get quiz by lesson ID
 const getQuizByLesson = asyncHandler(async (req, res) => {
   const { lessonId } = req.params;
 
-  const quiz = await Quiz.findOne({ lessonId, isActive: true })
-    .populate('questions')
-    .populate('createdBy', 'username email');
+  // Log the incoming lessonId for debugging
+  console.log('Fetching quiz for lessonId:', lessonId);
+  
+  try {
+    // Create a proper query without any potential MongoDB errors
+    const query = { lessonId };
+    
+    console.log('MongoDB query:', JSON.stringify(query));
+    
+    // Attempt to find the quiz with exact lessonId
+    let quiz = await Quiz.findOne(query)
+      .populate('questions');
+    
+    // Debug log to see if quiz was found
+    console.log('Quiz found:', quiz ? 'yes' : 'no');
 
-  if (!quiz) {
-    throw new ApiError(404, 'No quiz found for this lesson');
+    if (!quiz) {
+      return res
+        .status(404)
+        .json(new ApiResponse(404, null, 'No quiz found for this lesson'));
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, quiz, 'Quiz retrieved successfully'));
+  } catch (error) {
+    console.error(`Error fetching quiz for lesson ${lessonId}:`, error);
+    return res
+      .status(500)
+      .json(new ApiResponse(500, null, `Error fetching quiz: ${error.message}`));
   }
-
-  return res
-    .status(200)
-    .json(new ApiResponse(200, quiz, 'Quiz retrieved successfully'));
 });
 
 // Student submits quiz attempt
 const submitQuizAttempt = asyncHandler(async (req, res) => {
   const { quizId, lessonId, answers, timeTaken } = req.body;
-  const userId = req.user._id;
-
-  // Validate inputs
+  
+  // Get user ID from auth user object with flexible format
+  const userId = req.user?.id || req.user?._id || req.user;
+  
+  // Debug info for troubleshooting
+  console.log('Quiz submission - User object:', req.user);
+  console.log('Quiz submission - Answers:', answers);
+  
+  // Validate required inputs
   if (!quizId || !lessonId || !answers || !Array.isArray(answers)) {
     throw new ApiError(400, 'Quiz ID, lesson ID, and answers are required');
   }
-
-  // Get the quiz with questions
-  const quiz = await Quiz.findById(quizId).populate('questions');
-  if (!quiz) {
-    throw new ApiError(404, 'Quiz not found');
+  
+  if (!userId) {
+    throw new ApiError(401, 'User authentication required to submit quiz');
   }
 
-  // Verify answers and calculate score
-  let correctCount = 0;
-  const processedAnswers = await Promise.all(
-    answers.map(async (answer) => {
+  try {
+    // Get the quiz with questions
+    const quiz = await Quiz.findById(quizId).populate('questions');
+    if (!quiz) {
+      throw new ApiError(404, 'Quiz not found');
+    }
+
+    // Verify answers and calculate score
+    let correctCount = 0;
+    
+    // Process answers and ensure selectedAnswer is never empty
+    const processedAnswers = answers.map(answer => {
+      // Ensure we have a valid selectedAnswer
+      if (!answer.selectedAnswer || answer.selectedAnswer === '') {
+        answer.selectedAnswer = 'No answer provided';
+      }
+      
       const question = quiz.questions.find(
-        (q) => q._id.toString() === answer.questionId
+        q => q._id.toString() === answer.questionId
       );
       
       if (!question) {
         throw new ApiError(400, `Question ${answer.questionId} not found in this quiz`);
       }
-
+      
       const isCorrect = question.correctAnswer === answer.selectedAnswer;
       if (isCorrect) correctCount++;
-
+      
       return {
-        questionId: question._id,
+        questionId: answer.questionId,
         selectedAnswer: answer.selectedAnswer,
         isCorrect
       };
-    })
-  );
+    });
 
-  // Calculate results
-  const totalQuestions = quiz.questions.length;
-  const score = correctCount;
-  const percentage = Math.round((correctCount / totalQuestions) * 100);
-  const passed = percentage >= quiz.passingScore;
+    // Calculate results
+    const totalQuestions = quiz.questions.length;
+    const score = correctCount;
+    const percentage = Math.round((correctCount / totalQuestions) * 100);
+    const passed = percentage >= quiz.passingScore;
 
-  // Save attempt
-  const attempt = await QuizAttempt.create({
-    quizId,
-    userId,
-    lessonId,
-    answers: processedAnswers,
-    score,
-    percentage,
-    passed,
-    timeTaken
-  });
+    try {
+      // Save attempt with userId handling for different formats
+      const attempt = await QuizAttempt.create({
+        quizId,
+        userId,
+        lessonId,
+        answers: processedAnswers,
+        score,
+        percentage,
+        passed,
+        timeTaken
+      });
 
-  return res
-    .status(201)
-    .json(new ApiResponse(201, attempt, 'Quiz attempt submitted successfully'));
+      // Award XP for passing if enabled
+      let xpInfo = {};
+      if (passed && typeof awardXP === 'function') {
+        try {
+          const XP_VALUES = { quizPerfectBonus: 50 }; // Default value if not defined
+          const bonus = percentage === 100 ? XP_VALUES.quizPerfectBonus : 0;
+          xpInfo = await awardXP(userId, 'quizPass', bonus);
+        } catch (xpError) {
+          console.error('Error awarding XP:', xpError);
+          // Continue without failing if XP award fails
+        }
+      }
+
+      return res
+        .status(201)
+        .json(new ApiResponse(201, { attempt, xpInfo }, 'Quiz attempt submitted successfully'));
+    } catch (dbError) {
+      console.error('Database error when saving quiz attempt:', dbError);
+      throw new ApiError(500, `Failed to save quiz attempt: ${dbError.message}`);
+    }
+  } catch (error) {
+    console.error('Quiz attempt submission error:', error);
+    throw new ApiError(error.statusCode || 500, error.message || 'Failed to submit quiz attempt');
+  }
 });
 
 // Get quiz attempts for a student
