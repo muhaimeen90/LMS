@@ -56,3 +56,4 @@
 {"duration":"25763ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 12:35:57","url":"/chat"}
 {"duration":"4703ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 12:40:23","url":"/chat"}
 {"duration":"9001ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 12:41:04","url":"/chat"}
+{"level":"warn","message":"MongoDB disconnected","service":"lms-api","timestamp":"2025-05-22 12:45:45"}
