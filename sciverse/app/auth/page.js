@@ -62,10 +62,22 @@ export default function AuthPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
-
+      // Attempt to parse JSON, handle non-JSON responses
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error(isSignIn
+          ? 'Sign in service unavailable. Please try again later.'
+          : 'Sign up service unavailable. Please try again later.'
+        );
+      }
       if (!response.ok) {
-        throw new Error(data.message || 'Authentication failed');
+        // Curate error messages for sign-in vs. sign-up
+        const defaultMsg = isSignIn
+          ? 'Invalid email or password.'
+          : 'Sign up failed. Please verify your information.';
+        throw new Error(data?.message || defaultMsg);
       }
 
       // Save token if provided - fixed to match backend response format
