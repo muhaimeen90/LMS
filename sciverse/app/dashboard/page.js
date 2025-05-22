@@ -12,7 +12,7 @@ import { useAuth } from '../utils/AuthContext';
 import Link from 'next/link';
 
 export default function DashboardPage() {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading, isTeacher } = useAuth();
   const { data: dashboardData, loading: dashboardLoading, error: dashboardError, refreshData } = useDashboardData();
   
   const [lessons, setLessons] = useState([]); // For static lesson data fallback
@@ -21,15 +21,26 @@ export default function DashboardPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.push('/auth');
-      return;
+    if (!isLoading) {
+      // Redirect unauthenticated users to login
+      if (!isAuthenticated) {
+        router.push('/auth');
+        return;
+      }
+      
+      // Redirect teachers away from dashboard
+      if (isTeacher) {
+        router.push('/lessons');
+        return;
+      }
+      
+      // Only load data if authenticated and not a teacher
+      if (isAuthenticated) {
+        setLessons(lessonData || []); 
+        announceToScreenReader('Dashboard loaded with your learning progress');
+      }
     }
-    if (isAuthenticated) {
-      setLessons(lessonData || []); 
-      announceToScreenReader('Dashboard loaded with your learning progress');
-    }
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, isLoading, router, isTeacher]);
 
   useEffect(() => {
     if (dashboardData) {
@@ -235,8 +246,8 @@ export default function DashboardPage() {
         <h2 className="text-2xl font-semibold mb-4">Completed Lessons</h2>
         {dashboardData?.completedLessons && dashboardData.completedLessons.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {dashboardData.completedLessons.map(completedLesson => (
-              <div key={completedLesson.lessonId} className="border border-gray-200 rounded-lg p-4 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-shadow duration-300">
+            {dashboardData.completedLessons.map((completedLesson, index) => (
+              <div key={`${completedLesson.lessonId}-${index}`} className="border border-gray-200 rounded-lg p-4 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-shadow duration-300">
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="font-medium text-lg text-gray-800 dark:text-white truncate">
                     {completedLesson.title || "Untitled Lesson"}

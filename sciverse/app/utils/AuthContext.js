@@ -120,10 +120,22 @@ export function AuthProvider({ children }) {
           }
           
           if (!hasRequiredRole) {
-            // Redirect to dashboard if user doesn't have required role
-            router.push('/dashboard');
+            // Redirect based on role
+            if (user.role === 'teacher') {
+              router.push('/lessons'); // Teachers go to lessons page instead of dashboard
+            } else {
+              router.push('/dashboard'); // Students go to dashboard
+            }
           }
         }
+      }
+      
+      // Prevent teachers from accessing student-only pages
+      if (
+        user.role === 'teacher' && 
+        (pathname === '/dashboard' || pathname.startsWith('/quizzes/take'))
+      ) {
+        router.push('/lessons');
       }
     }
   }, [isLoading, user, pathname, router]);

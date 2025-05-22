@@ -18,12 +18,24 @@ const Navigation = () => {
   const getNavItems = () => {
     const items = [
       { name: 'Home', path: '/' },
-      { name: 'Lessons', path: '/lessons' },
     ];
     
-    // Add authenticated-only items
-    if (isAuthenticated) {
+    // Teacher-specific items
+    if (isTeacher && isAuthenticated) {
+      items.push({ name: 'Lessons', path: '/lessons' });
+      items.push({ name: 'Create Lesson', path: '/lessons/create' });
+      items.push({ name: 'Create Quiz', path: '/quizzes/create' });
       items.push({ name: 'Profile', path: '/profile' });
+    } 
+    // Regular student items
+    else if (isAuthenticated) {
+      items.push({ name: 'Lessons', path: '/lessons' });
+      items.push({ name: 'Profile', path: '/profile' });
+      items.push({ name: 'Dashboard', path: '/dashboard' });
+    } 
+    // Non-authenticated items
+    else {
+      items.push({ name: 'Lessons', path: '/lessons' });
     }
     
     // Common items for all users
