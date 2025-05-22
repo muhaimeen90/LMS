@@ -20,7 +20,13 @@ export const getAllLessons = catchAsync(async (req, res) => {
     limit: parseInt(limit)
   };
 
-  const data = await fetchAllLessons(options);
+  const lessons = await fetchAllLessons(options);
+  // Ensure default grade for lessons missing the field
+  const data = lessons.map(doc => {
+    const obj = doc.toObject();
+    if (!obj.grade) obj.grade = 'grade9';
+    return obj;
+  });
 
   res.status(200).json({
     status: 'success',
@@ -31,11 +37,14 @@ export const getAllLessons = catchAsync(async (req, res) => {
 
 export const getLessonById = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const data = await fetchLessonById(id);
+  const doc = await fetchLessonById(id);
 
-  if (!data) {
+  if (!doc) {
     throw new ApiError(404, 'Lesson not found');
   }
+
+  const data = doc.toObject();
+  if (!data.grade) data.grade = 'grade9';
 
   res.status(200).json({
     status: 'success',
@@ -44,7 +53,7 @@ export const getLessonById = catchAsync(async (req, res) => {
 });
 
 export const createLesson = catchAsync(async (req, res) => {
-  const { title, description, content, metadata } = req.body;
+  const { title, description, content, metadata, type, difficulty, grade } = req.body;
   let fileUrl = null;
 
   // Handle file upload if present
@@ -62,6 +71,9 @@ export const createLesson = catchAsync(async (req, res) => {
     title, 
     description,
     content,
+    type,
+    difficulty,
+    grade,
     metadata: metadata || {},
     material_url: fileUrl,
     created_by: req.user?.userId || 'anonymous'
@@ -85,7 +97,7 @@ export const createLesson = catchAsync(async (req, res) => {
 
 export const updateLesson = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const { title, description, content, metadata } = req.body;
+  const { title, description, content, metadata, type, difficulty, grade } = req.body;
   
   // Check if lesson exists
   const existingLesson = await fetchLessonById(id);
@@ -116,6 +128,9 @@ export const updateLesson = catchAsync(async (req, res) => {
     ...(title && { title }),
     ...(description && { description }),
     ...(content && { content }),
+    ...(type && { type }),
+    ...(difficulty && { difficulty }),
+    ...(grade && { grade }),
   };
 
   // Handle metadata update
