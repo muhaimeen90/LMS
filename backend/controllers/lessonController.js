@@ -4,7 +4,6 @@ import {
   getAllLessons as fetchAllLessons,
   getLessonById as fetchLessonById,
   createLesson as createNewLesson,
-  updateLesson as updateLessonById,
   deleteLesson as deleteLessonById
 } from '../models/lessonModel.js';
 
@@ -21,159 +20,58 @@ export const getAllLessons = catchAsync(async (req, res) => {
   };
 
   const lessons = await fetchAllLessons(options);
-  // Ensure default grade for lessons missing the field
-  const data = lessons.map(doc => {
-    const obj = doc.toObject();
-    if (!obj.grade) obj.grade = 'grade9';
-    return obj;
-  });
-
-  res.status(200).json({
+  res.json({
     status: 'success',
-    results: data.length,
-    data
+    data: lessons
   });
 });
 
 export const getLessonById = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const doc = await fetchLessonById(id);
-
-  if (!doc) {
-    throw new ApiError(404, 'Lesson not found');
+  const lesson = await fetchLessonById(req.params.id);
+  if (!lesson) {
+    throw new ApiError('Lesson not found', 404);
   }
-
-  const data = doc.toObject();
-  if (!data.grade) data.grade = 'grade9';
-
-  res.status(200).json({
+  res.json({
     status: 'success',
-    data
+    data: lesson
   });
 });
 
 export const createLesson = catchAsync(async (req, res) => {
-  const { title, description, content, metadata, type, difficulty, grade } = req.body;
-  let fileUrl = null;
-
-  // Handle file upload if present
-  if (req.file) {
-    const uploadResult = await uploadFile(req.file, 'lesson-materials');
-    fileUrl = uploadResult.publicUrl;
-  }
-
-  // Generate a unique lesson ID
-  const lessonId = `lesson_${Date.now()}`;
-
-  // Prepare lesson data
-  const lessonData = { 
-    id: lessonId,
-    title, 
-    description,
-    content,
-    type,
-    difficulty,
-    grade,
-    metadata: metadata || {},
-    material_url: fileUrl,
-    created_by: req.user?.userId || 'anonymous'
+  const lessonData = {
+    ...req.body,
+    created_by: req.user.id,
   };
 
-  // Add file URL to metadata if present
-  if (fileUrl) {
-    if (!lessonData.metadata) {
-      lessonData.metadata = {};
-    }
-    lessonData.metadata.material_url = fileUrl;
+  if (req.file) {
+    const materialUrl = await uploadFile(req.file);
+    lessonData.material_url = materialUrl;
   }
 
-  const data = await createNewLesson(lessonData);
-
+  const lesson = await createNewLesson(lessonData);
+  
   res.status(201).json({
     status: 'success',
-    data
-  });
-});
-
-export const updateLesson = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const { title, description, content, metadata, type, difficulty, grade } = req.body;
-  
-  // Check if lesson exists
-  const existingLesson = await fetchLessonById(id);
-  if (!existingLesson) {
-    throw new ApiError(404, 'Lesson not found');
-  }
-
-  // Optional: Check ownership if you're maintaining creator-based access control
-  // if (existingLesson.created_by !== req.user.userId) {
-  //   throw new ApiError(403, 'You are not authorized to update this lesson');
-  // }
-
-  let fileUrl = null;
-  // Handle file upload if present
-  if (req.file) {
-    // Delete old file if exists
-    if (existingLesson.metadata?.material_url) {
-      const oldFileName = existingLesson.metadata.material_url.split('/').pop();
-      await deleteFile(oldFileName, 'lesson-materials');
-    }
-    
-    const uploadResult = await uploadFile(req.file, 'lesson-materials');
-    fileUrl = uploadResult.publicUrl;
-  }
-
-  // Prepare updated data
-  const updateData = {
-    ...(title && { title }),
-    ...(description && { description }),
-    ...(content && { content }),
-    ...(type && { type }),
-    ...(difficulty && { difficulty }),
-    ...(grade && { grade }),
-  };
-
-  // Handle metadata update
-  if (metadata || fileUrl) {
-    updateData.metadata = {
-      ...(existingLesson.metadata || {}),
-      ...(metadata ? (typeof metadata === 'string' ? JSON.parse(metadata) : metadata) : {}),
-      ...(fileUrl && { material_url: fileUrl })
-    };
-  }
-
-  const data = await updateLessonById(id, updateData);
-
-  res.status(200).json({
-    status: 'success',
-    data
+    data: lesson
   });
 });
 
 export const deleteLesson = catchAsync(async (req, res) => {
-  const { id } = req.params;
-
-  // Get existing lesson to check ownership and get file URL
-  const existingLesson = await fetchLessonById(id);
-  if (!existingLesson) {
-    throw new ApiError(404, 'Lesson not found');
+  const lesson = await fetchLessonById(req.params.id);
+  
+  if (!lesson) {
+    throw new ApiError('Lesson not found', 404);
   }
 
-  // Optional: Check ownership if you're maintaining creator-based access control
-  // if (existingLesson.created_by !== req.user.userId) {
-  //   throw new ApiError(403, 'You are not authorized to delete this lesson');
-  // }
-
-  // Delete associated file if exists
-  if (existingLesson.metadata?.material_url) {
-    const fileName = existingLesson.metadata.material_url.split('/').pop();
-    await deleteFile(fileName, 'lesson-materials');
+  // Delete associated material if it exists
+  if (lesson.material_url) {
+    await deleteFile(lesson.material_url);
   }
 
-  await deleteLessonById(id);
-
-  res.status(200).json({
+  await deleteLessonById(req.params.id);
+  
+  res.status(204).json({
     status: 'success',
-    message: 'Lesson deleted successfully'
+    data: null
   });
 });

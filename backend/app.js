@@ -22,7 +22,7 @@ app.use(compression())
 
 // Security middlewares
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -71,8 +71,12 @@ app.use('/api/lessons', lessonRoutes)
 app.use('/api/quizzes', quizRoutes)
 app.use('/api/questions', questionRoutes) 
 app.use('/api/progress', progressRoutes)
-app.use('/api/', chatbotRoute);
+// Chatbot route (AI chat)
+app.use('/api/chat', chatbotRoute);
 app.use('/api/user', userRoutes);
+// Lesson questions routes (for FAQs and related questions)
+import lessonQuestionRoutes from './routes/lessonQuestionRoutes.js';
+app.use('/api/lesson-questions', lessonQuestionRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

@@ -57,20 +57,22 @@ const userSchema = new mongoose.Schema({
   },
   completedLessons: [
     {
-      lessonId: String,
-      dateCompleted: Date,
-      timeSpentSec: Number,
-      quizScore: Number,
-      attempts: Number
+      lessonId: { type: String, required: true },
+      dateCompleted: { type: Date, required: true },
+      timeSpentSec: { type: Number, default: 0 }
+      // Removed quizScore and attempts from here; will be derived from quizAttempts
     }
   ],
   quizAttempts: [
     {
-      quizId: String,
-      score: Number,
-      maxScore: Number,
-      passed: Boolean,
-      dateTaken: Date
+      quizId: { type: String, required: true },
+      lessonId: { type: String }, // Made optional
+      score: { type: Number, default: 0 }, // Made optional with default
+      totalQuestions: { type: Number, default: 0 }, // Made optional with default
+      percentage: { type: Number, default: 0 }, // Made optional with default
+      passed: { type: Boolean, default: false }, // Made optional with default
+      dateTaken: { type: Date, default: Date.now }, // Made optional with default
+      timeTaken: { type: Number, default: 0 }
     }
   ],
   totalXP: { type: Number, default: 0 },

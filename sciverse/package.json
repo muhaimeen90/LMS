@@ -11,9 +11,12 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.49.7",
     "@tailwindcss/typography": "^0.5.16",
+    "autoprefixer": "^10.4.21",
+    "confetti": "^2.0.6",
     "isomorphic-dompurify": "^1.13.0",
     "next": "^15.3.2",
     "react": "^19.1.0",
+    "react-confetti": "^6.4.0",
     "react-dom": "^19.1.0",
     "react-icons": "^5.0.1",
     "uuid": "^9.0.1"

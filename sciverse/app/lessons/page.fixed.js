@@ -13,9 +13,11 @@ import AccessibleOutline from '../../components/AccessibleOutline';
 import { 
   markLessonCompleted, 
   isLessonCompleted,
-  calculateOverallProgress 
+  calculateOverallProgress,
+  getQuizScore // Import getQuizScore
 } from '../../utils/storageUtils';
 import { useLessonTimer } from '../../utils/useLessonTimer';
+import { useAuth } from '../../utils/AuthContext'; // Import useAuth
 
 export default function LessonPage({ params }) {
   const [activeTab, setActiveTab] = useState('content');
@@ -25,6 +27,8 @@ export default function LessonPage({ params }) {
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
   const [showOutline, setShowOutline] = useState(false);
   
+  const { user } = useAuth(); // Get user from AuthContext
+
   // Get the current lesson data
   const currentLessonId = params.lessonId;
   const currentLessonData = lessonData.find(lesson => lesson.id === currentLessonId) || lessonData[0];
@@ -110,6 +114,7 @@ export default function LessonPage({ params }) {
   const handleMarkComplete = () => {
     markLessonCompleted(currentLessonId, true);
     setLessonCompleted(true);
+    // Backend sync will be handled by the useEffect below
   };
 
   // Navigate to next section
@@ -152,6 +157,62 @@ export default function LessonPage({ params }) {
   const toggleOutline = () => {
     setShowOutline(!showOutline);
   };
+
+  // Sync progress with backend when time spent or completion status changes
+  useEffect(() => {
+    const syncProgress = async () => {
+      if (!user || !currentLessonId) return;
+
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.warn('No token found, cannot sync progress.');
+          return;
+        }
+        
+        const timeSpentToSync = Number(totalTimeSpent);
+        if (isNaN(timeSpentToSync)) {
+          console.warn('totalTimeSpent is NaN, cannot sync progress.');
+          return;
+        }
+
+        const payload = {
+          time_spent: timeSpentToSync,
+          last_accessed: new Date().toISOString(),
+          completed: lessonCompleted,
+        };
+
+        const currentQuizScore = getQuizScore(currentLessonId);
+        if (currentQuizScore) {
+          payload.quiz_score = currentQuizScore.score;
+          payload.quiz_total_questions = currentQuizScore.totalQuestions;
+          payload.quiz_percentage = Math.round((currentQuizScore.score / currentQuizScore.totalQuestions) * 100);
+        }
+        
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/progress/${user.id}/${currentLessonId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('Failed to sync progress with backend:', response.status, errorData);
+        } else {
+          console.log('Progress synced successfully with backend for page.fixed.js.');
+        }
+      } catch (err) {
+        console.error('Error syncing progress in page.fixed.js:', err);
+      }
+    };
+
+    if (currentLessonId && user?.id) {
+      syncProgress();
+    }
+  }, [totalTimeSpent, lessonCompleted, currentLessonId, user, getQuizScore]); // Added getQuizScore to dependencies
 
   return (
     <div className="container mx-auto px-4 py-8">

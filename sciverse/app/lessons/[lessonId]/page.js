@@ -11,6 +11,7 @@ import LessonNavigationAssistant from '../../components/LessonNavigationAssistan
 import LessonKeyboardShortcutsModal from '../../components/LessonKeyboardShortcutsModal';
 import AccessibleOutline from '../../components/AccessibleOutline';
 import ChatBot from '../../components/ChatBot';
+import FAQ from '../../components/FAQ';
 import { 
   markLessonCompleted, 
   isLessonCompleted,
@@ -50,6 +51,56 @@ export default function LessonPage({ params }) {
     totalTimeFormatted,
     pauseTimer
   } = useLessonTimer(lessonId);
+
+  const updateBackendLessonCompletion = async (currentLessonId, isNowCompleted, currentTimeSpent) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Authentication token not found.');
+      setError('Authentication token not found. Please log in again.');
+      return;
+    }
+
+    try {
+      let response;
+      if (isNowCompleted) {
+        response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/progress/${currentLessonId}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            completed: true,
+            timeSpent: currentTimeSpent
+          }),
+        });
+      } else {
+        response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/progress/${currentLessonId}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            completed: false,
+            timeSpent: currentTimeSpent 
+          }),
+        });
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Failed to update lesson completion status to ${isNowCompleted}`);
+      }
+
+      console.log(`Lesson ${currentLessonId} completion status updated to ${isNowCompleted} on the backend.`);
+      // Optionally, trigger a refresh of dashboard data or show a success message.
+
+    } catch (err) {
+      console.error('Error updating lesson completion status on backend:', err);
+      setError(err.message);
+    }
+  };
 
   // Process lesson data to ensure it's in the right format
   const processLessonData = (data) => {
@@ -279,9 +330,10 @@ export default function LessonPage({ params }) {
     setQuizResults({ score, totalQuestions });
     
     if (score / totalQuestions >= 0.7) {
-      markLessonCompleted(lessonId);
-      setLessonCompleted(true);
+      markLessonCompleted(lessonId); // Local storage update
+      setLessonCompleted(true);     // Local UI state update
       announceToScreenReader(`Congratulations! You scored ${score} out of ${totalQuestions} and completed this lesson.`);
+      updateBackendLessonCompletion(lessonId, true, totalTimeSpent); // Backend update
     } else {
       announceToScreenReader(`You scored ${score} out of ${totalQuestions}. You need 70% to complete this lesson.`);
     }
@@ -354,7 +406,10 @@ export default function LessonPage({ params }) {
             <div className="flex items-center">
               <LessonCompletionBadge 
                 lessonId={lessonId} 
-                onStatusChange={(status) => setLessonCompleted(status)}
+                onStatusChange={(status) => {
+                  setLessonCompleted(status);
+                  updateBackendLessonCompletion(lessonId, status, totalTimeSpent);
+                }}
               />
               
               <div className="text-sm text-gray-600 dark:text-gray-400 ml-4">
@@ -712,8 +767,7 @@ export default function LessonPage({ params }) {
           )}
         </div>
 
-        {/* Ask Anything Tab */}
-        <div
+        {/* Ask Anything Tab */}        <div
           id="lesson-ask"
           role="tabpanel"
           aria-labelledby="ask-tab"
@@ -721,11 +775,15 @@ export default function LessonPage({ params }) {
         >
           <div className="mb-6">
             <h2 className="text-2xl font-bold mb-4">Ask Anything</h2>
-            <ChatBot lessonId={lessonId} lessonTitle={lessonData?.title} />
+            <ChatBot 
+              lessonId={lessonId} 
+              lessonTitle={lessonData?.title} 
+              lessonGrade={lessonData?.grade} 
+              lessonDifficulty={lessonData?.difficulty} 
+            />
           </div>
         </div>
-        
-        {/* FAQ Tab */}
+          {/* FAQ Tab */}
         <div
           id="lesson-faq"
           role="tabpanel"
@@ -734,18 +792,7 @@ export default function LessonPage({ params }) {
         >
           <div className="mb-6">
             <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions</h2>
-            {lessonData?.faq?.length > 0 ? (
-              <ul className="space-y-4">
-                {lessonData.faq.map((item, idx) => (
-                  <li key={idx} className="bg-white rounded-lg shadow-sm p-4">
-                    <p className="font-medium">Q: {item.question}</p>
-                    <p className="mt-1 text-gray-700">A: {item.answer}</p>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-600">No FAQs have been added for this lesson yet.</p>
-            )}
+            <FAQ lessonId={lessonId} />
           </div>
         </div>
         
