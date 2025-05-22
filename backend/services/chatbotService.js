@@ -1,5 +1,3 @@
-
-
 // correct demo
 
 
@@ -232,7 +230,8 @@ import Question from '../models/questions.js';
 import { 
     querySimilarVectors, 
     storeVector, 
-    deleteVector 
+    deleteVector, 
+    storeLessonVector
 } from './vectorDatabaseService.js';
 import VectorEntry from '../models/vectorDatabase.js';
 
@@ -319,255 +318,6 @@ export function cosineSimilarity(vec1, vec2) {
     return dotProduct / (magnitude1 * magnitude2);
 }
 
-// // Main chatbot service function
-// export const chatWithAI = async (req, res) => {
-//     const userMessage = req.body.message;
-    
-//     try {
-//         // Process the question for database
-//         const correctedQuestion = await correctGrammarWithAI(userMessage);
-//         const normalizedQuestion = normalizeText(correctedQuestion);
-//         // Inside the database operations try-catch block, update this section:
-
-// try {
-//     const questionEmbedding = await getEmbedding(normalizedQuestion);
-    
-//     // Check for similar questions
-//     const existingQuestions = await Question.find();
-//     let similarQuestion = null;
-//     let highestSimilarity = 0;
-    
-//     // Continue with normal AI response handling to get label and explanation first
-//     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-    
-//     // Create a chat session with the system prompt
-//     const chat = model.startChat({
-//         history: [
-//             {
-//                 role: "user",
-//                 parts: [{ text: systemPrompt }],
-//             },
-//             {
-//                 role: "model",
-//                 parts: [{ text: "I understand. I'll respond to science questions in the specified JSON format." }],
-//             },
-//         ],
-//     });
-    
-//     // Send the user's message
-//     const result = await chat.sendMessage(userMessage);
-//     const response = await result.response;
-//     const text = response.text();
-    
-//     // Clean the response text before parsing
-//     let cleanText = text.trim();
-    
-//     if (cleanText.startsWith('```json')) {
-//         cleanText = cleanText.replace(/^```json\n/, '').replace(/\n```$/, '');
-//     } else if (cleanText.startsWith('```')) {
-//         cleanText = cleanText.replace(/^```\n/, '').replace(/\n```$/, '');
-//     }
-    
-//     cleanText = cleanText.replace(/^`+/, '').replace(/`+$/, '');
-    
-//     // Parse the response to get label and explanation
-//     const parsedResponse = JSON.parse(cleanText);
-    
-//     // If it's an error (not a science question), don't store in DB
-//     if (parsedResponse.error) {
-//         return res.status(200).json({
-//             error: parsedResponse.error
-//         });
-//     }
-    
-//     // Extract label and explanation
-//     const { label, explanation } = parsedResponse;
-    
-//     // Convert label to boolean for isTrue field
-//     const isTrueBool = label.toLowerCase() === "fact";
-    
-//     // Check if database has any questions at all
-//     if (existingQuestions.length === 0) {
-//         console.log("Database is empty. Adding first question.");
-//         // This is the first question, store it directly
-//         const firstQuestion = new Question({
-//             Question: correctedQuestion,
-//             Explanation: explanation,
-//             isTrue: isTrueBool,
-//             count: 1
-//         });
-//         await firstQuestion.save();
-//     } else {
-//         // Database has questions, check for similarities
-//         for (const question of existingQuestions) {
-//             try {
-//                 const existingEmbedding = await getEmbedding(normalizeText(question.Question));
-//                 const similarity = cosineSimilarity(questionEmbedding, existingEmbedding);
-                
-//                 if (similarity > highestSimilarity) {
-//                     highestSimilarity = similarity;
-//                     similarQuestion = question;
-//                 }
-//             } catch (embeddingError) {
-//                 console.error("Error getting embedding for existing question:", embeddingError);
-//             }
-//         }
-        
-//         // Handle database operation based on similarity
-//         if (similarQuestion && highestSimilarity >= 0.85) {
-//             // Update count for similar question
-//             similarQuestion.count += 1;
-//             await similarQuestion.save();
-//             console.log("Similar question found, count incremented");
-//         } else {
-//             // This is a new question, store it
-//             const newQuestion = new Question({
-//                 Question: correctedQuestion,
-//                 Explanation: explanation,
-//                 isTrue: isTrueBool,
-//                 count: 1
-//             });
-//             await newQuestion.save();
-//             console.log("New question added to database");
-//         }
-//     }
-    
-//     // Format the response nicely for the client
-//     return res.status(200).json({ 
-//         response: { label, explanation },
-//         isTrue: isTrueBool
-//     });
-    
-// } catch (databaseError) {
-//     console.error("Error processing database operations:", databaseError);
-//     // Continue with response even if database operations fail
-// }
-// //         try {
-// //     const questionEmbedding = await getEmbedding(normalizedQuestion);
-    
-// //     // Check for similar questions
-// //     const existingQuestions = await Question.find();
-// //     let similarQuestion = null;
-// //     let highestSimilarity = 0;
-    
-// //     // Check if database has any questions at all
-// //     if (existingQuestions.length === 0) {
-// //         console.log("Database is empty. Adding first question.");
-// //         // This is the first question, store it directly
-// //         const firstQuestion = new Question({
-// //             Question: correctedQuestion,
-// //             count: 1
-// //         });
-// //         await firstQuestion.save();
-// //     } else {
-// //         // Database has questions, check for similarities
-// //         for (const question of existingQuestions) {
-// //             try {
-// //                 const existingEmbedding = await getEmbedding(normalizeText(question.Question));
-// //                 const similarity = cosineSimilarity(questionEmbedding, existingEmbedding);
-                
-// //                 if (similarity > highestSimilarity) {
-// //                     highestSimilarity = similarity;
-// //                     similarQuestion = question;
-// //                 }
-// //             } catch (embeddingError) {
-// //                 console.error("Error getting embedding for existing question:", embeddingError);
-// //             }
-// //         }
-        
-// //         // Handle database operation based on similarity
-// //         if (similarQuestion && highestSimilarity >= 0.85) {
-// //             // Update count for similar question
-// //             similarQuestion.count += 1;
-// //             await similarQuestion.save();
-// //             console.log("Similar question found, count incremented");
-// //         } else {
-// //             // This is a new question, store it
-// //             const newQuestion = new Question({
-// //                 Question: correctedQuestion,
-// //                 count: 1
-// //             });
-// //             await newQuestion.save();
-// //             console.log("New question added to database");
-// //         }
-// //     }
-// // } catch (databaseError) {
-// //     console.error("Error processing database operations:", databaseError);
-// //     // Continue with response even if database operations fail
-// // }
-        
-// //         // Continue with normal AI response handling
-// //         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-        
-// //         // Create a chat session with the system prompt
-// //         const chat = model.startChat({
-// //             history: [
-// //                 {
-// //                     role: "user",
-// //                     parts: [{ text: systemPrompt }],
-// //                 },
-// //                 {
-// //                     role: "model",
-// //                     parts: [{ text: "I understand. I'll respond to science questions in the specified JSON format." }],
-// //                 },
-// //             ],
-// //         });
-        
-// //         // Send the user's message
-// //         const result = await chat.sendMessage(userMessage);
-// //         const response = await result.response;
-// //         const text = response.text();
-        
-// //         // Clean the response text before parsing
-// //         let cleanText = text.trim();
-        
-// //         // Remove markdown code block formatting if present
-// //         if (cleanText.startsWith('```json')) {
-// //             cleanText = cleanText.replace(/^```json\n/, '').replace(/\n```$/, '');
-// //         } else if (cleanText.startsWith('```')) {
-// //             cleanText = cleanText.replace(/^```\n/, '').replace(/\n```$/, '');
-// //         }
-        
-// //         // Remove any backticks that might be at the start or end
-// //         cleanText = cleanText.replace(/^`+/, '').replace(/`+$/, '');
-        
-// //         try {
-// //             // Try to parse the response as JSON
-// //             const parsedResponse = JSON.parse(cleanText);
-            
-// //             // If the response contains an error field
-// //             if (parsedResponse.error) {
-// //                 return res.status(200).json({
-// //                     error: parsedResponse.error
-// //                 });
-// //             }
-            
-// //             // Extract response components
-// //             const { label, explanation } = parsedResponse;
-            
-// //             // Format the response nicely
-            
-// //             return res.status(200).json({ 
-// //                 response: { label, explanation } 
-// //             });
-// //         } catch (parseError) {
-// //             console.error("Error parsing AI response:", parseError);
-// //             console.log("Raw text causing error:", cleanText);
-            
-// //             // If parsing fails, return a friendly message
-// //             return res.status(200).json({
-// //                 error: "I had trouble understanding that. Please try rephrasing your question.",
-// //                 rawResponse: cleanText
-// //             });
-// //         }
-//     } catch (error) {
-//         console.error("Error in chatWithAI:", error);
-//         return res.status(500).json({ 
-//             error: "Error processing request. Please try again later."
-//         });
-//     }
-// };
-
 // Main chatbot service function
 export const chatWithAI = async (req, res) => {
     const userMessage = req.body.message;
@@ -646,7 +396,7 @@ export const chatWithAI = async (req, res) => {
             // Send the user's message
             const result = await chat.sendMessage(userMessage);
             const response = await result.response;
-            const text = response.text();
+            const text = await response.text();
             
             // Clean and parse the response text
             let cleanText = text.trim();
@@ -675,28 +425,45 @@ export const chatWithAI = async (req, res) => {
             // Convert label to boolean for isTrue field
             const isTrueBool = label.toLowerCase() === "fact";
             
-            // Handle database operations based on similarity check results
-            if (similarQuestion && highestSimilarity >= 0.85) {
-                // Update count for similar question
-                similarQuestion.count += 1;
-                await similarQuestion.save();
-                console.log("Similar question found, count incremented");
+            // Persist based on lesson context
+            const { lessonId } = req.body;
+            if (!lessonId) {
+                // No lesson context: handle database operations in main questions collection
+                if (similarQuestion && highestSimilarity >= 0.85) {
+                    // Update count for similar question
+                    similarQuestion.count += 1;
+                    await similarQuestion.save();
+                    console.log("Similar question found, count incremented");
+                } else {
+                    // This is a new general question, store it
+                    const newQuestion = new Question({
+                        Question: correctedQuestion,
+                        Explanation: explanation,
+                        isTrue: isTrueBool,
+                        count: 1
+                    });
+                    // Save to MongoDB and store vector
+                    const savedQuestion = await newQuestion.save();
+                    await storeVector(savedQuestion._id, questionEmbedding);
+                    console.log("New question added to general questions collection");
+                }
             } else {
-                // This is a new question, store it
-                const newQuestion = new Question({
-                    Question: correctedQuestion,
-                    Explanation: explanation,
-                    isTrue: isTrueBool,
-                    count: 1
-                });
-                
-                // Save to MongoDB
-                const savedQuestion = await newQuestion.save();
-                
-                // Store the vector embedding
-                await storeVector(savedQuestion._id, questionEmbedding);
-                
-                console.log("New question added to database with vector embedding");
+                console.log("Lesson context detected, skipping general question storage");
+            }
+
+            if (lessonId) {
+                try {
+                    const LessonQuestion = (await import('../models/lessonQuestionModel.js')).default;
+                    // Save question record
+                    const newLQ = await LessonQuestion.create({ lessonId, questionText: userMessage, vectorId: '' });
+                    // Create embedding and store vector
+                    const embedding = await getEmbedding(normalizeText(userMessage));
+                    const storedVectorId = await storeLessonVector(newLQ._id.toString(), lessonId, embedding);
+                    newLQ.vectorId = storedVectorId;
+                    await newLQ.save();
+                } catch (persistError) {
+                    console.error('Error persisting lesson question:', persistError);
+                }
             }
             
             // Format the response nicely for the client
@@ -726,7 +493,7 @@ export const chatWithAI = async (req, res) => {
             
             const result = await chat.sendMessage(userMessage);
             const response = await result.response;
-            const text = response.text();
+            const text = await response.text();
             
             // Clean and parse response
             let cleanText = text.trim();
@@ -735,7 +502,7 @@ export const chatWithAI = async (req, res) => {
             } else if (cleanText.startsWith('```')) {
                 cleanText = cleanText.replace(/^```\n/, '').replace(/\n```$/, '');
             }
-            cleanText = cleanText.replace(/^`+/, '').replace(/`+$/, '');
+            cleanText = cleanText.replace(/^`+/, '');
             
             const parsedResponse = JSON.parse(cleanText);
             

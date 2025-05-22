@@ -87,6 +87,29 @@ export const storeVector = async (questionId, embedding) => {
     }
 };
 
+/**
+ * Store a lesson question vector in Pinecone with lesson metadata
+ * @param {string} lessonQuestionId - ID of the lessonQuestion document
+ * @param {string} lessonId - ID of the lesson
+ * @param {number[]} embedding - vector embedding
+ * @returns {string} vectorId
+ */
+export const storeLessonVector = async (lessonQuestionId, lessonId, embedding) => {
+    try {
+        const index = getIndex();
+        const vectorId = lessonQuestionId.toString();
+        await index.upsert([{
+            id: vectorId,
+            values: embedding,
+            metadata: { lessonId }
+        }]);
+        return vectorId;
+    } catch (error) {
+        console.error('Error storing lesson vector:', error);
+        throw error;
+    }
+};
+
 // Query similar vectors
 export const querySimilarVectors = async (embedding, similarityThreshold = 0.85, limit = 5) => {
     try {
@@ -107,6 +130,31 @@ export const querySimilarVectors = async (embedding, similarityThreshold = 0.85,
         return filteredResults;
     } catch (error) {
         console.error('Error querying vectors:', error);
+        throw error;
+    }
+};
+
+/**
+ * Query lesson-specific vectors by similarity
+ * @param {number[]} embedding - query vector
+ * @param {string} lessonId - filter for lessonId
+ * @param {number} similarityThreshold 
+ * @param {number} limit
+ * @returns {Array} matches
+ */
+export const queryLessonVectors = async (embedding, lessonId, similarityThreshold = 0.8, limit = 5) => {
+    try {
+        const index = getIndex();
+        const queryResponse = await index.query({
+            vector: embedding,
+            topK: limit,
+            includeMetadata: true,
+            includeValues: false,
+            filter: { lessonId }
+        });
+        return queryResponse.matches.filter(match => match.score >= similarityThreshold);
+    } catch (error) {
+        console.error('Error querying lesson vectors:', error);
         throw error;
     }
 };
