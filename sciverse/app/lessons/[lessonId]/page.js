@@ -721,7 +721,7 @@ export default function LessonPage({ params }) {
         >
           <div className="mb-6">
             <h2 className="text-2xl font-bold mb-4">Ask Anything</h2>
-            <ChatBot lessonId={lessonId} />
+            <ChatBot lessonId={lessonId} lessonTitle={lessonData?.title} />
           </div>
         </div>
         
