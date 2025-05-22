@@ -76,7 +76,13 @@ export const createLessonValidation = [
     .notEmpty()
     .withMessage('Difficulty is required')
     .isIn(['beginner', 'intermediate', 'advanced'])
-    .withMessage('Difficulty must be either beginner, intermediate, or advanced')
+    .withMessage('Difficulty must be either beginner, intermediate, or advanced'),
+  body('grade')
+    .trim()
+    .notEmpty()
+    .withMessage('Grade is required')
+    .isIn(['grade9', 'grade10', 'grade11', 'grade12', 'undergraduate'])
+    .withMessage('Grade must be one of grade9, grade10, grade11, grade12, or undergraduate')
 ]
 
 // Quiz validations

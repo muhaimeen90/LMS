@@ -3,9 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../utils/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function LessonsPage() {
-  const { isTeacher, isAdmin } = useAuth();
+  const { isTeacher, isAdmin, isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -73,7 +76,17 @@ export default function LessonsPage() {
             {lessons.length > 0 ? (
               <div className="grid gap-6">
                 {lessons.map(lesson => (
-                  <div key={lesson.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                  <div
+                    key={lesson.id}
+                    className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
+                    onClick={() => {
+                      if (!isLoading && !isAuthenticated) {
+                        router.push('/auth');
+                      } else {
+                        router.push(`/lessons/${lesson.id}`);
+                      }
+                    }}
+                  >
                     <div className="p-6">
                       <div className="flex justify-between items-start">
                         <div>
@@ -82,15 +95,29 @@ export default function LessonsPage() {
                             <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded mr-2">
                               {lesson.difficulty}
                             </span>
-                            <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded">
+                            <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded mr-2">
                               {lesson.type}
                             </span>
+                            {lesson.grade && (
+                              <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+                                {lesson.grade === 'undergraduate'
+                                  ? 'Undergraduate'
+                                  : lesson.grade.replace('grade', 'Grade ')}
+                              </span>
+                            )}
                           </div>
                           <p className="text-gray-700 mb-4">{lesson.description}</p>
                         </div>
                       </div>
                       <Link 
                         href={`/lessons/${lesson.id}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (!isLoading && !isAuthenticated) {
+                            e.preventDefault();
+                            router.push('/auth');
+                          }
+                        }}
                         className="inline-block bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         aria-label={`Start lesson: ${lesson.title}`}
                       >
