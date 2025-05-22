@@ -18,12 +18,13 @@ router.route('/')
   .get(getAllQuizzes)
   .post(protect, teacherOnly, createQuiz);
 
-router.route('/:id')
-  .get(getQuizById);
-
-// Public route to get quiz by lesson
+// Public route to get quiz by lesson - this needs to come BEFORE the /:id route
 router.route('/lesson/:lessonId')
   .get(getQuizByLesson);
+
+// Quiz by ID route
+router.route('/:id')
+  .get(getQuizById);
 
 // Student routes
 router.route('/attempt')

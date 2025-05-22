@@ -145,17 +145,37 @@ const createQuiz = asyncHandler(async (req, res) => {
 const getQuizByLesson = asyncHandler(async (req, res) => {
   const { lessonId } = req.params;
 
-  const quiz = await Quiz.findOne({ lessonId, isActive: true })
-    .populate('questions')
-    .populate('createdBy', 'username email');
+  // Log the incoming lessonId for debugging
+  console.log('Fetching quiz for lessonId:', lessonId);
+  
+  try {
+    // Create a proper query without any potential MongoDB errors
+    const query = { lessonId };
+    
+    console.log('MongoDB query:', JSON.stringify(query));
+    
+    // Attempt to find the quiz with exact lessonId
+    let quiz = await Quiz.findOne(query)
+      .populate('questions');
+    
+    // Debug log to see if quiz was found
+    console.log('Quiz found:', quiz ? 'yes' : 'no');
 
-  if (!quiz) {
-    throw new ApiError(404, 'No quiz found for this lesson');
+    if (!quiz) {
+      return res
+        .status(404)
+        .json(new ApiResponse(404, null, 'No quiz found for this lesson'));
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, quiz, 'Quiz retrieved successfully'));
+  } catch (error) {
+    console.error(`Error fetching quiz for lesson ${lessonId}:`, error);
+    return res
+      .status(500)
+      .json(new ApiResponse(500, null, `Error fetching quiz: ${error.message}`));
   }
-
-  return res
-    .status(200)
-    .json(new ApiResponse(200, quiz, 'Quiz retrieved successfully'));
 });
 
 // Student submits quiz attempt
