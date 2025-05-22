@@ -536,3 +536,6 @@
 {"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 22:28:24"}
 {"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 22:28:24"}
 {"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 22:28:24"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 23:09:04"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 23:09:04"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 23:09:04"}
