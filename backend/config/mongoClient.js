@@ -6,7 +6,7 @@ import logger from '../utils/logger.js';
 dotenv.config();
 
 // Get MongoDB connection string from environment variables
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/lms';
+const MONGODB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/lms';
 
 // Configure MongoDB connection options - removed deprecated options
 const options = {
