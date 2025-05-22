@@ -54,11 +54,43 @@ const userSchema = new mongoose.Schema({
   },
   last_login: {
     type: Date
-  }
+  },
+  completedLessons: [
+    {
+      lessonId: String,
+      dateCompleted: Date,
+      timeSpentSec: Number,
+      quizScore: Number,
+      attempts: Number
+    }
+  ],
+  quizAttempts: [
+    {
+      quizId: String,
+      score: Number,
+      maxScore: Number,
+      passed: Boolean,
+      dateTaken: Date
+    }
+  ],
+  totalXP: { type: Number, default: 0 },
+  level: { type: Number, default: 1 },
+  badges: [
+    {
+      badgeId: String,
+      name: String,
+      unlocked: { type: Boolean, default: false },
+      dateEarned: Date
+    }
+  ],
+  lastLogin: Date,
+  loginStreak: { type: Number, default: 0 }
 });
 
 // Create model
 const User = mongoose.model('User', userSchema);
+
+export default User;
 
 /**
  * Create a new user
@@ -144,17 +176,28 @@ export const deleteUser = async (userId) => {
 };
 
 /**
- * Record user login
+ * Record user login and update login streak
  * @param {string} userId - User ID
  * @returns {Promise<Object>} Updated user
  */
 export const recordLogin = async (userId) => {
   try {
-    return await User.findOneAndUpdate(
-      { id: userId },
-      { last_login: new Date() },
-      { new: true }
-    );
+    const user = await User.findOne({ id: userId });
+    if (!user) throw new Error('User not found');
+    const now = new Date();
+    let newStreak = 1;
+    if (user.last_login) {
+      const last = new Date(user.last_login);
+      const yesterday = new Date(now);
+      yesterday.setDate(yesterday.getDate() - 1);
+      if (last.toDateString() === yesterday.toDateString()) {
+        newStreak = (user.loginStreak || 0) + 1;
+      }
+    }
+    user.last_login = now;
+    user.loginStreak = newStreak;
+    await user.save();
+    return user;
   } catch (error) {
     //logger.error(`Error recording login: ${error.message}`);
     throw error;
