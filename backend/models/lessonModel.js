@@ -31,6 +31,11 @@ const lessonSchema = new mongoose.Schema({
     enum: ['beginner', 'intermediate', 'advanced'],
     default: 'beginner'
   },
+  grade: {
+    type: String,
+    enum: ['grade9', 'grade10', 'grade11', 'grade12', 'undergraduate'],
+    default: 'grade9'
+  },
   material_url: {
     type: String
   },

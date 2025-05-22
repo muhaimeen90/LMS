@@ -10,6 +10,7 @@ export default function CreateLessonPage() {
     content: '',
     type: 'text',
     difficulty: 'beginner',
+    grade: 'grade9',
     material: null,
   });
   const [loading, setLoading] = useState(false);
@@ -83,6 +84,7 @@ export default function CreateLessonPage() {
       apiFormData.append('content', formData.content);
       apiFormData.append('type', formData.type);
       apiFormData.append('difficulty', formData.difficulty);
+      apiFormData.append('grade', formData.grade);
       if (formData.material) {
         apiFormData.append('material', formData.material);
       }
@@ -114,6 +116,7 @@ export default function CreateLessonPage() {
         content: '',
         type: 'text',
         difficulty: 'beginner',
+        grade: 'grade9',
         material: null,
       });
       
@@ -239,6 +242,27 @@ export default function CreateLessonPage() {
                   <option value="beginner">Beginner</option>
                   <option value="intermediate">Intermediate</option>
                   <option value="advanced">Advanced</option>
+                </select>
+              </div>
+
+              {/* Grade dropdown */}
+              <div>
+                <label htmlFor="grade" className="block text-sm font-medium text-gray-700 mb-1">
+                  Grade <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="grade"
+                  name="grade"
+                  value={formData.grade}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="grade9">Grade 9</option>
+                  <option value="grade10">Grade 10</option>
+                  <option value="grade11">Grade 11</option>
+                  <option value="grade12">Grade 12</option>
+                  <option value="undergraduate">Undergraduate</option>
                 </select>
               </div>
             </div>

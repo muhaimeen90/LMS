@@ -10,6 +10,7 @@ import AdaptiveLearningPath from '../../components/AdaptiveLearningPath';
 import LessonNavigationAssistant from '../../components/LessonNavigationAssistant';
 import LessonKeyboardShortcutsModal from '../../components/LessonKeyboardShortcutsModal';
 import AccessibleOutline from '../../components/AccessibleOutline';
+import ChatBot from '../../components/ChatBot';
 import { 
   markLessonCompleted, 
   isLessonCompleted,
@@ -473,6 +474,39 @@ export default function LessonPage({ params }) {
                 <span className="ml-1 text-xs text-gray-500">(Alt+3)</span>
               </button>
             )}
+
+            <button
+              onClick={() => {
+                setActiveTab('ask');
+                announceToScreenReader('Ask Anything tab selected');
+              }}
+              className={`py-4 px-6 font-medium text-sm focus:outline-none focus:text-blue-700 ${
+                activeTab === 'ask'
+                  ? 'border-b-2 border-blue-500 text-blue-600'
+                  : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+              aria-selected={activeTab === 'ask'}
+              aria-controls="lesson-ask"
+              id="ask-tab"
+            >
+              Ask Anything
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab('faq');
+                announceToScreenReader('FAQ tab selected');
+              }}
+              className={`py-4 px-6 font-medium text-sm focus:outline-none focus:text-blue-700 ${
+                activeTab === 'faq'
+                  ? 'border-b-2 border-blue-500 text-blue-600'
+                  : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+              aria-selected={activeTab === 'faq'}
+              aria-controls="lesson-faq"
+              id="faq-tab"
+            >
+              FAQ
+            </button>
           </nav>
         </div>
         
@@ -611,50 +645,52 @@ export default function LessonPage({ params }) {
           )}
           
           {/* For all users (including students) */}
-          <div>
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
-              Test Your Knowledge
-            </h2>
-            
-            {quizData ? (
-              <div className="bg-white rounded-lg shadow-md p-6 dark:bg-gray-800">
-                <div className="text-gray-700 dark:text-gray-300 mb-6">
-                  <p>This lesson has a quiz available to test your knowledge on the material you've learned.</p>
-                  <p className="mt-2">The quiz contains {quizData.questions?.length || 0} questions and will help reinforce the key concepts from this lesson.</p>
-                </div>
-                
-                {/* Show quiz status if user has results */}
-                {quizResults && (
-                  <div className="mb-6 p-4 bg-blue-50 rounded-md dark:bg-blue-900/30">
-                    <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">Your Previous Attempt</h4>
-                    <p className="text-blue-700 dark:text-blue-300">
-                      Score: {quizResults.score}/{quizResults.totalQuestions} ({Math.round((quizResults.score / quizResults.totalQuestions) * 100)}%)
-                    </p>
-                    <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">
-                      {quizResults.score / quizResults.totalQuestions >= 0.7 ? "Passed" : "Not passed yet"}
-                    </p>
+          {!isTeacher && (
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+                Test Your Knowledge
+              </h2>
+              
+              {quizData ? (
+                <div className="bg-white rounded-lg shadow-md p-6 dark:bg-gray-800">
+                  <div className="text-gray-700 dark:text-gray-300 mb-6">
+                    <p>This lesson has a quiz available to test your knowledge on the material you've learned.</p>
+                    <p className="mt-2">The quiz contains {quizData.questions?.length || 0} questions and will help reinforce the key concepts from this lesson.</p>
                   </div>
-                )}
-                
-                <div className="flex justify-center">
-                  <Link
-                    href={`/quizzes/${quizData._id}`}
-                    className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  >
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    {quizResults ? "Retake Quiz" : "Take Quiz"}
-                  </Link>
+                  
+                  {/* Show quiz status if user has results */}
+                  {quizResults && (
+                    <div className="mb-6 p-4 bg-blue-50 rounded-md dark:bg-blue-900/30">
+                      <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">Your Previous Attempt</h4>
+                      <p className="text-blue-700 dark:text-blue-300">
+                        Score: {quizResults.score}/{quizResults.totalQuestions} ({Math.round((quizResults.score / quizResults.totalQuestions) * 100)}%)
+                      </p>
+                      <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">
+                        {quizResults.score / quizResults.totalQuestions >= 0.7 ? "Passed" : "Not passed yet"}
+                      </p>
+                    </div>
+                  )}
+                  
+                  <div className="flex justify-center">
+                    <Link
+                      href={`/quizzes/${quizData._id}`}
+                      className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                      {quizResults ? "Retake Quiz" : "Take Quiz"}
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className="bg-yellow-50 border border-yellow-200 text-yellow-700 p-4 rounded-lg dark:bg-yellow-900/30 dark:border-yellow-800 dark:text-yellow-300">
-                <p className="mb-2">No quiz available for this lesson yet.</p>
-                <p>Complete the lesson content to gain knowledge on this topic.</p>
-              </div>
-            )}
-          </div>
+              ) : (
+                <div className="bg-yellow-50 border border-yellow-200 text-yellow-700 p-4 rounded-lg dark:bg-yellow-900/30 dark:border-yellow-800 dark:text-yellow-300">
+                  <p className="mb-2">No quiz available for this lesson yet.</p>
+                  <p>Complete the lesson content to gain knowledge on this topic.</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
         
         {/* Interactive Tab */}
@@ -674,6 +710,43 @@ export default function LessonPage({ params }) {
               <p>No interactive content available for this lesson.</p>
             </div>
           )}
+        </div>
+
+        {/* Ask Anything Tab */}
+        <div
+          id="lesson-ask"
+          role="tabpanel"
+          aria-labelledby="ask-tab"
+          className={activeTab === 'ask' ? 'block' : 'hidden'}
+        >
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold mb-4">Ask Anything</h2>
+            <ChatBot lessonId={lessonId} />
+          </div>
+        </div>
+        
+        {/* FAQ Tab */}
+        <div
+          id="lesson-faq"
+          role="tabpanel"
+          aria-labelledby="faq-tab"
+          className={activeTab === 'faq' ? 'block' : 'hidden'}
+        >
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions</h2>
+            {lessonData?.faq?.length > 0 ? (
+              <ul className="space-y-4">
+                {lessonData.faq.map((item, idx) => (
+                  <li key={idx} className="bg-white rounded-lg shadow-sm p-4">
+                    <p className="font-medium">Q: {item.question}</p>
+                    <p className="mt-1 text-gray-700">A: {item.answer}</p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-600">No FAQs have been added for this lesson yet.</p>
+            )}
+          </div>
         </div>
         
         {/* Adaptive Learning Recommendations */}
