@@ -3,22 +3,38 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '../utils/AuthContext';
 
 const Navigation = () => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAuthenticated, isLoading, logout, isTeacher, isAdmin } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Lessons', path: '/lessons' },
-    { name: 'Science Fact Checker', path: '/fact-checker' },
-    { name: 'Accessibility', path: '/accessibility' },
-    { name: 'Profile', path: '/profile' },
-  ];
+  // Define navigation items - some may be conditional based on auth status
+  const getNavItems = () => {
+    const items = [
+      { name: 'Home', path: '/' },
+      { name: 'Lessons', path: '/lessons' },
+    ];
+    
+    // Add authenticated-only items
+    if (isAuthenticated) {
+      items.push({ name: 'Dashboard', path: '/dashboard' });
+      items.push({ name: 'Profile', path: '/profile' });
+    }
+    
+    // Common items for all users
+    items.push({ name: 'Science Fact Checker', path: '/fact-checker' });
+    items.push({ name: 'Accessibility', path: '/accessibility' });
+    
+    return items;
+  };
+
+  const navItems = getNavItems();
 
   return (
     <nav className="bg-blue-600 text-white py-4" aria-label="Main Navigation">
@@ -35,6 +51,59 @@ const Navigation = () => {
         <Link href="/" className="text-2xl font-bold" aria-label="SciVerse Home">
           SciVerse
         </Link>
+        
+        {/* Desktop navigation */}
+        <div className="hidden md:flex space-x-4">
+          {navItems.map((item) => (
+            <Link 
+              key={item.path} 
+              href={item.path}
+              className={`py-2 px-3 rounded transition-colors ${
+                pathname === item.path 
+                  ? 'bg-blue-700 font-semibold' 
+                  : 'hover:bg-blue-500 focus:bg-blue-500'
+              } focus:outline-none focus:ring-2 focus:ring-yellow-400`}
+              aria-current={pathname === item.path ? 'page' : undefined}
+            >
+              {item.name}
+            </Link>
+          ))}
+          
+          {/* Authentication buttons */}
+          {!isLoading && (
+            <>
+              {isAuthenticated ? (
+                <button
+                  onClick={logout}
+                  className="py-2 px-3 rounded bg-red-500 hover:bg-red-600 focus:bg-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  aria-label="Log out"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link
+                  href="/auth"
+                  className="py-2 px-3 rounded bg-green-500 hover:bg-green-600 focus:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  aria-label="Log in or sign up"
+                >
+                  Login / Signup
+                </Link>
+              )}
+            </>
+          )}
+          
+          {/* Show teacher/admin badge if applicable */}
+          {isTeacher && (
+            <span className="py-1 px-2 bg-yellow-500 text-yellow-900 text-xs font-semibold rounded">
+              Teacher
+            </span>
+          )}
+          {isAdmin && (
+            <span className="py-1 px-2 bg-purple-500 text-white text-xs font-semibold rounded">
+              Admin
+            </span>
+          )}
+        </div>
         
         {/* Mobile menu button */}
         <button 
@@ -59,24 +128,6 @@ const Navigation = () => {
           </svg>
         </button>
         
-        {/* Desktop navigation */}
-        <div className="hidden md:flex space-x-6">
-          {navItems.map((item) => (
-            <Link 
-              key={item.path} 
-              href={item.path}
-              className={`py-2 px-3 rounded transition-colors ${
-                pathname === item.path 
-                  ? 'bg-blue-700 font-semibold' 
-                  : 'hover:bg-blue-500 focus:bg-blue-500'
-              } focus:outline-none focus:ring-2 focus:ring-yellow-400`}
-              aria-current={pathname === item.path ? 'page' : undefined}
-            >
-              {item.name}
-            </Link>
-          ))}
-        </div>
-        
         {/* Mobile navigation */}
         {isMenuOpen && (
           <div 
@@ -99,6 +150,40 @@ const Navigation = () => {
                   {item.name}
                 </Link>
               ))}
+              
+              {/* Authentication buttons for mobile */}
+              {!isLoading && (
+                <>
+                  {isAuthenticated ? (
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsMenuOpen(false);
+                      }}
+                      className="py-3 px-4 border-b border-blue-500 text-left bg-red-500 hover:bg-red-600 focus:bg-red-600"
+                      aria-label="Log out"
+                    >
+                      Logout
+                    </button>
+                  ) : (
+                    <Link
+                      href="/auth"
+                      className="py-3 px-4 border-b border-blue-500 bg-green-500 hover:bg-green-600 focus:bg-green-600"
+                      onClick={() => setIsMenuOpen(false)}
+                      aria-label="Log in or sign up"
+                    >
+                      Login / Signup
+                    </Link>
+                  )}
+                </>
+              )}
+              
+              {/* Show role in mobile menu */}
+              {(isTeacher || isAdmin) && (
+                <div className="py-3 px-4 text-sm">
+                  Role: {isAdmin ? 'Admin' : ''} {isTeacher ? 'Teacher' : ''}
+                </div>
+              )}
             </div>
           </div>
         )}
