@@ -1,4 +1,5 @@
 import { Quiz, QuizQuestion, QuizAttempt } from '../models/quizModel.js';
+import User from '../models/userModel.js';
 import ApiError from '../utils/apiError.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
@@ -183,12 +184,11 @@ const submitQuizAttempt = asyncHandler(async (req, res) => {
   const { quizId, lessonId, answers, timeTaken } = req.body;
   
   // Get user ID from auth user object with flexible format
-  const userId = req.user?.id || req.user?._id || req.user;
+  const userId = req.user?.id || req.user?._id || req.user?.userId;
   
   // Debug info for troubleshooting
   console.log('Quiz submission - User object:', req.user);
   console.log('Quiz submission - Answers:', answers);
-  
   // Validate required inputs
   if (!quizId || !lessonId || !answers || !Array.isArray(answers)) {
     throw new ApiError(400, 'Quiz ID, lesson ID, and answers are required');
@@ -220,7 +220,13 @@ const submitQuizAttempt = asyncHandler(async (req, res) => {
       );
       
       if (!question) {
-        throw new ApiError(400, `Question ${answer.questionId} not found in this quiz`);
+        // This case should ideally not happen if question IDs are validated on client
+        console.warn(`Question ${answer.questionId} not found in quiz ${quizId} during submission.`);
+        return {
+          questionId: answer.questionId,
+          selectedAnswer: answer.selectedAnswer,
+          isCorrect: false // Mark as incorrect if question not found
+        };
       }
       
       const isCorrect = question.correctAnswer === answer.selectedAnswer;
@@ -236,10 +242,21 @@ const submitQuizAttempt = asyncHandler(async (req, res) => {
     // Calculate results
     const totalQuestions = quiz.questions.length;
     const score = correctCount;
-    const percentage = Math.round((correctCount / totalQuestions) * 100);
-    const passed = percentage >= quiz.passingScore;
+    const percentage = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
+    const passed = percentage >= (quiz.passingScore || 70); // Use quiz's passing score or default to 70
 
     try {
+      // Check if this is the first attempt
+      const previousAttempts = await QuizAttempt.find({ 
+        userId, 
+        quizId
+      });
+      const isFirstAttempt = previousAttempts.length === 0;
+      const previouslyFailed = previousAttempts.some(attempt => !attempt.passed);
+      
+      // Calculate par time (if not set, use 2 minutes per question as a default)
+      const parTime = quiz.timeLimit || (totalQuestions * 120);
+
       // Save attempt with userId handling for different formats
       const attempt = await QuizAttempt.create({
         quizId,
@@ -249,25 +266,77 @@ const submitQuizAttempt = asyncHandler(async (req, res) => {
         score,
         percentage,
         passed,
-        timeTaken
+        timeTaken: timeTaken || 0, // Ensure timeTaken is a number
+        totalQuestions, // Store total questions for the attempt
+        isFirstAttempt
       });
 
-      // Award XP for passing if enabled
+      // Update User model with quiz attempt
+      await User.findOneAndUpdate(
+        { id: userId },
+        {
+          $push: {
+            quizAttempts: {
+              quizId,
+              lessonId,
+              score,
+              totalQuestions,
+              percentage,
+              passed,
+              dateTaken: new Date(),
+              timeTaken: timeTaken || 0,
+              isFirstAttempt
+            },
+          },
+        },
+        { upsert: true }
+      );
+
+      // Award XP using the enhanced XP system
       let xpInfo = {};
-      if (passed && typeof awardXP === 'function') {
-        try {
-          const XP_VALUES = { quizPerfectBonus: 50 }; // Default value if not defined
-          const bonus = percentage === 100 ? XP_VALUES.quizPerfectBonus : 0;
-          xpInfo = await awardXP(userId, 'quizPass', bonus);
-        } catch (xpError) {
-          console.error('Error awarding XP:', xpError);
-          // Continue without failing if XP award fails
-        }
+      try {
+        // Create quiz data object for XP calculation
+        const quizXpData = {
+          passed,
+          score,
+          totalQuestions,
+          isFirstAttempt,
+          timeTaken,
+          parTime,
+          previouslyFailed
+        };
+        
+        // Use specialized quiz XP calculation function
+        const { awardQuizXP } = await import('../utils/xpUtils.js');
+        xpInfo = await awardQuizXP(userId, quizXpData);
+        console.log('XP awarded for quiz attempt:', xpInfo);
+      } catch (xpError) {
+        console.error('Error awarding XP:', xpError);
+        // Continue without failing if XP award fails
       }
 
+      // Return detailed attempt information
       return res
         .status(201)
-        .json(new ApiResponse(201, { attempt, xpInfo }, 'Quiz attempt submitted successfully'));
+        .json(new ApiResponse(201, { 
+          attempt: { 
+            ...attempt.toObject(), 
+            totalQuestions 
+          }, 
+          xpInfo,
+          quizResult: {
+            score,
+            totalQuestions,
+            percentage,
+            passed,
+            timeTaken,
+            isFirstAttempt,
+            xpGained: xpInfo.xpGained || 0,
+            xpBreakdown: xpInfo.xpBreakdown || {},
+            levelUp: xpInfo.leveledUp || false,
+            newBadges: xpInfo.newBadges || []
+          }
+        }, 'Quiz attempt submitted successfully'));
     } catch (dbError) {
       console.error('Database error when saving quiz attempt:', dbError);
       throw new ApiError(500, `Failed to save quiz attempt: ${dbError.message}`);

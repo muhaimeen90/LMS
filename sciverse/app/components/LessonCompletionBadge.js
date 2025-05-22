@@ -28,19 +28,61 @@ const LessonCompletionBadge = ({
     }
   }, [lessonId]);
   
-  const handleMarkComplete = () => {
+  const handleMarkComplete = async () => {
     markLessonCompleted(lessonId, true);
     setIsCompleted(true);
     if (onStatusChange) {
       onStatusChange(true);
     }
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Authentication token not found');
+        return;
+      }
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/progress/${lessonId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ completed: true }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Failed to mark lesson as complete on server:', errorData.message || response.statusText);
+      }
+    } catch (error) {
+      console.error('Error marking lesson as complete on server:', error);
+    }
   };
   
-  const handleMarkIncomplete = () => {
+  const handleMarkIncomplete = async () => {
     markLessonCompleted(lessonId, false);
     setIsCompleted(false);
     if (onStatusChange) {
       onStatusChange(false);
+    }
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Authentication token not found');
+        return;
+      }
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/progress/${lessonId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ completed: false }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Failed to mark lesson as incomplete on server:', errorData.message || response.statusText);
+      }
+    } catch (error) {
+      console.error('Error marking lesson as incomplete on server:', error);
     }
   };
   

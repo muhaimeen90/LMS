@@ -13,6 +13,26 @@ const AuthContext = createContext({
   logout: () => {},
 });
 
+// Safe localStorage access function
+const safeLocalStorage = {
+  getItem: (key) => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(key);
+    }
+    return null;
+  },
+  setItem: (key, value) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(key, value);
+    }
+  },
+  removeItem: (key) => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(key);
+    }
+  }
+};
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,7 +42,7 @@ export function AuthProvider({ children }) {
   // Check if the user is authenticated
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('token');
+      const token = safeLocalStorage.getItem('token');
       
       if (!token) {
         setUser(null);
@@ -36,7 +56,7 @@ export function AuthProvider({ children }) {
       }
       
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/me`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -47,7 +67,7 @@ export function AuthProvider({ children }) {
           setUser(data.data); // Access user data through data property based on backend response
         } else {
           // Invalid token
-          localStorage.removeItem('token');
+          safeLocalStorage.removeItem('token');
           setUser(null);
           
           // Redirect to login page if accessing protected routes
@@ -57,7 +77,7 @@ export function AuthProvider({ children }) {
         }
       } catch (error) {
         console.error('Error checking authentication:', error);
-        localStorage.removeItem('token');
+        safeLocalStorage.removeItem('token');
         setUser(null);
         
         // Redirect to login page if accessing protected routes
@@ -75,13 +95,9 @@ export function AuthProvider({ children }) {
   // Handle role-based access
   useEffect(() => {
     if (!isLoading && user) {
-      console.log('Role check with user:', user);
-      console.log('Current path:', pathname);
-      
       // Check if user tries to access a page they don't have permission for
       if (isRestrictedRoute(pathname)) {
         const requiredRoles = getRequiredRoles(pathname);
-        console.log('Required roles for this route:', requiredRoles);
         
         if (requiredRoles.length > 0) {
           // More flexible role checking
@@ -103,11 +119,8 @@ export function AuthProvider({ children }) {
             }
           }
           
-          console.log('Has required role:', hasRequiredRole);
-          
           if (!hasRequiredRole) {
             // Redirect to dashboard if user doesn't have required role
-            console.log('Redirecting to dashboard due to lack of permission');
             router.push('/dashboard');
           }
         }
@@ -118,9 +131,9 @@ export function AuthProvider({ children }) {
   // Logout function
   const logout = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = safeLocalStorage.getItem('token');
       if (token) {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/logout`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`
@@ -130,8 +143,8 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.error('Error during logout:', error);
     } finally {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      safeLocalStorage.removeItem('token');
+      safeLocalStorage.removeItem('user');
       setUser(null);
       router.push('/auth');
     }
@@ -157,32 +170,6 @@ export function AuthProvider({ children }) {
     return [];
   };
   
-  // Get user role in a more flexible way that handles different API response formats
-  const getUserRole = (user) => {
-    // Direct role property
-    if (user?.role) {
-      return user.role;
-    }
-    
-    // Array of role objects with role property
-    if (user?.roles && Array.isArray(user.roles)) {
-      const roleObjects = user.roles.filter(r => r && (typeof r === 'string' || r.role));
-      if (roleObjects.length > 0) {
-        return typeof roleObjects[0] === 'string' ? roleObjects[0] : roleObjects[0].role;
-      }
-    }
-    
-    return null;
-  };
-  
-  // Log the user for debugging
-  useEffect(() => {
-    if (user) {
-      console.log("Current user for role detection:", user);
-      console.log("User role detected as:", getUserRole(user));
-    }
-  }, [user]);
-  
   // Compute role flags for easier checks - improved version
   const isTeacher = (
     user?.role === 'teacher' || 
@@ -199,8 +186,6 @@ export function AuthProvider({ children }) {
       (role && role.role === 'admin')
     ))
   ) || false;
-
-  console.log("Final role check - isTeacher:", isTeacher, "isAdmin:", isAdmin);
 
   return (
     <AuthContext.Provider 

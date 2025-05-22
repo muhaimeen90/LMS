@@ -75,8 +75,40 @@ export const getAllProgress = () => {
  * @param {string} lessonId - The unique identifier for the lesson
  * @param {boolean} completed - Whether the lesson is completed
  */
-export const markLessonCompleted = (lessonId, completed = true) => {
-  saveProgress(lessonId, completed, 'lesson_completed');
+export const markLessonCompleted = async (lessonId, completed = true) => {
+  saveProgress(lessonId, completed, 'lesson_completed'); // Optimistic local update
+
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found, cannot update lesson completion status on backend.');
+      // Optionally, you could queue this update or notify the user
+      return;
+    }
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/progress/${lessonId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ completed: completed }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ message: 'Failed to update lesson completion status on backend.' }));
+      console.error(`Backend error updating lesson completion for lesson ${lessonId}:`, errorData.message);
+      // Handle error, perhaps revert optimistic update or notify user
+    } else {
+      console.log(`Lesson ${lessonId} completion status (${completed}) successfully synced with backend.`);
+      // If the dashboard data is managed by a global state (like Redux, Zustand, React Context),
+      // you might want to dispatch an action here to re-fetch or update the dashboard data.
+      // However, typically, the dashboard would re-fetch on its next load/mount.
+    }
+  } catch (error) {
+    console.error(`Network error updating lesson completion status for lesson ${lessonId}:`, error);
+    // Handle network error
+  }
 };
 
 /**
