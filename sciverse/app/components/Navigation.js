@@ -23,7 +23,6 @@ const Navigation = () => {
     
     // Add authenticated-only items
     if (isAuthenticated) {
-      items.push({ name: 'Dashboard', path: '/dashboard' });
       items.push({ name: 'Profile', path: '/profile' });
     }
     

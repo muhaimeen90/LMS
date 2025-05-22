@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-export default function ChatBot({ lessonId, lessonTitle }) {
+export default function ChatBot({ lessonId, lessonTitle, lessonGrade, lessonDifficulty }) {
   const [messages, setMessages] = useState([{ 
     type: 'bot',
     content: lessonTitle
@@ -22,10 +22,16 @@ export default function ChatBot({ lessonId, lessonTitle }) {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/chat', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage, lessonId }),
+        body: JSON.stringify({ 
+          message: userMessage, 
+          lessonId, 
+          lessonTitle,
+          grade: lessonGrade || "Grade 9-12", // Default if not provided
+          difficulty: lessonDifficulty || "Intermediate" // Default if not provided
+        }),
       });
 
       const data = await response.json();
