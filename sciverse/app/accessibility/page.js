@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import { useTheme } from '../components/ThemeProvider';
 import { FONT_SIZES, THEMES, MOTION_PREFERENCES, TEXT_SPACING, COLOR_BLINDNESS_MODES } from '../utils/themeUtils';
 import AccessibilityGuide from '../components/AccessibilityGuide';
-import AccessibilityTester from '../components/AccessibilityTester';
-import ScreenReaderTest from '../components/ScreenReaderTest';
 
 export default function AccessibilityPage() {
   const { 
@@ -359,42 +357,6 @@ export default function AccessibilityPage() {
           </div>
         </div>
           <AccessibilityGuide />
-        
-        <ScreenReaderTest />
-        
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
-          <div className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">Accessibility Compliance Test</h2>
-            <p className="mb-4">Test your content against WCAG guidelines:</p>
-            
-            <AccessibilityTester 
-              htmlContent={`
-                <div class="lesson-content">
-                  <h1>Example Content</h1>
-                  <p>This is an example paragraph to test accessibility features.</p>
-                  <img src="/example.jpg" alt="Example image with proper alt text" />
-                  <a href="#">Learn more</a>
-                  <table>
-                    <caption>Data Table Example</caption>
-                    <thead>
-                      <tr>
-                        <th>Header 1</th>
-                        <th>Header 2</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Data 1</td>
-                        <td>Data 2</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              `} 
-              title="Content Accessibility Test" 
-            />
-          </div>
-        </div>
         
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="p-6">

@@ -8,6 +8,7 @@ import {
   deleteProgress
 } from '../models/progressModel.js';
 import { getLessonById } from '../models/lessonModel.js';
+import { awardXP } from '../utils/xpUtils.js';
 
 /**
  * Get progress for a specific lesson
@@ -113,13 +114,13 @@ export const completeLesson = catchAsync(async (req, res) => {
     throw new ApiError(404, 'Lesson not found');
   }
 
-  const progress = await upsertProgress(userId, lessonId, {
-    completed: true
-  });
+  const progress = await upsertProgress(userId, lessonId, { completed: true });
+  // Award XP for completing lesson
+  const { totalXP, level, newBadges } = await awardXP(userId, 'lessonComplete');
 
   res.status(200).json({
     status: 'success',
-    data: progress
+    data: { progress, totalXP, level, newBadges }
   });
 });
 
