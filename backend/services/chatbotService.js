@@ -257,6 +257,29 @@ If the question is not science-related, respond:
 If you cannot process the request, respond with:
 {"error":"Unable to process the request."}`;
 
+// Define the educational prompt for lesson-specific questions
+const educationalPrompt = `You are a science teacher helping a student understand a concept.
+
+Please explain the following question according to the following criteria:
+
+Grade: "{grade}"
+Student Level: "{difficulty}"
+Lesson Topic: "{lessonTitle}" 
+Question: "{question}"
+
+Output Format:
+- A brief explanation in clear, simple language
+- If needed, include an analogy or real-life example
+- Use friendly tone (as if speaking to the student)
+
+Do not answer any other questions that is not related to the lesson topic.
+Example:
+Question: "Why do heavier objects not fall faster than lighter ones?"
+→ Output: "It might seem like heavier things should fall faster, but in reality, all objects fall at the same speed because of gravity — if there's no air getting in the way. It's like if you dropped a bowling ball and a tennis ball on the Moon, they'd hit the ground at the same time!"
+
+IMPORTANT: Respond ONLY with a valid JSON object with no formatting, markdown, or backticks in this format:
+{"label":"Answer","explanation":"Your friendly explanation here"}`;
+
 // Define the prompt for grammatical correction
 const grammarPrompt = `You are a grammar correction assistant. Your task is to rewrite the given question into a grammatically correct form, ensuring proper punctuation, capitalization, and sentence structure. Respond with only the corrected question as plain text, nothing else. Do not add extra explanations or formatting.
 
@@ -321,6 +344,10 @@ export function cosineSimilarity(vec1, vec2) {
 // Main chatbot service function
 export const chatWithAI = async (req, res) => {
     const userMessage = req.body.message;
+    const { lessonId, lessonTitle, grade, difficulty } = req.body;
+    // Debug what we're receiving from the client
+    console.log("ChatBot API received request body:", JSON.stringify(req.body));
+    console.log("Message:", userMessage, "lessonId:", lessonId);
     
     try {
         // Process the question for database
@@ -375,26 +402,41 @@ export const chatWithAI = async (req, res) => {
                     }
                 }
             }
-            
-            // Continue with normal AI response handling to get label and explanation
+              // Continue with normal AI response handling to get label and explanation
             const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
             
-            // Create a chat session with the system prompt
+            // Determine which prompt to use based on context
+            let prompt = systemPrompt;
+            let initialResponse = "I understand. I'll respond to science questions in the specified JSON format.";
+            
+            // If we have lesson context, use the educational prompt
+            if (lessonId && lessonTitle) {
+                // Format the educational prompt with context
+                prompt = educationalPrompt
+                    .replace('{grade}', grade || 'Grade 9-12')
+                    .replace('{difficulty}', difficulty || 'Intermediate')
+                    .replace('{lessonTitle}', lessonTitle)
+                    .replace('{question}', userMessage);
+                
+                initialResponse = "I understand. I'll explain this concept in a student-friendly way.";
+            }
+            
+            // Create a chat session with the appropriate prompt
             const chat = model.startChat({
                 history: [
                     {
                         role: "user",
-                        parts: [{ text: systemPrompt }],
+                        parts: [{ text: prompt }],
                     },
                     {
                         role: "model",
-                        parts: [{ text: "I understand. I'll respond to science questions in the specified JSON format." }],
+                        parts: [{ text: initialResponse }],
                     },
                 ],
             });
             
-            // Send the user's message
-            const result = await chat.sendMessage(userMessage);
+            // Send the user's message (or the complete prompt in case of lesson context)
+            const result = await chat.sendMessage(lessonId && lessonTitle ? prompt : userMessage);
             const response = await result.response;
             const text = await response.text();
             
@@ -424,9 +466,7 @@ export const chatWithAI = async (req, res) => {
             
             // Convert label to boolean for isTrue field
             const isTrueBool = label.toLowerCase() === "fact";
-            
-            // Persist based on lesson context
-            const { lessonId } = req.body;
+              // Persist based on lesson context            // We already have lessonId from req.body at the top of the function
             if (!lessonId) {
                 // No lesson context: handle database operations in main questions collection
                 if (similarQuestion && highestSimilarity >= 0.85) {
@@ -434,6 +474,10 @@ export const chatWithAI = async (req, res) => {
                     similarQuestion.count += 1;
                     await similarQuestion.save();
                     console.log("Similar question found, count incremented");
+                } else if (similarVectors.length > 0) {
+                    // We have similar vectors but couldn't find the question in MongoDB (data inconsistency)
+                    // Don't store to avoid duplicates, just log the issue
+                    console.log("Similar vectors found but corresponding question not found in database, skipping storage");
                 } else {
                     // This is a new general question, store it
                     const newQuestion = new Question({
@@ -449,20 +493,80 @@ export const chatWithAI = async (req, res) => {
                 }
             } else {
                 console.log("Lesson context detected, skipping general question storage");
-            }
-
-            if (lessonId) {
+            }              if (lessonId) {
                 try {
+                    // Import LessonQuestion model directly with full path for reliable resolution
                     const LessonQuestion = (await import('../models/lessonQuestionModel.js')).default;
-                    // Save question record
-                    const newLQ = await LessonQuestion.create({ lessonId, questionText: userMessage, vectorId: '' });
-                    // Create embedding and store vector
+                    console.log(`Checking for similar lesson questions before saving for lessonId: ${lessonId}`);
+                    
+                    // Create embedding first
                     const embedding = await getEmbedding(normalizeText(userMessage));
-                    const storedVectorId = await storeLessonVector(newLQ._id.toString(), lessonId, embedding);
-                    newLQ.vectorId = storedVectorId;
-                    await newLQ.save();
-                } catch (persistError) {
+                    
+                    // Check for similar vectors in the lesson context
+                    // We're specifically looking for vectors with the same lessonId metadata
+                    const similarLessonVectors = await querySimilarVectors(embedding, 0.85, 3);
+                    
+                    // Filter to only include vectors related to this specific lesson
+                    const lessonSpecificVectors = similarLessonVectors.filter(
+                        vector => vector.metadata && vector.metadata.lessonId === lessonId
+                    );                      if (lessonSpecificVectors.length > 0) {
+                        // Found a similar question for this lesson, don't store a duplicate
+                        const similarityScore = lessonSpecificVectors[0].score.toFixed(2);
+                        const similarQuestionId = lessonSpecificVectors[0].id;
+                        
+                        console.log(`Similar question already exists for lessonId ${lessonId}`);
+                        console.log(`Similarity score: ${similarityScore}, existing question ID: ${similarQuestionId}`);
+                        console.log('Skipping storage to avoid duplicate lesson questions');
+                        
+                        // Try to retrieve the existing question to log what it was and increment count
+                        try {
+                            const existingQuestion = await LessonQuestion.findById(similarQuestionId);
+                            if (existingQuestion) {
+                                console.log(`Similar existing question: "${existingQuestion.questionText.substring(0, 50)}..."`);
+                                  // Increment the count for this question
+                                const previousCount = existingQuestion.count || 1;
+                                existingQuestion.count = previousCount + 1;
+                                await existingQuestion.save();
+                                console.log(`Incremented count for question "${existingQuestion.questionText.substring(0, 30)}..." from ${previousCount} to ${existingQuestion.count}`);
+                            }
+                        } catch (err) {
+                            console.log('Could not retrieve or update existing similar question details:', err.message);
+                        }
+                    } else {                        // No similar question found, proceed with storage
+                        console.log(`No similar lesson questions found, creating new entry for lessonId: ${lessonId}`);
+                        
+                        // Create document with initialized fields and response details
+                        const newLQ = new LessonQuestion({
+                            lessonId,
+                            questionText: userMessage,
+                            responseText: text, // Store the raw text response
+                            responseLabel: label, // Store just the label ('Myth' or 'Fact')
+                            responseExplanation: explanation, // Store just the explanation
+                            count: 1 // Initialize count to 1 for a new question
+                            // vectorId will be added after storage
+                        });
+                        
+                        console.log(`Created new LessonQuestion instance with data:`, {
+                            lessonId,
+                            questionText: userMessage.substring(0, 30) + "...", // Truncate for logging
+                            hasResponseText: !!text,
+                            responseLabel: label,
+                            count: 1  // Log that we're starting with a count of 1
+                        });
+                        
+                        // Store vector using the new document ID
+                        const storedVectorId = await storeLessonVector(newLQ._id.toString(), lessonId, embedding);
+                        console.log(`Vector stored with ID: ${storedVectorId}`);
+                        
+                        // Set vectorId and save
+                        newLQ.vectorId = storedVectorId;
+                        await newLQ.save();
+                        console.log(`Successfully saved lessonQuestion with ID: ${newLQ._id}, vectorId: ${storedVectorId}`);
+                    }                } catch (persistError) {
+                    console.error('Error persisting lesson question:', persistError.message);
+                    console.error('Error stack:', persistError.stack);
                     console.error('Error persisting lesson question:', persistError);
+                    // Continue processing and return response to user even if storage fails
                 }
             }
             
@@ -475,23 +579,37 @@ export const chatWithAI = async (req, res) => {
         } catch (databaseError) {
             console.error("Error processing database operations:", databaseError);
             // Continue with response even if database operations fail
-            
-            // Just return the AI response without DB operations
+              // Just return the AI response without DB operations
             const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+            
+            // Determine which prompt to use based on context, same as above
+            let prompt = systemPrompt;
+            let initialResponse = "I understand. I'll respond to science questions in the specified JSON format.";
+            
+            if (lessonId && lessonTitle) {
+                prompt = educationalPrompt
+                    .replace('{grade}', grade || 'Grade 9-12')
+                    .replace('{difficulty}', difficulty || 'Intermediate')
+                    .replace('{lessonTitle}', lessonTitle)
+                    .replace('{question}', userMessage);
+                
+                initialResponse = "I understand. I'll explain this concept in a student-friendly way.";
+            }
+            
             const chat = model.startChat({
                 history: [
                     {
                         role: "user",
-                        parts: [{ text: systemPrompt }],
+                        parts: [{ text: prompt }],
                     },
                     {
                         role: "model",
-                        parts: [{ text: "I understand. I'll respond to science questions in the specified JSON format." }],
+                        parts: [{ text: initialResponse }],
                     },
                 ],
             });
             
-            const result = await chat.sendMessage(userMessage);
+            const result = await chat.sendMessage(lessonId && lessonTitle ? prompt : userMessage);
             const response = await result.response;
             const text = await response.text();
             

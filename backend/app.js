@@ -74,6 +74,9 @@ app.use('/api/progress', progressRoutes)
 // Chatbot route (AI chat)
 app.use('/api/chat', chatbotRoute);
 app.use('/api/user', userRoutes);
+// Lesson questions routes (for FAQs and related questions)
+import lessonQuestionRoutes from './routes/lessonQuestionRoutes.js';
+app.use('/api/lesson-questions', lessonQuestionRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

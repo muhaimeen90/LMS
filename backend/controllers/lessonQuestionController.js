@@ -45,3 +45,44 @@ export const getRelatedLessonQuestions = async (req, res, next) => {
     next(err);
   }
 };
+
+// Get top questions for a specific lesson by count (for FAQ section)
+export const getTopLessonQuestions = async (req, res, next) => {
+  try {
+    const { lessonId } = req.params;
+    const limit = parseInt(req.query.limit) || 3; // Default to top 3 questions
+    
+    if (!lessonId) {
+      throw new ApiError(400, 'lessonId is required');
+    }
+
+    console.log(`Fetching top ${limit} questions for lesson: ${lessonId}`);
+    
+    // Find questions for this lesson, sort by count (descending), and limit results
+    const topQuestions = await LessonQuestion.find({ lessonId })
+      .sort({ count: -1 }) // Sort by count in descending order
+      .limit(limit)
+      .select('questionText responseText responseLabel responseExplanation count');
+
+    console.log(`Found ${topQuestions.length} top questions for lessonId ${lessonId}`);
+    
+    // Log some details about the questions if any were found
+    if (topQuestions.length > 0) {
+      const questionStats = topQuestions.map(q => ({
+        id: q._id,
+        question: q.questionText.substring(0, 30) + '...',
+        count: q.count
+      }));
+      console.log('Top question stats:', questionStats);
+    }
+
+    res.status(200).json({
+      status: 'success',
+      results: topQuestions.length,
+      data: topQuestions
+    });
+  } catch (err) {
+    console.error(`Error fetching top questions for lessonId ${lessonId}:`, err);
+    next(err);
+  }
+};
