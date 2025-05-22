@@ -2,6 +2,7 @@ import { Quiz, QuizQuestion, QuizAttempt } from '../models/quizModel.js';
 import ApiError from '../utils/apiError.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
+import { awardXP } from '../utils/xpUtils.js';
 
 // Get all quizzes (public)
 const getAllQuizzes = asyncHandler(async (req, res) => {
@@ -206,9 +207,16 @@ const submitQuizAttempt = asyncHandler(async (req, res) => {
     timeTaken
   });
 
+  // Award XP: base for passing, bonus for perfect
+  let xpInfo = {};
+  if (passed) {
+    const bonus = percentage === 100 ? XP_VALUES.quizPerfectBonus : 0;
+    xpInfo = await awardXP(userId, 'quizPass', bonus);
+  }
+
   return res
     .status(201)
-    .json(new ApiResponse(201, attempt, 'Quiz attempt submitted successfully'));
+    .json(new ApiResponse(201, { attempt, xpInfo }, 'Quiz attempt submitted successfully'));
 });
 
 // Get quiz attempts for a student

@@ -13,6 +13,7 @@ import quizRoutes from './routes/quizRoutes.js'
 import questionRoutes from './routes/questionRoute.js'
 import progressRoutes from './routes/progressRoutes.js'
 import chatbotRoute from './routes/chatbotRoute.js';
+import userRoutes from './routes/userRoutes.js';
 
 const app = express()
 
@@ -71,6 +72,7 @@ app.use('/api/quizzes', quizRoutes)
 app.use('/api/questions', questionRoutes) 
 app.use('/api/progress', progressRoutes)
 app.use('/api/', chatbotRoute);
+app.use('/api/user', userRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
