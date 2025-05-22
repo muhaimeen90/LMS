@@ -52,6 +52,56 @@ export default function LessonPage({ params }) {
     pauseTimer
   } = useLessonTimer(lessonId);
 
+  const updateBackendLessonCompletion = async (currentLessonId, isNowCompleted, currentTimeSpent) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Authentication token not found.');
+      setError('Authentication token not found. Please log in again.');
+      return;
+    }
+
+    try {
+      let response;
+      if (isNowCompleted) {
+        response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/progress/${currentLessonId}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            completed: true,
+            timeSpent: currentTimeSpent
+          }),
+        });
+      } else {
+        response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/progress/${currentLessonId}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            completed: false,
+            timeSpent: currentTimeSpent 
+          }),
+        });
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Failed to update lesson completion status to ${isNowCompleted}`);
+      }
+
+      console.log(`Lesson ${currentLessonId} completion status updated to ${isNowCompleted} on the backend.`);
+      // Optionally, trigger a refresh of dashboard data or show a success message.
+
+    } catch (err) {
+      console.error('Error updating lesson completion status on backend:', err);
+      setError(err.message);
+    }
+  };
+
   // Process lesson data to ensure it's in the right format
   const processLessonData = (data) => {
     // Ensure content is properly structured for rendering
@@ -280,9 +330,10 @@ export default function LessonPage({ params }) {
     setQuizResults({ score, totalQuestions });
     
     if (score / totalQuestions >= 0.7) {
-      markLessonCompleted(lessonId);
-      setLessonCompleted(true);
+      markLessonCompleted(lessonId); // Local storage update
+      setLessonCompleted(true);     // Local UI state update
       announceToScreenReader(`Congratulations! You scored ${score} out of ${totalQuestions} and completed this lesson.`);
+      updateBackendLessonCompletion(lessonId, true, totalTimeSpent); // Backend update
     } else {
       announceToScreenReader(`You scored ${score} out of ${totalQuestions}. You need 70% to complete this lesson.`);
     }
@@ -355,7 +406,10 @@ export default function LessonPage({ params }) {
             <div className="flex items-center">
               <LessonCompletionBadge 
                 lessonId={lessonId} 
-                onStatusChange={(status) => setLessonCompleted(status)}
+                onStatusChange={(status) => {
+                  setLessonCompleted(status);
+                  updateBackendLessonCompletion(lessonId, status, totalTimeSpent);
+                }}
               />
               
               <div className="text-sm text-gray-600 dark:text-gray-400 ml-4">

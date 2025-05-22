@@ -5,7 +5,6 @@ import {
   getAllLessons,
   getLessonById,
   createLesson,
-  updateLesson,
   deleteLesson
 } from '../controllers/lessonController.js'
 import multer from 'multer'
@@ -19,9 +18,8 @@ const router = express.Router()
 router.get('/', getAllLessons)
 router.get('/:id', getLessonById)
 
-// Protected routes - only teachers and admins can create, update, or delete lessons
+// Protected routes - only teachers and admins can create or delete lessons
 router.post('/', protect, restrictTo('teacher', 'admin'), upload.single('material'), validate(createLessonValidation), createLesson)
-router.put('/:id', protect, restrictTo('teacher', 'admin'), upload.single('material'), validate(createLessonValidation), updateLesson)
 router.delete('/:id', protect, restrictTo('teacher', 'admin'), deleteLesson)
 
 export default router

@@ -43,7 +43,9 @@ export default function LessonsPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold">Science Lessons</h1>
+          <h1 className="text-3xl md:text-4xl font-bold">
+            {isTeacher ? 'Manage Lessons' : 'Science Lessons'}
+          </h1>
           
           {canCreateLesson && (
             <Link
@@ -109,20 +111,33 @@ export default function LessonsPage() {
                           <p className="text-gray-700 mb-4">{lesson.description}</p>
                         </div>
                       </div>
-                      <Link 
-                        href={`/lessons/${lesson.id}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (!isLoading && !isAuthenticated) {
-                            e.preventDefault();
-                            router.push('/auth');
-                          }
-                        }}
-                        className="inline-block bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                        aria-label={`Start lesson: ${lesson.title}`}
-                      >
-                        Start Lesson
-                      </Link>
+
+                      {isTeacher ? (
+                        <div className="flex space-x-3">
+                          <Link 
+                            href={`/quizzes/create?lessonId=${lesson.id}`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                          >
+                            Create Quiz
+                          </Link>
+                        </div>
+                      ) : (
+                        <Link 
+                          href={`/lessons/${lesson.id}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!isLoading && !isAuthenticated) {
+                              e.preventDefault();
+                              router.push('/auth');
+                            }
+                          }}
+                          className="inline-block bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                          aria-label={`Start lesson: ${lesson.title}`}
+                        >
+                          Start Lesson
+                        </Link>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -146,15 +161,17 @@ export default function LessonsPage() {
               </div>
             )}
             
-            <div className="bg-blue-50 rounded-lg p-8 text-center mt-8">
-              <h2 className="text-2xl font-semibold mb-4">More Lessons Coming Soon!</h2>
-              <p className="text-gray-700 mb-2">
-                We're working on adding more interactive science lessons in various subjects.
-              </p>
-              <p className="text-gray-700">
-                Check back soon for lessons on Chemistry, Biology, Astronomy, and more!
-              </p>
-            </div>
+            {!isTeacher && (
+              <div className="bg-blue-50 rounded-lg p-8 text-center mt-8">
+                <h2 className="text-2xl font-semibold mb-4">More Lessons Coming Soon!</h2>
+                <p className="text-gray-700 mb-2">
+                  We're working on adding more interactive science lessons in various subjects.
+                </p>
+                <p className="text-gray-700">
+                  Check back soon for lessons on Chemistry, Biology, Astronomy, and more!
+                </p>
+              </div>
+            )}
           </>
         )}
       </div>
