@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import QuizCreator from '../../components/QuizCreator';
 import { useAuth } from '../../utils/AuthContext';
@@ -15,6 +15,7 @@ export default function CreateQuizPage() {
   
   const { isAuthenticated, isTeacher, isAdmin, isLoading: authLoading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   
   // Check if user is authorized to create quizzes
   useEffect(() => {
@@ -35,6 +36,13 @@ export default function CreateQuizPage() {
         
         const result = await response.json();
         setLessons(result.data || []);
+        
+        // Check if lessonId is provided in URL params
+        const lessonIdFromURL = searchParams.get('lessonId');
+        if (lessonIdFromURL) {
+          setSelectedLessonId(lessonIdFromURL);
+          setShowCreator(true);
+        }
       } catch (err) {
         console.error('Error fetching lessons:', err);
       } finally {
@@ -45,7 +53,7 @@ export default function CreateQuizPage() {
     if (isAuthenticated && (isTeacher || isAdmin)) {
       fetchLessons();
     }
-  }, [isAuthenticated, isTeacher, isAdmin]);
+  }, [isAuthenticated, isTeacher, isAdmin, searchParams]);
   
   // Handle lesson selection and proceed to quiz creation
   const handleLessonSelect = (e) => {

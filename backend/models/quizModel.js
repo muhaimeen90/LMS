@@ -1,14 +1,62 @@
 import mongoose from 'mongoose';
 
+const quizSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    unique: true,
+    default: () => `quiz_${Date.now()}_${Math.floor(Math.random() * 1000)}`
+  },
+  title: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  description: {
+    type: String,
+    trim: true
+  },
+  lessonId: {
+    type: String,  // Change from ObjectId to String if using custom IDs
+    required: true
+  },
+  questions: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'QuizQuestion'
+  }],
+  createdBy: {
+    type: mongoose.Schema.Types.Mixed, // Accept either string ID or ObjectId
+    ref: 'User',
+    required: true
+  },
+  passingScore: {
+    type: Number,
+    default: 70,
+    min: 0,
+    max: 100
+  },
+  timeLimit: {
+    type: Number, // in minutes
+    min: 1
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+  }
+}, { timestamps: true });
+
 const quizQuestionSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    unique: true,
+    default: () => `question_${Date.now()}_${Math.floor(Math.random() * 1000)}`
+  },
   quizId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Quiz',
     required: true
   },
   lessonId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Lesson',
+    type: String,  // Change from ObjectId to String if using custom IDs
     required: true
   },
   text: {
@@ -38,7 +86,7 @@ const quizQuestionSchema = new mongoose.Schema({
     default: 'medium'
   },
   createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.Mixed, // Accept either string ID or ObjectId
     ref: 'User',
     required: true
   },
@@ -47,46 +95,6 @@ const quizQuestionSchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
-const quizSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  description: {
-    type: String,
-    trim: true
-  },
-  lessonId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Lesson',
-    required: true
-  },
-  questions: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'QuizQuestion'
-  }],
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  passingScore: {
-    type: Number,
-    default: 70,
-    min: 0,
-    max: 100
-  },
-  timeLimit: {
-    type: Number, // in minutes
-    min: 1
-  },
-  isActive: {
-    type: Boolean,
-    default: true
-  }
-}, { timestamps: true });
 
 const quizAttemptSchema = new mongoose.Schema({
   quizId: {
@@ -100,8 +108,7 @@ const quizAttemptSchema = new mongoose.Schema({
     required: true
   },
   lessonId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Lesson',
+    type: String,  // Change from ObjectId to String if using custom IDs
     required: true
   },
   answers: [{

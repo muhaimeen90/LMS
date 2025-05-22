@@ -19,21 +19,47 @@ export default function QuizzesPage() {
   useEffect(() => {
     const fetchQuizzes = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quizzes`);
+        setLoading(true);
+        setError(null);
+        
+        // Use environment variable for API URL
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const endpoint = `${apiUrl}/api/quizzes`;
+        
+        console.log('Fetching quizzes from:', endpoint);
+        
+        const response = await fetch(endpoint, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        
+        console.log('Response status:', response.status);
+        
         if (!response.ok) {
-          throw new Error('Failed to fetch quizzes');
+          const errorData = await response.json().catch(() => null);
+          console.error('Error response:', errorData);
+          throw new Error(errorData?.message || `Failed to fetch quizzes: ${response.status}`);
         }
+        
         const result = await response.json();
-        setQuizzes(result.data.data || []);
-        announceToScreenReader(`${result.data.data?.length || 0} quizzes available`);
+        console.log('API response:', result);
+        
+        // Handle different response formats
+        const quizzesData = result.data?.data || result.data || result || [];
+        
+        console.log('Final quizzes data:', quizzesData);
+        setQuizzes(Array.isArray(quizzesData) ? quizzesData : []);
+        announceToScreenReader(`${quizzesData.length || 0} quizzes available`);
       } catch (err) {
-        setError(err.message);
+        console.error('Error fetching quizzes:', err);
+        setError(err.message || 'Failed to load quizzes. Please try again later.');
         announceToScreenReader('Error loading quizzes');
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchQuizzes();
   }, []);
 
@@ -77,7 +103,7 @@ export default function QuizzesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {quizzes.map((quiz) => (
             <div 
-              key={quiz.id} 
+              key={quiz._id || quiz.id} 
               className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg dark:bg-gray-800 dark:border dark:border-gray-700"
             >
               <div className="p-6">
@@ -94,7 +120,7 @@ export default function QuizzesPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                   </svg>
                   <span>
-                    {new Date(quiz.created_at).toLocaleDateString()}
+                    {new Date(quiz.createdAt || quiz.created_at).toLocaleDateString()}
                   </span>
                   
                   <span className="mx-2">•</span>
@@ -109,7 +135,7 @@ export default function QuizzesPage() {
                 
                 <div className="mt-auto">
                   <Link 
-                    href={`/quizzes/${quiz.id}`}
+                    href={`/quizzes/${quiz._id || quiz.id}`}
                     className="inline-block w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium text-center rounded-md transition-colors duration-300 dark:bg-blue-700 dark:hover:bg-blue-600"
                   >
                     Take Quiz

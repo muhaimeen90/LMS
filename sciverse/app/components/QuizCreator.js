@@ -6,18 +6,27 @@ import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from '../utils/AuthContext';
 import { announceToScreenReader } from '../utils/screenReaderAnnouncer';
 
-const QuizCreator = ({ lessonId, existingQuiz = null, onQuizCreated }) => {
+// Helper function to validate MongoDB ObjectId - used for quiz ID validation only
+const isValidObjectId = (id) => {
+  return /^[0-9a-fA-F]{24}$/.test(id);
+};
+
+const QuizCreator = ({ lessonId: initialLessonId, existingQuiz = null, onQuizCreated }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [passingScore, setPassingScore] = useState(70); // Default passing score 70%
-  const [timeLimit, setTimeLimit] = useState(30); // Default time limit 30 minutes
+  const [passingScore, setPassingScore] = useState(70);
+  const [timeLimit, setTimeLimit] = useState(30);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   
-  const { isAuthenticated, isTeacher, isAdmin } = useAuth();
+  const { isAuthenticated, isTeacher, isAdmin, user } = useAuth();
   const router = useRouter();
+
+  // Accept the lessonId as is, without ObjectId validation
+  // The backend will validate if it's a valid lesson ID
+  const lessonId = initialLessonId;
   
   // Initialize with existing quiz data if provided
   useEffect(() => {
@@ -28,7 +37,6 @@ const QuizCreator = ({ lessonId, existingQuiz = null, onQuizCreated }) => {
       setTimeLimit(existingQuiz.timeLimit || 30);
       setIsEditing(true);
       
-      // Map questions to our format
       const formattedQuestions = existingQuiz.questions.map(q => ({
         id: q._id,
         text: q.text,
@@ -42,7 +50,6 @@ const QuizCreator = ({ lessonId, existingQuiz = null, onQuizCreated }) => {
       
       setQuestions(formattedQuestions);
     } else {
-      // Initialize with one empty question
       setQuestions([{
         id: uuidv4(),
         text: '',
@@ -111,7 +118,6 @@ const QuizCreator = ({ lessonId, existingQuiz = null, onQuizCreated }) => {
     const newQuestions = [...questions];
     if (newQuestions[qIndex].options.length <= 2) return;
     
-    // If removing the option that was set as correct answer, reset the correct answer
     const removedOption = newQuestions[qIndex].options[optIndex];
     if (newQuestions[qIndex].correctAnswer === removedOption.id) {
       newQuestions[qIndex].correctAnswer = null;
@@ -136,7 +142,22 @@ const QuizCreator = ({ lessonId, existingQuiz = null, onQuizCreated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    console.log("user", user);
+    console.log("lessonId", lessonId);
+    // Validate user
+    if (!user) {
+      setError('User authentication required');
+      announceToScreenReader('Please log in to create quizzes');
+      return;
+    }
+
+    // Validate lesson
+    if (!lessonId) {
+      setError('Invalid lesson reference');
+      announceToScreenReader('Invalid lesson selected');
+      return;
+    }
+
     // Basic validation
     if (!title.trim()) {
       setError('Quiz title is required');
@@ -144,7 +165,7 @@ const QuizCreator = ({ lessonId, existingQuiz = null, onQuizCreated }) => {
       return;
     }
     
-    // Validate all questions have text, options and correct answer
+    // Validate questions
     const hasInvalidQuestions = questions.some(q => 
       !q.text.trim() || 
       q.options.some(opt => !opt.text.trim()) ||
@@ -160,9 +181,10 @@ const QuizCreator = ({ lessonId, existingQuiz = null, onQuizCreated }) => {
     // Format questions for API
     const formattedQuestions = questions.map(q => ({
       text: q.text,
-      options: q.options,
-      correctAnswer: q.correctAnswer,
-      explanation: q.explanation
+      options: q.options.map(opt => opt.text),
+      correctAnswer: q.options.find(opt => opt.id === q.correctAnswer)?.text || '',
+      explanation: q.explanation,
+      difficulty: 'medium'
     }));
     
     setLoading(true);
@@ -174,16 +196,22 @@ const QuizCreator = ({ lessonId, existingQuiz = null, onQuizCreated }) => {
         : `${process.env.NEXT_PUBLIC_API_URL}/api/quizzes`;
       
       const method = isEditing ? 'PUT' : 'POST';
+
+      // Get token for authentication
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Authentication required. Please log in again.');
+      }
       
       const response = await fetch(endpoint, {
         method,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          title,
-          description,
+          title: title.trim(),
+          description: description.trim(),
           lessonId,
           questions: formattedQuestions,
           passingScore,
@@ -192,22 +220,27 @@ const QuizCreator = ({ lessonId, existingQuiz = null, onQuizCreated }) => {
       });
       
       if (!response.ok) {
-        throw new Error(isEditing ? 'Failed to update quiz' : 'Failed to create quiz');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Backend error response:', errorData);
+        throw new Error(errorData.message || (isEditing ? 'Failed to update quiz' : 'Failed to create quiz'));
       }
       
       const result = await response.json();
       
       announceToScreenReader(isEditing ? 'Quiz updated successfully' : 'Quiz created successfully');
       
-      // Call the callback with the created/updated quiz data
       if (onQuizCreated) {
         onQuizCreated(result.data);
       }
       
     } catch (err) {
       console.error('Quiz creation error:', err);
-      setError(err.message);
-      announceToScreenReader(`Error: ${err.message}`);
+      let errorMessage = err.message;
+      if (err.message.includes('ObjectId')) {
+        errorMessage = 'Invalid data format - please refresh and try again';
+      }
+      setError(errorMessage);
+      announceToScreenReader(`Error: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
