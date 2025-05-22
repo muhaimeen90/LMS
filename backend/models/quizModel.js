@@ -103,7 +103,7 @@ const quizAttemptSchema = new mongoose.Schema({
     required: true
   },
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.Mixed, // Changed from ObjectId to Mixed to accept string IDs
     ref: 'User',
     required: true
   },
