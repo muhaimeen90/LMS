@@ -11,6 +11,7 @@ import LessonNavigationAssistant from '../../components/LessonNavigationAssistan
 import LessonKeyboardShortcutsModal from '../../components/LessonKeyboardShortcutsModal';
 import AccessibleOutline from '../../components/AccessibleOutline';
 import ChatBot from '../../components/ChatBot';
+import FAQ from '../../components/FAQ';
 import { 
   markLessonCompleted, 
   isLessonCompleted,
@@ -712,8 +713,7 @@ export default function LessonPage({ params }) {
           )}
         </div>
 
-        {/* Ask Anything Tab */}
-        <div
+        {/* Ask Anything Tab */}        <div
           id="lesson-ask"
           role="tabpanel"
           aria-labelledby="ask-tab"
@@ -721,11 +721,15 @@ export default function LessonPage({ params }) {
         >
           <div className="mb-6">
             <h2 className="text-2xl font-bold mb-4">Ask Anything</h2>
-            <ChatBot lessonId={lessonId} lessonTitle={lessonData?.title} />
+            <ChatBot 
+              lessonId={lessonId} 
+              lessonTitle={lessonData?.title} 
+              lessonGrade={lessonData?.grade} 
+              lessonDifficulty={lessonData?.difficulty} 
+            />
           </div>
         </div>
-        
-        {/* FAQ Tab */}
+          {/* FAQ Tab */}
         <div
           id="lesson-faq"
           role="tabpanel"
@@ -734,18 +738,7 @@ export default function LessonPage({ params }) {
         >
           <div className="mb-6">
             <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions</h2>
-            {lessonData?.faq?.length > 0 ? (
-              <ul className="space-y-4">
-                {lessonData.faq.map((item, idx) => (
-                  <li key={idx} className="bg-white rounded-lg shadow-sm p-4">
-                    <p className="font-medium">Q: {item.question}</p>
-                    <p className="mt-1 text-gray-700">A: {item.answer}</p>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-600">No FAQs have been added for this lesson yet.</p>
-            )}
+            <FAQ lessonId={lessonId} />
           </div>
         </div>
         

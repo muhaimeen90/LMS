@@ -536,3 +536,200 @@
 {"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 22:28:24"}
 {"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 22:28:24"}
 {"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 22:28:24"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-22 23:34:43"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-22 23:34:43"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-22 23:34:43"}
+{"duration":"186ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:35:31","url":"/me"}
+{"duration":"7ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":404,"timestamp":"2025-05-22 23:35:38","url":"/api/auth/logout"}
+{"duration":"1189ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 23:37:46","url":"/login"}
+{"duration":"459ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":401,"timestamp":"2025-05-22 23:37:51","url":"/api/user/progress"}
+{"duration":"103ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":401,"timestamp":"2025-05-22 23:37:51","url":"/api/user/progress"}
+{"duration":"1466ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 23:37:52","url":"/me"}
+{"duration":"192ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:37:52","url":"/me"}
+{"duration":"201ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:37:53","url":"/me"}
+{"duration":"926ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:37:54","url":"/me"}
+{"duration":"101ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":401,"timestamp":"2025-05-22 23:37:54","url":"/api/user/progress"}
+{"duration":"501ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":401,"timestamp":"2025-05-22 23:37:55","url":"/api/user/progress"}
+{"duration":"673ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:37:55","url":"/me"}
+{"duration":"292ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:37:58","url":"/me"}
+{"duration":"2ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":404,"timestamp":"2025-05-22 23:38:04","url":"/api/auth/logout"}
+{"duration":"1319ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 23:38:37","url":"/login"}
+{"duration":"191ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":401,"timestamp":"2025-05-22 23:38:38","url":"/api/user/progress"}
+{"duration":"217ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 23:38:38","url":"/me"}
+{"duration":"95ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":401,"timestamp":"2025-05-22 23:38:38","url":"/api/user/progress"}
+{"duration":"193ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:38:39","url":"/me"}
+{"duration":"276ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:38:39","url":"/me"}
+{"duration":"232ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:38:39","url":"/me"}
+{"duration":"225ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":401,"timestamp":"2025-05-22 23:38:40","url":"/api/user/progress"}
+{"duration":"715ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:38:41","url":"/me"}
+{"duration":"497ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":401,"timestamp":"2025-05-22 23:38:41","url":"/api/user/progress"}
+{"duration":"229ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:38:45","url":"/me"}
+{"duration":"20ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":404,"timestamp":"2025-05-22 23:44:46","url":"/api/auth/logout"}
+{"duration":"1138ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 23:44:54","url":"/login"}
+{"duration":"218ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 23:44:55","url":"/me"}
+{"duration":"272ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:44:56","url":"/me"}
+{"duration":"3ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":404,"timestamp":"2025-05-22 23:44:58","url":"/api/auth/logout"}
+{"duration":"1101ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 23:46:00","url":"/login"}
+{"duration":"691ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 23:46:01","url":"/me"}
+{"duration":"616ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:46:02","url":"/me"}
+{"duration":"272ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 23:46:13","url":"/top?limit=10"}
+{"duration":"842ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:46:14","url":"/me"}
+{"duration":"634ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:46:14","url":"/top?limit=10"}
+{"duration":"6247ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 23:46:54","url":"/"}
+{"duration":"10932ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-22 23:47:32","url":"/"}
+{"duration":"314ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:51:01","url":"/me"}
+{"duration":"112ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 23:52:26","url":"/"}
+{"duration":"179ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:52:26","url":"/"}
+{"duration":"603ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:52:26","url":"/me"}
+{"duration":"62ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:52:48","url":"/lesson_1747895174982"}
+{"duration":"135ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:52:48","url":"/lesson_1747895174982"}
+{"duration":"73ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:52:48","url":"/"}
+{"duration":"272ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:52:48","url":"/"}
+{"duration":"1216ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:52:49","url":"/me"}
+{"duration":"10841ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-22 23:53:12","url":"/lesson/lesson_1747895174982"}
+{"duration":"172ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:54:41","url":"/me"}
+{"duration":"302ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-22 23:55:07","url":"/me"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:19:17"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:19:17"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:19:17"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:20:04"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:20:04"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:20:04"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:20:31"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:20:31"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:20:31"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:21:12"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:21:12"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:21:12"}
+{"duration":"99ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:21:50","url":"/"}
+{"duration":"567ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:21:51","url":"/"}
+{"duration":"625ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:21:51","url":"/me"}
+{"duration":"52ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:21:53","url":"/lesson_1747895174982"}
+{"duration":"440ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:21:53","url":"/lesson_1747895174982"}
+{"duration":"443ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:21:53","url":"/"}
+{"duration":"509ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:21:53","url":"/me"}
+{"duration":"387ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:21:54","url":"/"}
+{"duration":"8882ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 00:22:11","url":"/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:23:38"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:23:38"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:23:38"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:24:09"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:24:09"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:24:09"}
+{"duration":"12540ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 00:31:41","url":"/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:46:26"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:46:26"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:46:26"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:46:46"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:46:46"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:46:46"}
+{"duration":"82ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-23 00:47:18","url":"/top?limit=10"}
+{"duration":"60ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:47:18","url":"/top?limit=10"}
+{"duration":"120ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:47:18","url":"/me"}
+{"duration":"7949ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 00:47:39","url":"/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:47:42"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:47:42"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:47:42"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:48:04"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:48:04"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:48:04"}
+{"duration":"75ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:50:40","url":"/"}
+{"duration":"66ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:50:40","url":"/"}
+{"duration":"212ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:50:41","url":"/me"}
+{"duration":"53ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:50:42","url":"/lesson_1747895174982"}
+{"duration":"131ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:50:42","url":"/lesson_1747895174982"}
+{"duration":"134ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:50:42","url":"/"}
+{"duration":"244ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:50:42","url":"/me"}
+{"duration":"65ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 00:50:42","url":"/"}
+{"duration":"6658ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 00:51:01","url":"/"}
+{"duration":"6850ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 00:52:02","url":"/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:52:51"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:52:51"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:52:51"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:52:55"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:52:55"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:52:55"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:53:01"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:53:01"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:53:01"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:53:07"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:53:07"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:53:07"}
+{"duration":"5828ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 00:53:24","url":"/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:57:49"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:57:49"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:57:49"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:58:19"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:58:19"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:58:19"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 00:58:41"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 00:58:41"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 00:58:41"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:00:43"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:00:43"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:00:43"}
+{"duration":"7799ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:01:41","url":"/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:06:03"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:06:03"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:06:03"}
+{"duration":"8419ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:11:05","url":"/"}
+{"duration":"8979ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:12:48","url":"/"}
+{"duration":"7077ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:13:22","url":"/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:15:37"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:15:37"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:15:37"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:16:01"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:16:01"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:16:01"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:16:32"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:16:32"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:16:32"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:16:49"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:16:49"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:16:49"}
+{"duration":"7734ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:17:43","url":"/"}
+{"duration":"9845ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:18:30","url":"/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:20:44"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:20:44"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:20:44"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:21:08"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:21:08"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:21:08"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:25:52"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:25:52"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:25:52"}
+{"duration":"91ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 01:26:00","url":"/lesson_1747895174982"}
+{"duration":"74ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 01:26:01","url":"/"}
+{"duration":"11097ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:26:20","url":"/"}
+{"duration":"7406ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:27:49","url":"/"}
+{"duration":"8057ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:28:05","url":"/"}
+{"duration":"6692ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:28:26","url":"/"}
+{"duration":"11416ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:29:31","url":"/"}
+{"duration":"7342ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:29:44","url":"/"}
+{"duration":"7643ms","ip":"::1","level":"info","message":"HTTP Request","method":"POST","service":"lms-api","status":200,"timestamp":"2025-05-23 01:29:57","url":"/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:33:20"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:33:20"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:33:20"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:33:44"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:33:44"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:33:44"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:35:16"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:35:16"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:35:16"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:37:03"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:37:03"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:37:03"}
+{"duration":"206ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 01:40:22","url":"/lesson_1747895174982"}
+{"duration":"63ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 01:40:22","url":"/"}
+{"duration":"61ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 01:40:24","url":"/lesson_1747895174982"}
+{"duration":"56ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 01:40:25","url":"/"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:41:02"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:41:02"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:41:02"}
+{"level":"info","message":"Attempting to connect to MongoDB...","service":"lms-api","timestamp":"2025-05-23 01:41:16"}
+{"level":"info","message":"Successfully connected to MongoDB","service":"lms-api","timestamp":"2025-05-23 01:41:16"}
+{"level":"info","message":"Server is running on port 5000","service":"lms-api","timestamp":"2025-05-23 01:41:16"}
+{"duration":"87ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 01:41:30","url":"/lesson_1747895174982"}
+{"duration":"59ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 01:41:30","url":"/"}
+{"duration":"74ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":200,"timestamp":"2025-05-23 01:41:30","url":"/top/lesson_1747895174982"}
+{"duration":"146ms","ip":"::1","level":"info","message":"HTTP Request","method":"GET","service":"lms-api","status":304,"timestamp":"2025-05-23 01:41:30","url":"/top/lesson_1747895174982"}
