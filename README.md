@@ -8,6 +8,7 @@ A full-stack Learning Management System for interactive, accessible science less
 - MongoDB instance (local or cloud)
 - Pinecone API key (for vector storage)
 - Google Generative AI API key (for chatbot)
+- Sample Teacher Account info to login as a teacher(email: tamimhasantoha444@gmail.com, password: 1234567)
 
 ## Folder Structure
 
