@@ -31,18 +31,8 @@ LMS/
    npm install
    ```
 
-3. Create a `.env` with:
-   ```env
-   PORT=5000
-   MONGO_URI=mongodb://localhost:27017/your-db
-   JWT_SECRET=your_jwt_secret
-   CORS_ORIGIN=http://localhost:3000
-   GEMINI_API_KEY=your_google_genai_key
-   PINECONE_API_KEY=your_pinecone_key
-   PINECONE_ENV=your_pinecone_env
-   ```
 
-4. Start in development mode  
+3. Start in development mode  
    ```bash
    npm run dev
    ```
@@ -64,13 +54,7 @@ LMS/
    npm install
    ```
 
-3. Create a `.env.local` with:
-   ```env
-   NEXT_PUBLIC_API_URL=http://localhost:5000/api
-   NEXT_PUBLIC_CLIENT_URL=http://localhost:3000
-   ```
-
-4. Start Next.js dev server  
+3. Start Next.js dev server  
    ```bash
    npm run dev
    ```
